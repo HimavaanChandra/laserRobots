@@ -1,8 +1,15 @@
 {
 	"folders": [
-		{
-			"path": "."
-		}
+	  {
+		"path": "."
+	  }
 	],
-	"settings": {}
-}
+	"settings": {
+	  "liveshare.guestApprovalRequired": true,
+	  "python.pythonPath": "C:\\Program Files (x86)\\Python37-32\\python.exe",
+	  "files.exclude": {
+		"*/settings.json": true
+		// ".code-workspace": true
+	  }
+	}
+  }
