@@ -8,8 +8,18 @@
     "liveshare.guestApprovalRequired": true,
     "python.pythonPath": "K:\\Program Files (x86)\\Python37-32\\python.exe",
     "files.exclude": {
-      "**/settings.json": true,
-      "*.code-workspace": true
-    }
+      "**/settings.json": true
+      // "*.code-workspace": true
+    },
+    "editor.wordWrap": "on",
+    "editor.formatOnType": true,
+    "files.autoSave": "afterDelay",
+    "python.linting.mypyArgs": [
+      "--ignore-missing-imports",
+      "--follow-imports=silent",
+      "--show-column-numbers"
+      // "--extension-pkg-whitelist=pygame",
+      // "--ignored-modules=pygame"
+    ]
   }
 }
