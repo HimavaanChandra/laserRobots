@@ -23,7 +23,7 @@
     <ProjectGuid>{34EC0B54-05EB-4E43-B338-602CBE434FCF}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>mx2Vision</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
