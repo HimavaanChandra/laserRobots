@@ -10,6 +10,7 @@
 	  "files.exclude": {
 		"*/settings.json": true
 		// ".code-workspace": true
-	  }
+	},
+	"files.autoSave": "afterDelay"
 	}
   }
