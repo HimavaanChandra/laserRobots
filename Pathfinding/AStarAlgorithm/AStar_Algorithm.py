@@ -82,7 +82,9 @@ def astar(maze, start, end):
             path = [] #Creating a list for creating the final path
             current = current_node #linking "current" to "current_node = open_list[0]"
             while current is not None: # "None" is similar to "NULL" in C coding maybe???
+                #Note to self ---> modifier = path[] 
                 path.append(current.position) #"current.position" links to the object "new_node = Node(current_node, node_position)" further down in code - # Add the "current.position" to the end of the "path"
+                #Note to self ---> (path = path - modifier) ---> (SHOULD GIVE THE CHANGE IN COORDINATE VALUE?? E.G. (3,1)-(2,1) ---> (1,0) = 1 GRID UPWARDS)
                 current = current.parent #"current.parent" links to the object "new_node = Node(current_node, node_position)" further down in code
             return path[::-1]  # Return reversed path
 
