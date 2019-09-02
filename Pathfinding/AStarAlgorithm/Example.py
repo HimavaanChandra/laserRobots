@@ -51,21 +51,25 @@ def astar(maze, start, end):
             while current is not None:
                 path.append(current.position)
                 current = current.parent
-            return path[::-1] # Return reversed path
+            return path[::-1]  # Return reversed path
 
         # Generate children
         children = []
-        for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]: # Adjacent squares
+        # Adjacent squares
+        for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)] and x == 0:
 
             # Get node position
-            node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
+            node_position = (
+                current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
 
             # Make sure within range
-            if node_position[0] > (len(maze) - 1) or node_position[0] < 0 or node_position[1] > (len(maze[len(maze)-1]) -1) or node_position[1] < 0:
+            if node_position[0] > (len(maze) - 1) or node_position[0] < 0 or node_position[1] > (len(maze[len(maze)-1]) - 1) or node_position[1] < 0:
+                x = 1
                 continue
 
             # Make sure walkable terrain
             if maze[node_position[0]][node_position[1]] != 0:
+                x = 1
                 continue
 
             # Create new node
@@ -76,7 +80,7 @@ def astar(maze, start, end):
 
         # Loop through children
         for child in children:
-
+            x = 0
             # Child is on the closed list
             for closed_child in closed_list:
                 if child == closed_child:
@@ -84,7 +88,8 @@ def astar(maze, start, end):
 
             # Create the f, g, and h values
             child.g = current_node.g + 1
-            child.h = ((child.position[0] - end_node.position[0]) ** 2) + ((child.position[1] - end_node.position[1]) ** 2)
+            child.h = ((child.position[0] - end_node.position[0]) **
+                       2) + ((child.position[1] - end_node.position[1]) ** 2)
             child.f = child.g + child.h
 
             # Child is already in the open list
@@ -98,16 +103,20 @@ def astar(maze, start, end):
 
 def main():
 
-    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-            [0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 1, 0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+    maze = [[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0]  # MULTI DIMENSIONAL (2D) ARRAY (ARRAYS WITHIN AN ARRAY)
+            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1],
+            [0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1],
+            [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
+            [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
     start = (0, 0)
     end = (8, 8)
