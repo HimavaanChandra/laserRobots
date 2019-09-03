@@ -139,7 +139,7 @@ def astar(maze, start, end):
 
 def main(): 
 
-    # MULTI DIMENSIONAL (2D) 40x40 ARRAY (ARRAYS WITHIN AN ARRAY)
+    # MULTI DIMENSIONAL (2D) 41x41 ARRAY (INCLUDING 0) (ARRAYS WITHIN AN ARRAY)
     #        0  1  2  3  4  5  6  7  8  9 .......... 
     maze = [[0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
             [0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
