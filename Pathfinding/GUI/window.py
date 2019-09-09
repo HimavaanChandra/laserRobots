@@ -11,7 +11,7 @@ class Window():
         self.screen_size(width, height)
 
         pygame.init()
-        pygame.key.set_repeat(1, 40)
+        # pygame.key.set_repeat(1, 40)
         self.fps_clock = pygame.time.Clock()
         self.clock = pygame.time.Clock()
 
