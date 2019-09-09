@@ -1,11 +1,12 @@
 import cv2
-import numpy as np
-import sys
-import time
 import pyzbar.pyzbar as pyzbar
+import numpy as np
+#import sys
+#import time
+
 
 cap = cv2.VideoCapture(0)
-hasFrame,frame = cap.read()
+hasFrame = cap.read() #hasFrame,frame = cap.read()
 
 # Display barcode and QR code location
 def display(im, decodedObjects):
@@ -19,9 +20,18 @@ def display(im, decodedObjects):
       hull = cv2.convexHull(np.array([point for point in points], dtype=np.float32))
       hull = list(map(tuple, np.squeeze(hull)))
     else :
-      hull = points;
-
+      hull = points
+    #print(points)   #points needs to be ROS published
+    # print(np.array(1))
     # Number of points in the convex hull
+
+    if zbarData == b'1':   #maybe b'1'
+          print("Thomas")
+          print(points)
+    if zbarData == b'2':
+          print("Lightning")
+          print(points)
+
     n = len(hull)
 
     # Draw the convext hull
@@ -29,7 +39,7 @@ def display(im, decodedObjects):
       cv2.line(im, hull[j], hull[ (j+1) % n], (255,0,0), 3)
 
   # Display results
-      cv2.imshow("Results", im); #can remove
+      cv2.imshow("Results", im) #can remove
 
 # Detect and decode the qrcode
 #t = time.time()
