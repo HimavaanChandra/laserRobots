@@ -41,7 +41,7 @@ class TCPServer():
             threading.Thread.__init__(self)
             self.client = client
             self.address = address
-            self.timeout = 60
+            self.timeout = 600
             self.connected = True
             self.client_name = None
 
