@@ -2,6 +2,7 @@ import socket
 import threading
 import soundfx as soundfx
 import random
+import json
 
 # print_lock = threading.Lock()
 
@@ -52,8 +53,9 @@ class TCPServer():
 
         def recieve_data(self, size):
             try:
-                data = self.client.recv(size)
-                data = data.decode("utf-8")
+                # data = self.client.recv(size)
+                # data = data.decode("utf-8")
+                data = self.deserialise()
                 if data:
                     if self.client_name is None:
                         self.client_name = data
@@ -66,6 +68,26 @@ class TCPServer():
                       self.address[0], ':', self.address[1], " error:", error)
                 self.close()
                 return False
+
+        def deserialise(self):
+            # read the length of the data, letter by letter until we reach EOL
+            length_str = ''
+            char = self.client.recv(1)
+            while char != '\n':
+                length_str += char
+                char = self.client.recv(1)
+            total = int(length_str)
+            # use a memoryview to receive the data chunk by chunk efficiently
+            view = memoryview(bytearray(total))
+            next_offset = 0
+            while total - next_offset > 0:
+                recv_size = socket.recv_into(view[next_offset:], total - next_offset)
+                next_offset += recv_size
+            try:
+                deserialized = json.loads(view.tobytes())
+            except (TypeError, ValueError) as e:
+                raise Exception('Data received was not in JSON format')
+            return deserialized
 
         def handle_data(self, data):
             if data == 'shoot':
