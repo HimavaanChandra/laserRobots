@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"liveshare.guestApprovalRequired": true,
+		"terminal.integrated.env.windows": {
+			"PATH": "C:\\Users\\pholt\\.platformio\\penv\\Scripts;C:\\Users\\pholt\\.platformio\\penv;C:\\Program Files (x86)\\Python37-32\\Scripts\\;C:\\Program Files (x86)\\Python37-32\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files (x86)\\HP\\HP Performance Advisor;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Git\\cmd;C:\\Users\\pholt\\AppData\\Local\\Microsoft\\WindowsApps;;C:\\intelFPGA_pro\\18.1\\modelsim_ase\\win32aloem;C:\\intelFPGA_lite\\18.1\\modelsim_ase\\win32aloem;C:\\Users\\pholt\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;C:\\Program Files (x86)\\Python37-32\\Scripts\\;C:\\Program Files (x86)\\Python37-32\\;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;c:\\Program Files (x86)\\HP\\HP Performance Advisor;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\Intel\\WiFi\\bin\\;C:\\Program Files\\Common Files\\Intel\\WirelessCommon\\;C:\\Program Files (x86)\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Intel\\Intel(R) Management Engine Components\\DAL;C:\\Program Files\\Git\\cmd;C:\\Users\\pholt\\AppData\\Local\\Microsoft\\WindowsApps;;C:\\intelFPGA_pro\\18.1\\modelsim_ase\\win32aloem;C:\\intelFPGA_lite\\18.1\\modelsim_ase\\win32aloem;C:\\Users\\pholt\\AppData\\Local\\Programs\\Microsoft VS Code\\bin",
+			"PLATFORMIO_CALLER": "vscode"
+		}
+	}
+}
