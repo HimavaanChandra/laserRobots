@@ -6,7 +6,7 @@
 	],
 	"settings": {
 	  "liveshare.guestApprovalRequired": true,
-	  "python.pythonPath": "K:\\Program Files (x86)\\Python37-32\\python.exe",
+	  "python.pythonPath": "C:\\Users\\ajper\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
 	  "files.exclude": {
 		"**/settings.json": true
 	  },
