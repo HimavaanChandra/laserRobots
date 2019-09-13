@@ -51,8 +51,8 @@ while(1):   #here put the 2 different qr options
     if len(decodedObjects):
         zbarData = decodedObjects[0].data
     else:
-        zbarData=''
-            
+        zbarData=''     
+
     if zbarData == b'1':
         cv2.putText(inputImage, "Thomas: Found", (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     else:
@@ -61,7 +61,6 @@ while(1):   #here put the 2 different qr options
         cv2.putText(inputImage, "Lightning: Found", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
     else:
         cv2.putText(inputImage, "Lightning: Not Found", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
-
     display(inputImage, decodedObjects)
     cv2.imshow("Result",inputImage)
 
