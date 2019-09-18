@@ -14,7 +14,7 @@ class TCP():
         else:
             self.connected = False
 
-    def server(self, host="localhost", port="3322"):
+    def server(self, host="0.0.0.0", port="3322"):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind((host, port))
