@@ -189,7 +189,7 @@ class TCP_Thread(threading.Thread):
         self.connected = True
 
     def run(self):
-        while self.connected:
+        while self.connected and self.tcp.connected:
             self.receive_data()
 
     def receive_data(self):
