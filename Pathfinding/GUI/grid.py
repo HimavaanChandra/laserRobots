@@ -8,6 +8,7 @@ from cell import Cell, Wall
 
 class Grid():
     """Grid class holds and manipulates all the cells in the window."""
+    lg_grid_size = 1
 
     def __init__(self, window):
         self.cells = []
@@ -52,19 +53,17 @@ class Grid():
         return (x_position, y_position)
 
     def lg_grid(self, position):
-        lg_grid_size = 2
-        lg_x = int(position[0] / lg_grid_size)
-        lg_y = int(position[1] / lg_grid_size)
+        lg_x = int(position[0] / self.lg_grid_size)
+        lg_y = int(position[1] / self.lg_grid_size)
         return (lg_x, lg_y)
 
     def lg_convert(self, position):
         self.updated = True
-        lg_grid_size = 2
-        x_start = position[0] * lg_grid_size
-        x_end = (position[0]+1)*lg_grid_size
+        x_start = position[0] * self.lg_grid_size
+        x_end = (position[0]+1) * self.lg_grid_size
         x_range = range(x_start, x_end)
-        y_start = position[1]*lg_grid_size
-        y_end = (position[1]+1)*lg_grid_size
+        y_start = position[1] * self.lg_grid_size
+        y_end = (position[1]+1) * self.lg_grid_size
         y_range = range(y_start, y_end)
 
         for row_index in y_range:
@@ -75,12 +74,11 @@ class Grid():
 
     def lg_remove(self, position):
         self.updated = True
-        lg_grid_size = 2
-        x_start = position[0] * lg_grid_size
-        x_end = (position[0]+1)*lg_grid_size
+        x_start = position[0] * self.lg_grid_size
+        x_end = (position[0]+1) * self.lg_grid_size
         x_range = range(x_start, x_end)
-        y_start = position[1]*lg_grid_size
-        y_end = (position[1]+1)*lg_grid_size
+        y_start = position[1] * self.lg_grid_size
+        y_end = (position[1]+1) * self.lg_grid_size
         y_range = range(y_start, y_end)
 
         for row_index in y_range:

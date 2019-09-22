@@ -5,7 +5,7 @@ import pygame
 class Window():
     """Window handles the low level pygame implementation"""
     fps = 20
-    grid_size = 10
+    grid_size = 20
 
     def __init__(self, width, height):
         self.screen_size(width, height)

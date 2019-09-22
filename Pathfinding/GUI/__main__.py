@@ -10,7 +10,7 @@ from grid import Grid
 # pylint: disable=no-member
 
 if __name__ == '__main__':
-    WINDOW = Window(24, 16)
+    WINDOW = Window(12, 8)
     GRID = Grid(WINDOW)
     mouse_click = False
     mouse_button = None
