@@ -15,7 +15,8 @@ if __name__ == '__main__':
     mouse_click = False
     mouse_button = None
     GRID.draw()
-    EXPORT_FILENAME = "filename"
+    EXPORT_FILENAME = "../AStarAlgorithm/filename"
+
     while True:
 
         for event in pygame.event.get():

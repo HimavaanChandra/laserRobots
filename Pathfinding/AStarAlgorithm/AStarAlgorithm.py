@@ -13,6 +13,7 @@ Date: ##/##/2019
 
 import numpy as np
 from numpy import genfromtxt
+import operator
 
 class Node(): #Setting up "class" "Node"
 
@@ -31,7 +32,7 @@ class Node(): #Setting up "class" "Node"
         return self.position == other.position
 
 class AStar(): #Setting up "class" "AStar"
-    size = 6 #Sets the size of the buffer around the robot. MAKE SURE THAT ROBOT BUFFER IS NOT TOUCHING ANY WALLS IN THE STARTING POSITION
+    size = 1 #Sets the size of the buffer around the robot. MAKE SURE THAT ROBOT BUFFER IS NOT TOUCHING ANY WALLS IN THE STARTING POSITION
     # Initialisation function that is called when the class is called
     def __init__(self, maze, start, end): 
         self.maze = maze
@@ -183,45 +184,57 @@ def astar(maze, size, start, end):
                 continue 
 
             # Make sure within range of maze 
-            # if node_position[1] > (len(maze) - 1) or node_position[1] < 0 or node_position[0] > (len(maze[len(maze)-1]) - 1) or node_position[0] < 0:
-            #     continue
+            if node_position[1] > (len(maze) - 1) or node_position[1] < 0 or node_position[0] > (len(maze[len(maze)-1]) - 1) or node_position[0] < 0:
+                continue
 
             # Make sure walkable terrain (Not in a wall)
-            # if maze[node_position[1]][node_position[0]] != 0:
+            if maze[node_position[1]][node_position[0]] != 0:
+                continue
+
+            
+            # Below is a corner crossing wall check
+            # If the new position is on a diagnoal, only consider it if there are no walls on either side of the node positon after the movement
+            if new_position==(1, 1) and (maze[node_position[1]+0][node_position[0]-1] or maze[node_position[1]-1][node_position[0]+0]): 
+                continue
+            elif new_position==(1, -1) and (maze[node_position[1]-1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]+1]):
+                continue
+            elif new_position==(-1, -1) and (maze[node_position[1]+0][node_position[0]+1] or maze[node_position[1]+1][node_position[0]+0]):
+                continue
+            # elif new_position==(-1, 1) and (maze[node_position[1]+1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]-1]):
             #     continue
 
-            # Map range check
-            out_range = False     
-            if node_position[1]+size > (len(maze) - 1) or node_position[1]+size < 0 or node_position[0]+size > (len(maze[len(maze)-1]) - 1) or node_position[0]+size < 0: # Diagonal from bottom left to top right
-                out_range = True
+            # # Map range check
+            # out_range = False     
+            # if node_position[1]+size > (len(maze) - 1) or node_position[1]+size < 0 or node_position[0]+size > (len(maze[len(maze)-1]) - 1) or node_position[0]+size < 0: # Diagonal from bottom left to top right
+            #     out_range = True
 
-            # If not in map
-            if out_range == True:
-                continue
+            # # If not in map
+            # if out_range == True:
+            #     continue
             
-            # Below is a wall check
-            collision = False
-            for x in range(-size, size):
-                # Ignore zero since it is already checked
-                if x == 0:
-                    continue
+            # # Below is a wall check
+            # collision = False
+            # for x in range(-size, size):
+            #     # Ignore zero since it is already checked
+            #     if x == 0:
+            #         continue
 
-                # Diagonal from bottom left to top right
-                if maze[node_position[1]+x][node_position[0]+x] != 0: # != 0 = 1 = if wall present
-                    collision = True  
-                # Diagonal from top left to bottom right
-                elif maze[node_position[1]+x][node_position[0]-x] != 0:
-                    collision = True
-                # Horizontal
-                elif maze[node_position[1]+x][node_position[0]] != 0:
-                    collision = True 
-                # Vertical
-                elif maze[node_position[1]][node_position[0]+x] != 0:
-                    collision = True
+            #     # Diagonal from bottom left to top right
+            #     if maze[node_position[1]+x][node_position[0]+x] != 0: # != 0 = 1 = if wall present
+            #         collision = True  
+            #     # Diagonal from top left to bottom right
+            #     elif maze[node_position[1]+x][node_position[0]-x] != 0:
+            #         collision = True
+            #     # Horizontal
+            #     elif maze[node_position[1]+x][node_position[0]] != 0:
+            #         collision = True 
+            #     # Vertical
+            #     elif maze[node_position[1]][node_position[0]+x] != 0:
+            #         collision = True
             
-            # If wall present
-            if collision == True:
-                continue
+            # # If wall present
+            # if collision == True:
+            #     continue
 
             # Create new node
             new_node = Node(current_node, node_position) # Creating object for new child node that allows "current.parent" property to be called when the goal is found 
@@ -262,7 +275,7 @@ def main():
     cell_map = np.loadtxt("filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
    
-    aStar = AStar(cell_array, (10, 10), (70, 70)) # maze, start, end - Object "aStar" sets start and coordinates for robot
+    aStar = AStar(cell_array, (0, 0), (7, 7)) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     print(path) #Prints coordinates of path to terminal
     # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)
