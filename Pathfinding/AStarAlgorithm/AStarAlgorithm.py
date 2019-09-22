@@ -194,13 +194,13 @@ def astar(maze, size, start, end):
             
             # Below is a corner crossing wall check
             # If the new position is on a diagnoal, only consider it if there are no walls on either side of the node positon after the movement
-            if new_position==(1, 1) and (maze[node_position[1]+0][node_position[0]-1] or maze[node_position[1]-1][node_position[0]+0]): 
+            if new_position==(1, 1) and (maze[node_position[1]+0][node_position[0]-1] or maze[node_position[1]-1][node_position[0]+0]): # SE bearing
                 continue
-            elif new_position==(1, -1) and (maze[node_position[1]-1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]+1]):
+            # elif new_position==(1, -1) and (maze[node_position[1]-1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]+1]): # NE bearing
+            #     continue
+            elif new_position==(-1, -1) and (maze[node_position[1]+0][node_position[0]+1] or maze[node_position[1]+1][node_position[0]+0]): # NW bearing 
                 continue
-            elif new_position==(-1, -1) and (maze[node_position[1]+0][node_position[0]+1] or maze[node_position[1]+1][node_position[0]+0]):
-                continue
-            # elif new_position==(-1, 1) and (maze[node_position[1]+1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]-1]):
+            # elif new_position==(-1, 1) and (maze[node_position[1]+1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]-1]): # SW bearing
             #     continue
 
             # # Map range check
@@ -275,7 +275,7 @@ def main():
     cell_map = np.loadtxt("filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
    
-    aStar = AStar(cell_array, (0, 0), (7, 7)) # maze, start, end - Object "aStar" sets start and coordinates for robot
+    aStar = AStar(cell_array, (7, 7), (0, 0)) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     print(path) #Prints coordinates of path to terminal
     # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)
