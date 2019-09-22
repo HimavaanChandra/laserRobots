@@ -38,7 +38,7 @@ class ROS_TCP_Thread(tcp.TCP_Thread):
         print("[{0:8}] : {1:20} {2}".format(timestamp, robot, log))
 
     def shoot_sound(self):
-        sounds = ["kachow.wav", "pew_pew.wav", "bang_bang.wav"]
+        sounds = ["kachow.wav", "bang_bang.wav"]
 
         sound = soundfx.SoundFx(random.choice(sounds))
         sound.play()
