@@ -10,9 +10,10 @@ from grid import Grid
 # pylint: disable=no-member
 
 if __name__ == '__main__':
-    WINDOW = Window(300, 200)
+    WINDOW = Window(24, 16)
     GRID = Grid(WINDOW)
     mouse_click = False
+    mouse_button = None
     GRID.draw()
     EXPORT_FILENAME = "filename"
     while True:
@@ -30,13 +31,23 @@ if __name__ == '__main__':
 
             elif event.type == pygame.MOUSEMOTION:
                 if mouse_click:
-                    pos = pygame.mouse.get_pos()
-                    # print("Mouse click: ", pos)
-                    grid_position = GRID.pixle_grid_position(pos)
-                    lg_grid_position = GRID.lg_grid(grid_position)
-                    # print("Cell position: ", grid_position)
-                    GRID.lg_convert(lg_grid_position)
-                    # GRID.convert(grid_position)
+                    mouse_button = pygame.mouse.get_pressed()
+                    if mouse_button[0] == 1:
+                        pos = pygame.mouse.get_pos()
+                        # print("Mouse click: ", pos)
+                        grid_position = GRID.pixle_grid_position(pos)
+                        lg_grid_position = GRID.lg_grid(grid_position)
+                        # print("Cell position: ", grid_position)
+                        GRID.lg_convert(lg_grid_position)
+                        # GRID.convert(grid_position)
+                    if mouse_button[2] == 1:
+                        pos = pygame.mouse.get_pos()
+                        # print("Mouse click: ", pos)
+                        grid_position = GRID.pixle_grid_position(pos)
+                        lg_grid_position = GRID.lg_grid(grid_position)
+                        # print("Cell position: ", grid_position)
+                        GRID.lg_remove(lg_grid_position)
+                        # GRID.convert(grid_position)
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_HOME:
                     GRID.import_csv(EXPORT_FILENAME)

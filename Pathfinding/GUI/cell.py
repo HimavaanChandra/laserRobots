@@ -17,12 +17,14 @@ class Cell:
     def __init__(self, grid, x, y):
         self.grid = grid
         self.position = (x, y)
-        self.colour = (255, 0, 0)
+        self.colour = (255, 255, 255)
+        self.updated = True
 
     def draw(self, surf):
         """Called to paint the cell to the window"""
-        if self.cell_type != CellTypes.empty:
+        if self.updated is True:
             Window.draw_box(surf, self.colour, self.position)
+            self.updated = False
 
     def get_type(self):
         """returns cell enum type"""

@@ -15,6 +15,7 @@ class Grid():
         self.size = (self.window.grid_width, self.window.grid_height)
         self.generate_cells()
         self.window.surface.fill((255, 255, 255))
+        self.updated = True
 
     def generate_cells(self):
         """Populate the grid with cells"""
@@ -33,14 +34,15 @@ class Grid():
 
     def draw(self):
         """Called to paint the cells to the window"""
-        for row in self.cells:
-            for cell in row:
-                cell.draw(self.window.surface)
+        if self.updated is True:
+            for row in self.cells:
+                for cell in row:
+                    cell.draw(self.window.surface)
 
-        self.window.screen.blit(self.window.surface, (0, 0))
-        pygame.display.flip()
-        pygame.display.update()
-        self.window.tick()
+            self.window.screen.blit(self.window.surface, (0, 0))
+            pygame.display.flip()
+            pygame.display.update()
+            self.window.tick()
 
     def pixle_grid_position(self, pixle_position):
         """Determine grid position from pixle position"""
@@ -50,13 +52,14 @@ class Grid():
         return (x_position, y_position)
 
     def lg_grid(self, position):
-        lg_grid_size = 5
+        lg_grid_size = 2
         lg_x = int(position[0] / lg_grid_size)
         lg_y = int(position[1] / lg_grid_size)
         return (lg_x, lg_y)
 
     def lg_convert(self, position):
-        lg_grid_size = 5
+        self.updated = True
+        lg_grid_size = 2
         x_start = position[0] * lg_grid_size
         x_end = (position[0]+1)*lg_grid_size
         x_range = range(x_start, x_end)
@@ -68,6 +71,22 @@ class Grid():
             for cell_index in x_range:
                 cell = self.cells[row_index][cell_index]
                 cell = Wall(cell.grid, cell.position[0], cell.position[1])
+                self.cells[row_index][cell_index] = cell
+
+    def lg_remove(self, position):
+        self.updated = True
+        lg_grid_size = 2
+        x_start = position[0] * lg_grid_size
+        x_end = (position[0]+1)*lg_grid_size
+        x_range = range(x_start, x_end)
+        y_start = position[1]*lg_grid_size
+        y_end = (position[1]+1)*lg_grid_size
+        y_range = range(y_start, y_end)
+
+        for row_index in y_range:
+            for cell_index in x_range:
+                cell = self.cells[row_index][cell_index]
+                cell = Cell(cell.grid, cell.position[0], cell.position[1])
                 self.cells[row_index][cell_index] = cell
 
     def convert(self, position):
@@ -83,6 +102,7 @@ class Grid():
         self.cells[row_index][cell_index] = cell
 
     def import_csv(self, filename):
+        self.updated = True
         """Export cells as a csv"""
         cell_map = numpy.loadtxt(filename + ".csv", delimiter=',')
         cell_array = numpy.array(cell_map).tolist()
