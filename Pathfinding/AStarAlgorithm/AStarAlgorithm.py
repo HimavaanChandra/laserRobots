@@ -191,17 +191,29 @@ def astar(maze, size, start, end):
             if maze[node_position[1]][node_position[0]] != 0:
                 continue
 
-            
+            # 0 = x and 1 = y
             # Below is a corner crossing wall check
             # If the new position is on a diagnoal, only consider it if there are no walls on either side of the node positon after the movement
-            if new_position==(1, 1) and (maze[node_position[1]+0][node_position[0]-1] or maze[node_position[1]-1][node_position[0]+0]): # SE bearing
-                continue
-            # elif new_position==(1, -1) and (maze[node_position[1]-1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]+1]): # NE bearing
-            #     continue
-            elif new_position==(-1, -1) and (maze[node_position[1]+0][node_position[0]+1] or maze[node_position[1]+1][node_position[0]+0]): # NW bearing 
-                continue
-            # elif new_position==(-1, 1) and (maze[node_position[1]+1][node_position[0]+0] or maze[node_position[1]+0][node_position[0]-1]): # SW bearing
-            #     continue
+            if new_position == (1, 1): # SE bearing 
+                if maze[node_position[1] - 1][node_position[0]]: # Checking in the location of the hashes *# "*" = SE Movement
+                    continue                                                                              #*
+                if maze[node_position[1]][node_position[0] - 1]: # 
+                    continue        
+            elif new_position == (1, -1): # NE bearing
+                if maze[node_position[1]][node_position[0] - 1]:
+                    continue
+                if maze[node_position[1] + 1][node_position[0]]:
+                    continue
+            elif new_position == (-1, -1): # NW bearing 
+                if maze[node_position[1]][node_position[0] + 1]:
+                    continue
+                if maze[node_position[1] + 1][node_position[0]]:
+                    continue
+            elif new_position == (-1, 1): # SW bearing
+                if maze[node_position[1]][node_position[0] + 1]:
+                    continue
+                if maze[node_position[1] - 1][node_position[0]]:
+                    continue
 
             # # Map range check
             # out_range = False     
@@ -275,7 +287,7 @@ def main():
     cell_map = np.loadtxt("filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
    
-    aStar = AStar(cell_array, (7, 7), (0, 0)) # maze, start, end - Object "aStar" sets start and coordinates for robot
+    aStar = AStar(cell_array, (0, 0), (2, 0)) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     print(path) #Prints coordinates of path to terminal
     # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)
@@ -337,27 +349,3 @@ if __name__ == '__main__': #So that when/if this file is created as a header fil
     #         [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], #38
     #         [0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], #39 
     #         [0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]] #40
-
-    # x1=0
-    # y1=0
-    
-    # x2=40
-    # y2=45
-
-    # max = 40
-
-    # while maze == 1:
-    #     if x1 or y1 < max:
-    #         x1+=1
-    #         y1+=1
-    #     else:
-    #         x1-=1
-    #         y1-=1
-        
-    # while maze == 1:
-    #     if x2 or y2 < max:
-    #         x2+=1
-    #         y2+=1
-    #     else:
-    #         x2-=1
-    #         y2-=1
