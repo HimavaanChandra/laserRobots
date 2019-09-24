@@ -187,7 +187,7 @@ def astar(maze, size, start, end):
             if node_position[1] > (len(maze) - 1) or node_position[1] < 0 or node_position[0] > (len(maze[len(maze)-1]) - 1) or node_position[0] < 0:
                 continue
 
-            # Make sure walkable terrain (Not in a wall)
+            # Make sure new postion is walkable terrain (Not in a wall)
             if maze[node_position[1]][node_position[0]] != 0:
                 continue
 
