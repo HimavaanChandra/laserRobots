@@ -50,8 +50,12 @@ void loop()
     {
         Red_Angle_Corrected = Red_Angle_Corrected % 360;
     }
-
+ 
+    // if (0<=Red_Angle_Corrected<=180)   // Add if 360 degree servos not available (other parts of code will probably also have to be modified aswell?)
     Red_Servo.write(Red_Angle_Corrected);
+    
+    // if (0<=Red_Angle_Corrected<=180)   // Add if 360 degree servos not available (other parts of code will probably also have to be modified aswell?)
     Blue_Servo.write(Blue_Angle_Corrected);
+    
     delay(10);
 }
