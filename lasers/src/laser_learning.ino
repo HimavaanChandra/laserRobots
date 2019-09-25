@@ -1,8 +1,8 @@
 #include <avr/io.h>
 #include <stdio.h>
-// #include <LiquidCrystal.h>
+#include <LiquidCrystal.h>
 
-// LiquidCrystal lcd (8, 9, 4, 5, 6, 7);
+LiquidCrystal lcd (8, 9, 4, 5, 6, 7);
 #define shot_time 500 //in milliseconds
 #define RECEIVER 12
 int shot_warmdown = (shot_time * 2);
@@ -17,9 +17,9 @@ void setup()
   DDRB &= ~(1 << 4); //initialise pin 12 as input (for receiver)
 
   // **********************LCD initializations ***********************
-  // lcd.begin (16,2); //start LCD library
-  // lcd.setCursor (0,0);
-  // lcd.print ("Health:");
+  lcd.begin (16,2); //start LCD library
+  lcd.setCursor (0,0);
+  lcd.print ("Health:");
 }
 
 void loop()
