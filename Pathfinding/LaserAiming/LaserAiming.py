@@ -5,7 +5,7 @@ Code Author: Thomas Harrison
 Date: ##/##/2019
 
 # Update every time a robot moves or rotates
-# Angles are with respect to the postive x axis
+# Angles are with respect to the postive x axis (East - with North being the front of the robot)
 
 '''
 

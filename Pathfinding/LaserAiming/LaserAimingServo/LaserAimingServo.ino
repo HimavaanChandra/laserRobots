@@ -14,6 +14,9 @@ int Red_Robot_Rotation_Angle = +0;  // Positive = clockwise, Negative = counter 
 int Blue_Angle_Corrected = 0; // Corrected for robot rotation
 int Red_Angle_Corrected = 0;  // Corrected for robot rotation
 
+int Red_Out_of_FOV = 0; // Flag to alert when the red robot need to turn around to shoot
+int Blue_Out_of_FOV = 0; // Flag to alert when the blue robot need to turn around to shoot
+
 void setup()
 {
     Red_Servo.attach(9);
@@ -50,12 +53,26 @@ void loop()
     {
         Red_Angle_Corrected = Red_Angle_Corrected % 360;
     }
- 
+
     // if (0<=Red_Angle_Corrected<=180)   // Add if 360 degree servos not available (other parts of code will probably also have to be modified aswell?)
     Red_Servo.write(Red_Angle_Corrected);
-    
+    // Red_Out_of_FOV = 0;
+
+    // else
+    // {
+    //     Red_Out_of_FOV = 1;
+    //     return Red_Out_of_FOV;
+    // }
+
     // if (0<=Red_Angle_Corrected<=180)   // Add if 360 degree servos not available (other parts of code will probably also have to be modified aswell?)
     Blue_Servo.write(Blue_Angle_Corrected);
-    
-    delay(10);
+    // Blue_Out_of_FOV = 0;
+
+    // else
+    // {
+    //     Blue_Out_of_FOV = 1;
+    //     return Blue_Out_of_FOV;
+    // }
+
+        delay(10);
 }
