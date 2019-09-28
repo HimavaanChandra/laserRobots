@@ -5,10 +5,15 @@ import rospy
 import numpy as np
 import cv2
 import time
-from vision_ros import msg
-# import vision_comms
+from vision_ros.msg import vision_comms
 import geometry_msgs
-# from Point.msg import x
+
+
+xThomasCode = 0
+yThomasCode = 0
+xLightningCode = 0
+yLightningCode = 0
+
 
 def decode(im) : 
     # Find barcodes and QR codes
@@ -17,17 +22,11 @@ def decode(im) :
         print('')     
     return decodedObjects
 
+pub = rospy.Publisher('xThomas', vision_comms, queue_size=10)
+rospy.init_node('Position', anonymous=True)
+rate = rospy.Rate(10)  #10hz
 
-def rosCommsInit() :
-  pub = rospy.Publisher('Position', vision_comms, queue_size=10)
-  rospy.init_node('Position', anonymous=True)
-  rate = rospy.Rate(10)  #10hz
 
-def rosPublisher():
-  if not rospy.is_shutdown():
-    pub.publish(x)
-
-# rosCommsInit()
 
 cap = cv2.VideoCapture(0)
 
@@ -68,21 +67,27 @@ while(cap.isOpened()):
         qrData = decodedObject.data
 
         if qrData == b'1':
-              print("Thomas: ",x,y)
-              # print(x,y)
-              # print("Thomas")
-              # print(x,y)
-        if qrData == b'2':
-              print("Lightning: ",x,y)
-              # print(x,y)
+              xThomasCode = x
+              yThomasCode = y
+              print("Thomas: ",xThomasCode,yThomasCode)
 
-        # print('Type : ', decodedObject.type)
-        # print('Data : ', decodedObject.data,'\n')
+        if qrData == b'2':
+              xLightningCode = x
+              yLightningCode = y
+              print("Lightning: ",xLightningCode,yLightningCode)
+
 
         barCode = str(decodedObject.data)
         cv2.putText(frame, barCode, (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
-    # rosPublisher()            
-    # Display the resulting frame
+    
+    if not rospy.is_shutdown():
+      msg = vision_comms()
+      msg.xThomas = xThomasCode
+      msg.yThomas = yThomasCode
+      rospy.loginfo(msg)
+      pub.publish(msg)
+      rate.sleep()             
+
     cv2.imshow('frame',frame)
     key = cv2.waitKey(1)
     if key == 27:
