@@ -5,38 +5,35 @@ import rospy
 import numpy as np
 import cv2
 import time
-
-
-# get the webcam:  
-cap = cv2.VideoCapture(0)
-#test
-#test again
-
-
-cap.set(3,1920)
-cap.set(4,1080)
-
-# cap.set(3,640)
-# cap.set(4,480)
-#160.0 x 120.0
-#176.0 x 144.0
-#320.0 x 240.0
-#352.0 x 288.0
-#640.0 x 480.0
-#1024.0 x 768.0
-#1280.0 x 1024.0
-time.sleep(2)
+from vision_ros import msg
+# import vision_comms
+import geometry_msgs
+# from Point.msg import x
 
 def decode(im) : 
     # Find barcodes and QR codes
     decodedObjects = pyzbar.decode(im)
-    # Print results
     for obj in decodedObjects: #maybe adjust this for printing
-        # print('Type : ', obj.type)
-        # print('Data : ', obj.data,'\n')
         print('')     
     return decodedObjects
 
+
+def rosCommsInit() :
+  pub = rospy.Publisher('Position', vision_comms, queue_size=10)
+  rospy.init_node('Position', anonymous=True)
+  rate = rospy.Rate(10)  #10hz
+
+def rosPublisher():
+  if not rospy.is_shutdown():
+    pub.publish(x)
+
+# rosCommsInit()
+
+cap = cv2.VideoCapture(0)
+
+cap.set(3,1920)
+cap.set(4,1080)
+time.sleep(2)
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -56,7 +53,7 @@ while(cap.isOpened()):
           hull = cv2.convexHull(np.array([point for point in points], dtype=np.float32))
           hull = list(map(tuple, np.squeeze(hull)))
         else : 
-          hull = points;
+          hull = points
          
         # Number of points in the convex hull
         n = len(hull)     
@@ -84,7 +81,7 @@ while(cap.isOpened()):
 
         barCode = str(decodedObject.data)
         cv2.putText(frame, barCode, (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
-               
+    # rosPublisher()            
     # Display the resulting frame
     cv2.imshow('frame',frame)
     key = cv2.waitKey(1)
