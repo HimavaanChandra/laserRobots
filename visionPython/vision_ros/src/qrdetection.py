@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+#!/usr/bin/env python2
+
 from __future__ import print_function
 
 import pyzbar.pyzbar as pyzbar
@@ -22,8 +25,8 @@ def decode(im) :
         print('')     
     return decodedObjects
 
-pub = rospy.Publisher('xThomas', vision_comms, queue_size=10)
-rospy.init_node('Position', anonymous=True)
+pub = rospy.Publisher('robot_positions', vision_comms, queue_size=10)
+rospy.init_node('robot_positions', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
 
@@ -70,20 +73,23 @@ while(cap.isOpened()):
               xThomasCode = x
               yThomasCode = y
               print("Thomas: ",xThomasCode,yThomasCode)
-
+              cv2.putText(frame, 'Thomas', (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
         if qrData == b'2':
               xLightningCode = x
               yLightningCode = y
               print("Lightning: ",xLightningCode,yLightningCode)
+              cv2.putText(frame, 'Lightning', (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
 
 
         barCode = str(decodedObject.data)
-        cv2.putText(frame, barCode, (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
+        # cv2.putText(frame, barCode, (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
     
     if not rospy.is_shutdown():
       msg = vision_comms()
       msg.xThomas = xThomasCode
       msg.yThomas = yThomasCode
+      msg.xLightning = xLightningCode
+      msg.yLightning = yLightningCode
       rospy.loginfo(msg)
       pub.publish(msg)
       rate.sleep()             
