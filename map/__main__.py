@@ -208,6 +208,8 @@ class Square():
         for line in self.lines:
             # Only move single point for squares since lines share points.
             line.point1.move(m_vector)
+        for line in self.lines:
+
             line.update()
         self.origin = np.add(self.origin, m_vector)
 
@@ -258,8 +260,10 @@ class Wall(Square):
 class WallContainer():
     """Container for the walls"""
 
-    def __init__(self):
+    def __init__(self, size_x, size_y):
         self.walls = []
+        # Create slightly oversized map container
+        self.container = Square(Point(-1, -1), Point(size_x + 1, size_y + 1))
         self.wall_sprites = pygame.sprite.Group()
 
     def add(self, wall):
@@ -305,13 +309,13 @@ class Robot(Square):
 
     def move(self, vector, wall_container):
         super().move(vector)
+        if Collision.square_square(wall_container.container, self):
+            super().move(np.negative(vector))
         if wall_container.check_square_collision(self) is not False:
             super().move(np.negative(vector))
         else:
             self.sprite.rect.x = self.origin[0]
-            self.sprite.rect.y = self.origin[1]
-
-    
+            self.sprite.rect.y = self.origin[1]    
 
     def distance(self):
         pass
@@ -322,8 +326,8 @@ SCREEN = None
 
 def Main():
     size = SIZE
-    walls = WallContainer()
     grid = load_grid()
+    walls = WallContainer(len(grid[0]) * size, len(grid) * size)
     
     global SCREEN
     screen = pygame.display.set_mode([len(grid[0]) * size, len(grid) * size])
@@ -333,35 +337,60 @@ def Main():
         for cell_i in range(0, len(grid[row_i])):
             cell = grid[row_i][cell_i]
             if cell == 1:
-                x_1 = row_i * size
-                x_2 = x_1 + size
-                y_1 = cell_i * size
+                y_1 = row_i * size
                 y_2 = y_1 + size
+                x_1 = cell_i * size
+                x_2 = x_1 + size
 
                 walls.add(Wall(x_1, y_1, x_2, y_2))
 
     robots = pygame.sprite.Group()
 
-    robot1 = Robot(0, 0, size - 20, size - 20)
+    robot1 = Robot(0, 0, size - 2, size - 2)
     robots.add(robot1.sprite)
 
     pygame.display.set_caption('MAP Sim')
     clock = pygame.time.Clock()
 
     done = False
+    m_vector = np.array([0, 0])
+    speed = 10
     while done is not True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
                 return
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    m_vector = np.add(m_vector, np.array([-speed, 0]))
+                if event.key == pygame.K_RIGHT:
+                    m_vector = np.add(m_vector, np.array([speed, 0]))
+                if event.key == pygame.K_UP:
+                    m_vector = np.add(m_vector, np.array([0, -speed]))
+                if event.key == pygame.K_DOWN:
+                    m_vector = np.add(m_vector, np.array([0, speed]))
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_LEFT:
+                    m_vector = np.subtract(m_vector, np.array([-speed, 0]))
+                if event.key == pygame.K_RIGHT:
+                    m_vector = np.subtract(m_vector, np.array([speed, 0]))
+                if event.key == pygame.K_UP:
+                    m_vector = np.subtract(m_vector, np.array([0, -speed]))
+                if event.key == pygame.K_DOWN:
+                    m_vector = np.subtract(m_vector, np.array([0, speed]))
+
+
+        robot1.move(m_vector, walls)
+            
         # --- Drawing ---
         screen.fill((0, 0, 0))
 
         walls.wall_sprites.draw(screen)
         walls.debug_draw(screen)
-        robots.draw(screen)
-        robot1.move(np.array([1, 0]), walls)
         robot1.debug_draw(screen)
+        # robot1.move(np.array([5, 0]), walls)
+        # robots.draw(screen)
 
         pygame.display.flip()
 
