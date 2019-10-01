@@ -8,42 +8,54 @@ def load_grid(filename="filename"):
     return grid_list
 
 
-class Point():
-    def __init__(self, x=0, y=0, vector=None):
-        # pylint: disable=invalid-name
-        if vector is None:
-            self.vector = np.array([x, y])
-        else:
-            self.vector = vector
+class SimEntity():
+    def __init__(self, vector):
+        self.vector = vector
 
     def move(self, m_vector):
         self.vector = np.add(self.vector, m_vector)
 
+    def update(self):
+        pass
+
+    def debug_draw(self, screen, colour):
+        point = self.vector[0, :].tolist()
+        pygame.draw.circle(screen, colour, point, 4)
+
+    def __str__(self):
+        point = self.vector[0, :].tolist()
+        return str(point)
+
+
+class Point(SimEntity):
+    def __init__(self, x=0, y=0, vector=None):
+        # pylint: disable=invalid-name
+        if vector is None:
+            vector = np.array([x, y])
+        else:
+            vector = vector
+        super().__init__(vector)
+
 
 class Line():
-    def __init__(self, x1=0, y1=0, x2=0, y2=0, p1=None, p2=None):
-        # pylint: disable=invalid-name
-        if p1 is None and p2 is None:
-            self.p1 = Point(x1, y1)
-            self.p2 = Point(x2, y2)
-        else:
-            self.p1 = p1
-            self.p2 = p2
-        self._vector()
+    def __init__(self, point1=None, point2=None):
+        self.point1 = point1
+        self.point2 = point2
+        self.update()
 
-    def _vector(self):
-        self.vector = np.array([self.p1.vector, self.p2.vector])
+    def update(self):
+        self.vector = np.array([self.point1.vector, self.point2.vector])
 
     def distance(self):
-        return np.subtract(self.p2.vector, self.p1.vector)
+        return np.subtract(self.point2.vector, self.point1.vector)
 
     def origin(self):
-        return self.p1.vector
+        return self.point1.vector
 
     def move(self, m_vector):
-        self.p1.move(m_vector)
-        self.p2.move(m_vector)
-        self._vector()
+        self.point1.move(m_vector)
+        self.point2.move(m_vector)
+        self.update()
 
     def debug_draw(self, screen, colour):
         start = self.vector[0, :].tolist()
@@ -58,9 +70,9 @@ class Line():
     @staticmethod
     def rotate90(line):
         new_vector = np.rot90(line.vector)
-        p1 = Point(vector=new_vector[0, :])
-        p2 = Point(vector=new_vector[1, :])
-        return Line(p1=p1, p2=p2)
+        point1 = Point(vector=new_vector[0, :])
+        point2 = Point(vector=new_vector[1, :])
+        return Line(point1=point1, point2=point2)
 
 
 class Collision():
@@ -151,52 +163,52 @@ class Collision():
 
 class Square():
     """2D square composed of 4 lines"""
-    def __init__(self, x1=0, y1=0, x2=1, y2=1, p1=None, p2=None):
-        # pylint: disable=invalid-name
+    def __init__(self, point1=None, point2=None):
         self.lines = []
         self.size = None
         self.origin = None
-        if p1 is None and p2 is None:
-            p1 = Point(x1, y1)
-            p2 = Point(x2, y2)
-        self._generate_lines(p1, p2)
+        self._generate_lines(point1, point2)
 
-    def _generate_lines(self, p1, p2):
+    def _generate_lines(self, point1, point2):
         """Populates the line list based on the square corners"""
-        # pylint: disable=invalid-name
         # Create a cross inside the rectagle to find the corner points
-        diagonal = Line(p1=p1, p2=p2)
+        diagonal = Line(point1=point1, point2=point2)
         self.size = diagonal.distance()
         self.origin = diagonal.origin()
 
         # Set up the corner points
-        bottom_left = diagonal.p1
-        bottom_right = Point(diagonal.p1.vector[0], diagonal.p2.vector[1])
-        top_left = Point(diagonal.p2.vector[0], diagonal.p1.vector[1])
-        top_right = diagonal.p2
+        bottom_left = diagonal.point1
+        bottom_right = Point(diagonal.point1.vector[0], diagonal.point2.vector[1])
+        top_left = Point(diagonal.point2.vector[0], diagonal.point1.vector[1])
+        top_right = diagonal.point2
 
         # Create the lines for the square
         self.lines.clear()
         self.lines.append(Line(
-            p1=bottom_left,
-            p2=top_left
+            point1=bottom_left,
+            point2=top_left
         ))
         self.lines.append(Line(
-            p1=top_left,
-            p2=top_right
+            point1=top_left,
+            point2=top_right
         ))
         self.lines.append(Line(
-            p1=top_right,
-            p2=bottom_right
+            point1=top_right,
+            point2=bottom_right
         ))
         self.lines.append(Line(
-            p1=bottom_right,
-            p2=bottom_left
+            point1=bottom_right,
+            point2=bottom_left
         ))
+
+    def update(self):
+        pass
 
     def move(self, m_vector):
         for line in self.lines:
-            line.move(m_vector)
+            # Only move single point for squares since lines share points.
+            line.point1.move(m_vector)
+            line.update()
         self.origin = np.add(self.origin, m_vector)
 
     def check_line_collision(self, test_line):
@@ -234,8 +246,12 @@ class Square():
 class Wall(Square):
     """Wall, extends Square"""
 
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, x_1, y_1, x_2, y_2, point1=None, point2=None):
+        if point1 is None and point2 is None:
+            point1 = Point(x_1, y_1)
+            point2 = Point(x_2, y_2)
+
+        super().__init__(point1, point2)
         self.sprite = self.generate_sprite((125, 0, 125))
 
 
@@ -275,11 +291,16 @@ class WallContainer():
     def debug_draw(self, screen):
         for wall in self.walls:
             wall.debug_draw(screen)
-            print("Wall: " + str(wall))
+            # print("Wall: " + str(wall))
+
 
 class Robot(Square):
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, x_1, y_1, x_2, y_2, point1=None, point2=None):
+        if point1 is None and point2 is None:
+            point1 = Point(x_1, y_1)
+            point2 = Point(x_2, y_2)
+
+        super().__init__(point1, point2)
         self.sprite = self.generate_sprite((0, 125, 125))
 
     def move(self, vector, wall_container):
