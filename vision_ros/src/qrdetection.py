@@ -2,7 +2,7 @@
 #!/usr/bin/env python2
 
 from __future__ import print_function
-
+import rospkg
 import pyzbar.pyzbar as pyzbar
 import rospy
 import numpy as np
