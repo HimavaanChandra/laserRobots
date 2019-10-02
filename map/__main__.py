@@ -1,5 +1,6 @@
 import numpy as np
 import pygame as pygame
+import time
 
 
 def load_grid(filename="filename"):
@@ -170,7 +171,7 @@ class Collision():
     def debug_draw(screen):
         if DEBUG is True:
             for line in Collision.line_collisions:
-                line.debug_draw(screen, (255, 0, 0))            
+                line.debug_draw(screen, (255, 0, 0))
 
 
 class Square():
@@ -357,12 +358,12 @@ class Robot(Square):
             # Move Distance Lines
             for line in self.distance_lines:
                 line.move(vector)
-        
+
     def update(self):
         super().update()
         # Move Sprite Rectangle
         self.sprite.rect.x = self.origin[0]
-        self.sprite.rect.y = self.origin[1]        
+        self.sprite.rect.y = self.origin[1]
 
     def distance(self, wall_container):
         origin = np.add(self.origin, self.size * 0.5)
@@ -387,11 +388,11 @@ class Robot(Square):
                 distances.append(distance)
             else:
                 distances.append(-1)
-        
+
         return distances
 
-    def generate_sprite(self, colour):
-        return super().generate_sprite(colour)
+    # def generate_sprite(self, colour):
+    #     return super().generate_sprite(colour)
 
     def debug_draw(self, screen):
         super().debug_draw(screen)
@@ -399,16 +400,17 @@ class Robot(Square):
             line.debug_draw(screen, (255, 125, 20))
 
 
-SIZE = 100 # Grid Scaling Factor
+SIZE = 100  # Grid Scaling Factor
 SCREEN = None
-DEBUG = True # Enable / Disable visual debugging
+DEBUG = True  # Enable / Disable visual debugging
 
 
-def Main():
+def main():
     size = SIZE
     grid = load_grid()
     walls = WallContainer(len(grid[0]) * size, len(grid) * size)
-    
+    average_execution = []
+
     global SCREEN
     screen = pygame.display.set_mode([len(grid[0]) * size, len(grid) * size])
     SCREEN = screen
@@ -466,9 +468,14 @@ def Main():
                 if event.key == pygame.K_DOWN:
                     m_vector = np.subtract(m_vector, np.array([0, m_unit]))
 
+        start = time.time()
         for i in range(0, m_speed):
             robot1.move(m_vector, walls)
-   
+        robot1.distance(walls)
+        end = time.time()
+        average_execution.append((end-start))
+        print("Execution %d", (end-start))
+
         # --- Drawing ---
         screen.fill((0, 0, 0))
 
@@ -477,13 +484,15 @@ def Main():
         robot1.debug_draw(screen)
         Collision.debug_draw(screen)
         # robot1.move(np.array([5, 0]), walls)
-        print(robot1.distance(walls))
         robots.draw(screen)
 
         pygame.display.flip()
 
         clock.tick(60)
 
+    pygame.quit()
+    print("Average: %d", sum(average_execution)/len(average_execution))
+
 
 if __name__ == '__main__':
-    Main()
+    main()
