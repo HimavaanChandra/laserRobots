@@ -1,262 +1,17 @@
 import numpy as np
 import pygame as pygame
+import math
 import time
+
+from entity import Square, Line, Point
+from collision import Collision
+from config import SIZE, DEBUG, SCREEN
 
 
 def load_grid(filename="filename"):
     grid_csv = np.loadtxt(filename + ".csv", delimiter=',')
     grid_list = np.array(grid_csv).tolist()
     return grid_list
-
-
-class SimEntity():
-    def __init__(self, vector):
-        self.vector = vector
-
-    def move(self, m_vector):
-        self.vector = np.add(self.vector, m_vector)
-
-    def update(self):
-        pass
-
-    def debug_draw(self, screen, colour):
-        if DEBUG is True:
-            point = self.vector[0, :].tolist()
-            pygame.draw.circle(screen, colour, point, 4)
-
-    def __str__(self):
-        point = self.vector[0, :].tolist()
-        return str(point)
-
-
-class Point(SimEntity):
-    def __init__(self, x=0, y=0, vector=None):
-        # pylint: disable=invalid-name
-        if vector is None:
-            vector = np.array([x, y])
-        else:
-            vector = vector
-        super().__init__(vector)
-
-
-class Line():
-    def __init__(self, point1=None, point2=None):
-        self.point1 = point1
-        self.point2 = point2
-        self.update()
-
-    def update(self):
-        self.vector = np.array([self.point1.vector, self.point2.vector])
-
-    def distance(self):
-        return np.subtract(self.point2.vector, self.point1.vector)
-
-    def origin(self):
-        return self.point1.vector
-
-    def move(self, m_vector):
-        self.point1.move(m_vector)
-        self.point2.move(m_vector)
-        self.update()
-
-    def debug_draw(self, screen, colour):
-        if DEBUG is True:
-            start = self.vector[0, :].tolist()
-            end = self.vector[1, :].tolist()
-            pygame.draw.line(screen, colour, start, end, 4)
-
-    def __str__(self):
-        start = self.vector[0, :].tolist()
-        end = self.vector[1, :].tolist()
-        return str(start) + ", " + str(end)
-
-    @staticmethod
-    def rotate90(line):
-        new_vector = np.rot90(line.vector)
-        point1 = Point(vector=new_vector[0, :])
-        point2 = Point(vector=new_vector[1, :])
-        return Line(point1=point1, point2=point2)
-
-
-class Collision():
-    """Class to hold all the collision types"""
-    line_collisions = []
-
-    @staticmethod
-    def point_point(point1, point2):
-        """Points are equal"""
-        return point1.vector == point2.vector
-
-    @staticmethod
-    def point_line(point, line):
-        """point to line collision method"""
-        raise NotImplementedError()
-
-    @staticmethod
-    def line_line(line1, line2):
-        """line to line collision method"""
-        # Stolen from
-        # https://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect
-        # pylint: disable=invalid-name
-        p = line1.origin()
-        r = line1.distance()
-        q = line2.origin()
-        s = line2.distance()
-
-        numerator = np.cross(np.subtract(q, p), s)
-        denominator = np.cross(r, s)
-
-        if numerator == 0 and denominator == 0:
-            # lines are collinear
-            # t0 = np.divide(
-            #     np.dot(np.subtract(q, p), r),
-            #     np.dot(r, r)
-            # )
-            # t1 = np.add(t0, np.divide(
-            #     np.dot(s, r),
-            #     np.dot(r, r)
-            # ))
-            # print("[%f, %f]" % (t0, t1))
-
-            # lines maybe intersect
-            return False
-        elif numerator != 0 and denominator == 0:
-            # lines are parallel
-            # lines do not intersect
-            return False
-        else:
-            # lines are not parallel
-            u = np.divide(numerator, denominator)
-            t = np.divide(
-                np.cross(np.subtract(q, p), r),
-                denominator
-            )
-            if (0 <= t <= 1) and (0 <= u <= 1):
-                # lines intersect
-                return True
-            else:
-                # lines do not intersect
-                return False
-
-    @staticmethod
-    def line_square(line, square):
-        """Test if line intersects any of the square lines"""
-        collisions = []
-        for square_line in square.lines:
-            if Collision.line_line(line, square_line) is True:
-                Collision.line_collisions.append(line)
-                Collision.line_collisions.append(square_line)
-                collisions.append(square_line)
-        if not collisions:
-            return False
-        else:
-            return collisions
-
-    @staticmethod
-    def square_square(square1, square2):
-        """Test if any of the square lines intersect"""
-        collisions = []
-        for square_line1 in square1.lines:
-            for square_line2 in square2.lines:
-                if Collision.line_line(square_line1, square_line2) is True:
-                    Collision.line_collisions.append(square_line1)
-                    Collision.line_collisions.append(square_line2)
-                    collisions.append(square_line2)
-        if not collisions:
-            return False
-        else:
-            return collisions
-
-    @staticmethod
-    def debug_draw(screen):
-        if DEBUG is True:
-            for line in Collision.line_collisions:
-                line.debug_draw(screen, (255, 0, 0))
-
-
-class Square():
-    """2D square composed of 4 lines"""
-    def __init__(self, point1=None, point2=None):
-        self.lines = []
-        self.size = None
-        self.origin = None
-        self._generate_lines(point1, point2)
-
-    def _generate_lines(self, point1, point2):
-        """Populates the line list based on the square corners"""
-        # Create a cross inside the rectagle to find the corner points
-        diagonal = Line(point1=point1, point2=point2)
-        self.size = diagonal.distance()
-        self.origin = diagonal.origin()
-
-        # Set up the corner points
-        bottom_left = diagonal.point1
-        bottom_right = Point(diagonal.point1.vector[0], diagonal.point2.vector[1])
-        top_left = Point(diagonal.point2.vector[0], diagonal.point1.vector[1])
-        top_right = diagonal.point2
-
-        # Create the lines for the square
-        self.lines.clear()
-        self.lines.append(Line(
-            point1=bottom_left,
-            point2=top_left
-        ))
-        self.lines.append(Line(
-            point1=top_left,
-            point2=top_right
-        ))
-        self.lines.append(Line(
-            point1=top_right,
-            point2=bottom_right
-        ))
-        self.lines.append(Line(
-            point1=bottom_right,
-            point2=bottom_left
-        ))
-
-    def update(self):
-        pass
-
-    def move(self, m_vector):
-        for line in self.lines:
-            # Only move single point for squares since lines share points.
-            line.point1.move(m_vector)
-        for line in self.lines:
-
-            line.update()
-        self.origin = np.add(self.origin, m_vector)
-
-    def check_line_collision(self, test_line):
-        """Check if the test line intersects any of the square lines"""
-        return Collision.line_square(test_line, self)
-
-    def check_square_collision(self, test_square):
-        """Check if the test square intersects any of the square lines"""
-        return Collision.square_square(test_square, self)
-
-    def generate_sprite(self, colour):
-        # Make a BLUE, of the size specified in the parameters
-        sprite = pygame.sprite.Sprite()
-        sprite.image = pygame.Surface(self.size.tolist())
-        sprite.image.fill(colour)
-
-        # Make our top-left corner the passed-in location.
-        sprite.rect = sprite.image.get_rect()
-        sprite.rect.x = self.origin[0]
-        sprite.rect.y = self.origin[1]
-
-        return sprite
-
-    def debug_draw(self, screen):
-        if DEBUG is True:
-            for line in self.lines:
-                line.debug_draw(screen, (0, 255, 0))
-
-    def __str__(self):
-        string = ""
-        for line in self.lines:
-            string += str(line) + " : "
-        return string
 
 
 class Wall(Square):
@@ -326,18 +81,21 @@ class Robot(Square):
 
     def _generate_distance_line(self, origin, offset):
         start = origin
-        end = np.add(origin, offset)
+        end = [
+            origin[0] + offset[0],
+            origin[1] + offset[1]
+        ]
         line = Line(Point(vector=start), Point(vector=end))
         return line
 
     def _generate_distance_lines(self):
-        origin = np.add(self.origin, self.size * 0.5)
+        center = self.center
         length = 500
 
-        left = self._generate_distance_line(origin, np.array([0, length]))
-        right = self._generate_distance_line(origin, np.array([0, -length]))
-        up = self._generate_distance_line(origin, np.array([length, 0]))
-        down = self._generate_distance_line(origin, np.array([-length, 0]))
+        left = self._generate_distance_line(center, [0, length])
+        right = self._generate_distance_line(center, [0, -length])
+        up = self._generate_distance_line(center, [length, 0])
+        down = self._generate_distance_line(center, [-length, 0])
 
         self.distance_lines.clear()
         self.distance_lines.append(left)
@@ -349,9 +107,15 @@ class Robot(Square):
         super().move(vector)
 
         if Collision.square_square(wall_container.container, self):
-            super().move(np.negative(vector))
-        if wall_container.check_square_collision(self) is not False:
-            super().move(np.negative(vector))
+            super().move([
+                - vector[0],
+                - vector[1]
+            ])
+        elif wall_container.check_square_collision(self) is not False:
+            super().move([
+                - vector[0],
+                - vector[1]
+            ])
         else:
             # No Collisions
             self.update()
@@ -361,12 +125,13 @@ class Robot(Square):
 
     def update(self):
         super().update()
-        # Move Sprite Rectangle
-        self.sprite.rect.x = self.origin[0]
-        self.sprite.rect.y = self.origin[1]
+        if self.sprite is not None:
+            # Move Sprite Rectangle
+            self.sprite.rect.x = self.origin[0]
+            self.sprite.rect.y = self.origin[1]
 
     def distance(self, wall_container):
-        origin = np.add(self.origin, self.size * 0.5)
+        origin = self.origin
         distances = []
 
         for line in self.distance_lines:
@@ -374,17 +139,26 @@ class Robot(Square):
             if result is not False:
                 collision_distances = []
                 for collision in result:
-                    point1 = collision.point1.vector
-                    point2 = collision.point2.vector
-                    collision_distance = np.divide(
-                        np.abs(np.cross(
-                            point2 - point1,
-                            point1 - origin
-                        )),
-                        np.linalg.norm(point2 - point1)
-                    )
+                    point1 = collision.start.vector
+                    point2 = collision.end.vector
+
+                    a = point2[0] - point1[0]
+                    b = point2[1] - point1[1]
+
+                    numerator = a * origin[0] - b * origin[1]
+                    denominator = math.sqrt((a)**2 + (b)**2)
+
+                    collision_distance = numerator / denominator
+
+                    # collision_distance = np.divide(
+                    #     np.abs(np.cross(
+                    #         point2 - point1,
+                    #         point1 - origin
+                    #     )),
+                    #     np.linalg.norm(point2 - point1)
+                    # )
                     collision_distances.append(collision_distance)
-                distance = min(collision_distances) - np.amax(self.size) * 0.5
+                distance = min(collision_distances) - self.size[0] * 0.5
                 distances.append(distance)
             else:
                 distances.append(-1)
@@ -400,16 +174,28 @@ class Robot(Square):
             line.debug_draw(screen, (255, 125, 20))
 
 
-SIZE = 100  # Grid Scaling Factor
-SCREEN = None
-DEBUG = True  # Enable / Disable visual debugging
+def add_vectors(vector_a, vector_b):
+    def _Point(vector_a, vector_b):
+        return [
+            vector_a[0] + vector_b[0],
+            vector_a[1] + vector_b[1]
+        ]
+
+    if isinstance(vector_a, list):
+        if isinstance(vector_a[0], list):
+            raise NotImplementedError()
+            # Is Line
+        else:
+            # Is Point
+            return _Point(vector_a, vector_b)
+
+    
 
 
 def main():
     size = SIZE
     grid = load_grid()
     walls = WallContainer(len(grid[0]) * size, len(grid) * size)
-    average_execution = []
 
     global SCREEN
     screen = pygame.display.set_mode([len(grid[0]) * size, len(grid) * size])
@@ -428,14 +214,14 @@ def main():
 
     robots = pygame.sprite.Group()
 
-    robot1 = Robot(300, 300, 300 + size - 6, 300 + size - 6)
+    robot1 = Robot(200, 400, 200 + size - 6, 400 + size - 6)
     robots.add(robot1.sprite)
 
     pygame.display.set_caption('MAP Sim')
     clock = pygame.time.Clock()
 
     done = False
-    m_vector = np.array([0, 0])
+    m_vector = [0, 0]
     m_speed = 1
     m_unit = 1
     while done is not True:
@@ -450,31 +236,27 @@ def main():
                 if event.key == pygame.K_r:
                     Collision.line_collisions.clear()
                 if event.key == pygame.K_LEFT:
-                    m_vector = np.add(m_vector, np.array([-m_unit, 0]))
+                    m_vector = add_vectors(m_vector, [-m_unit, 0])
                 if event.key == pygame.K_RIGHT:
-                    m_vector = np.add(m_vector, np.array([m_unit, 0]))
+                    m_vector = add_vectors(m_vector, [m_unit, 0])
                 if event.key == pygame.K_UP:
-                    m_vector = np.add(m_vector, np.array([0, -m_unit]))
+                    m_vector = add_vectors(m_vector, [0, -m_unit])
                 if event.key == pygame.K_DOWN:
-                    m_vector = np.add(m_vector, np.array([0, m_unit]))
+                    m_vector = add_vectors(m_vector, [0, m_unit])
 
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
-                    m_vector = np.subtract(m_vector, np.array([-m_unit, 0]))
+                    m_vector = add_vectors(m_vector, [m_unit, 0])
                 if event.key == pygame.K_RIGHT:
-                    m_vector = np.subtract(m_vector, np.array([m_unit, 0]))
+                    m_vector = add_vectors(m_vector, [-m_unit, 0])
                 if event.key == pygame.K_UP:
-                    m_vector = np.subtract(m_vector, np.array([0, -m_unit]))
+                    m_vector = add_vectors(m_vector, [0, m_unit])
                 if event.key == pygame.K_DOWN:
-                    m_vector = np.subtract(m_vector, np.array([0, m_unit]))
+                    m_vector = add_vectors(m_vector, [0, -m_unit])
 
-        start = time.time()
         for i in range(0, m_speed):
             robot1.move(m_vector, walls)
-        robot1.distance(walls)
-        end = time.time()
-        average_execution.append((end-start))
-        print("Execution %d", (end-start))
+        print(robot1.distance(walls))
 
         # --- Drawing ---
         screen.fill((0, 0, 0))
@@ -491,7 +273,6 @@ def main():
         clock.tick(60)
 
     pygame.quit()
-    print("Average: %d", sum(average_execution)/len(average_execution))
 
 
 if __name__ == '__main__':
