@@ -182,8 +182,10 @@ class Square(SimEntity):
         ]
         self.center = [
             self.origin[0] + self.size[0] * 0.5,
-            self.origin[1] - self.size[1] * 0.5
+            self.origin[1] + self.size[1] * 0.5
         ]
+        for line in self.lines:
+            line.update()
 
     def move(self, m_vector):
         for point in self.points:

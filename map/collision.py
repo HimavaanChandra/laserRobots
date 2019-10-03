@@ -29,7 +29,7 @@ class Collision():
 
         q_minus_p = [
             q[0] - p[0],
-            q[1] - q[1]
+            q[1] - p[1]
         ]
 
         numerator = q_minus_p[0] * s[1] - q_minus_p[1] * s[0]
