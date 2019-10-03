@@ -1,5 +1,5 @@
 # from entity import Square, Line, Point
-from config import DEBUG
+from config import DEBUG, ITEM_LIMIT
 
 
 class Collision():
@@ -71,8 +71,8 @@ class Collision():
         collisions = []
         for square_line in square.lines:
             if Collision.line_line(line, square_line) is True:
-                Collision.line_collisions.append(line)
-                Collision.line_collisions.append(square_line)
+                Collision.add_line_collision(line)
+                Collision.add_line_collision(square_line)
                 collisions.append(square_line)
         if not collisions:
             return False
@@ -86,8 +86,8 @@ class Collision():
         for square_line1 in square1.lines:
             for square_line2 in square2.lines:
                 if Collision.line_line(square_line1, square_line2) is True:
-                    Collision.line_collisions.append(square_line1)
-                    Collision.line_collisions.append(square_line2)
+                    Collision.add_line_collision(square_line1)
+                    Collision.add_line_collision(square_line2)
                     collisions.append(square_line2)
         if not collisions:
             return False
@@ -99,3 +99,9 @@ class Collision():
         if DEBUG is True:
             for line in Collision.line_collisions:
                 line.debug_draw(screen, (255, 0, 0))
+
+    @staticmethod
+    def add_line_collision(line):
+        if len(Collision.line_collisions) > ITEM_LIMIT:
+            Collision.line_collisions.pop(0)
+        Collision.line_collisions.append(line)

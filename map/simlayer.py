@@ -4,7 +4,7 @@ import threading
 from entity import Line, Point
 from collision import Collision
 from game import Wall, WallContainer, Robot
-from config import SIZE, DEBUG
+from config import SCALE, DEBUG
 
 
 class SimLayer():
@@ -12,7 +12,7 @@ class SimLayer():
         self.wall_container = None
         self.instances = []
         self.scale = 90
-        self.size = SIZE
+        self.size = SCALE
         self.spawn_wall_container(grid)
 
     def spawn_wall_container(self, grid):
@@ -55,12 +55,23 @@ class SimThread(threading.Thread):
 
         self.robots.clear()
         self.robots.append(robot1)
-        self.robots.append(robot2)        
-
-    def move(self, index, vector):
-        if len(self.robots) > index:
-            self.robots[index].move(vector, self.wall_container)
+        self.robots.append(robot2)
         self.update()
+
+    def move(self, index, m_vector):
+        if len(self.robots) > index:
+            if not (m_vector[0] == 0 and m_vector[1] == 0):
+                self.robots[index].move(m_vector, self.wall_container)
+                self.update()
+        # if len(self.robots) > index:
+        #     if m_vector[0] != 0 and m_vector[1] != 0:
+        #         self.robots[index].move(m_vector, self.wall_container)
+        #         self.update()
+
+    def set(self, index, s_vector):
+        if len(self.robots) > index:
+            self.robots[index].set(s_vector)
+            self.update()
 
     def update(self):
         self.line_of_sight = Line(
@@ -96,4 +107,5 @@ class SimThread(threading.Thread):
             for robot in self.robots:
                 robot.debug_draw(screen)
             Collision.debug_draw(screen)
+
             self.line_of_sight.debug_draw(screen, (255, 255, 255))

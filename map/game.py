@@ -95,25 +95,32 @@ class Robot(Square):
         self.distance_lines.append(up)
         self.distance_lines.append(down)
 
-    def move(self, vector, wall_container):
-        super().move(vector)
+    def move(self, m_vector, wall_container):
+        super().move(m_vector)
 
         if Collision.square_square(wall_container.container, self) is not False:
             super().move([
-                - vector[0],
-                - vector[1]
+                - m_vector[0],
+                - m_vector[1]
             ])
         elif wall_container.check_square_collision(self) is not False:
             super().move([
-                - vector[0],
-                - vector[1]
+                - m_vector[0],
+                - m_vector[1]
             ])
         else:
             # No Collisions
             self.update()
             # Move Distance Lines
             for line in self.distance_lines:
-                line.move(vector)
+                line.move(m_vector)
+
+    def set(self, s_vector):
+        super().set(s_vector)
+        for line in self.distance_lines:
+            line.set(self.center)
+            line.update()
+        self.update()
 
     def update(self):
         super().update()

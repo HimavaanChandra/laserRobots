@@ -19,7 +19,7 @@ class SimEntity():
 
     def __str__(self):
         pass
-    
+
 
 class Point(SimEntity):
     def __init__(self, x=0, y=0, vector=None):
@@ -36,6 +36,11 @@ class Point(SimEntity):
     def move(self, m_vector):
         self.x += m_vector[0]
         self.y += m_vector[1]
+        self.update()
+
+    def set(self, s_vector):
+        self.x = s_vector[0]
+        self.y = s_vector[1]
         self.update()
 
     def update(self):
@@ -82,18 +87,20 @@ class Line(SimEntity):
             self.vector[0][1]
         ]
 
-    # def distance(self):
-    #     vector = self.vector
-    #     x = vector[1][0] - vector[0][0]
-    #     y = vector[1][1] - vector[0][1]
-    #     return [x, y]
-
-    # def origin(self):
-    #     return self.point1.vector
-
     def move(self, m_vector):
         self.start.move(m_vector)
         self.end.move(m_vector)
+        self.update()
+
+    def set(self, s_vector):
+        origin = s_vector
+        size = [
+            s_vector[0] + self.size[0],
+            s_vector[1] + self.size[1]
+        ]
+
+        self.start.set(origin)
+        self.end.set(size)
         self.update()
 
     def debug_draw(self, screen, colour):
@@ -110,22 +117,14 @@ class Line(SimEntity):
 
 class Square(SimEntity):
     """2D square composed of 4 lines"""
+
     def __init__(self, point1=None, point2=None):
         self.sprite = None
         self.lines = []
         self.points = []
-        self.size = [
-            [0, 0],
-            [0, 0]
-        ]
-        self.origin = [
-            [0, 0],
-            [0, 0]
-        ]
-        self.center = [
-            [0, 0],
-            [0, 0]
-        ]
+        self.size = [0, 0]
+        self.origin = [0, 0]
+        self.center = [0, 0]
         self.bottom_left = [0, 0]
         self.bottom_right = [0, 0]
         self.top_left = [0, 0]
@@ -133,7 +132,7 @@ class Square(SimEntity):
         self._generate_lines(point1, point2)
         self.update()
         # super().__init__([
-            
+
         # ])
 
     def _generate_lines(self, point1, point2):
@@ -193,6 +192,18 @@ class Square(SimEntity):
             point.move(m_vector)
         self.update()
 
+    def set(self, s_vector):
+        origin = Point(vector=s_vector)
+        size = Point(vector=[
+            s_vector[0] + self.size[0],
+            s_vector[1] + self.size[1]
+        ])
+        self._generate_lines(origin, size)
+        # for line in self.lines:
+        #     # Only set single point for squares since lines share points.
+        #     line.set(s_vector)
+        self.update()
+
     def check_line_collision(self, test_line):
         """Check if the test line intersects any of the square lines"""
         return Collision.line_square(test_line, self)
@@ -224,4 +235,3 @@ class Square(SimEntity):
         for line in self.lines:
             string += str(line) + " : "
         return string
-

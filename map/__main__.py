@@ -4,7 +4,7 @@ import pygame as pygame
 from simlayer import SimLayer
 from game import add_vectors
 from collision import Collision
-from config import SCREEN, SIZE
+from config import SCREEN, SCALE
 
 
 def load_grid(filename="filename"):
@@ -17,7 +17,7 @@ def main():
     grid = load_grid()
 
     global SCREEN
-    screen = pygame.display.set_mode([len(grid[0]) * SIZE, len(grid) * SIZE])
+    screen = pygame.display.set_mode([len(grid[0]) * SCALE, len(grid) * SCALE])
     SCREEN = screen
 
     sim = SimLayer(grid)
@@ -43,6 +43,7 @@ def main():
                     break
                 if event.key == pygame.K_r:
                     Collision.line_collisions.clear()
+                    test.set(0, [100, 100])
                 if event.key == pygame.K_LEFT:
                     m_vector = add_vectors(m_vector, [-m_unit, 0])
                 if event.key == pygame.K_RIGHT:
