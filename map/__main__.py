@@ -16,9 +16,7 @@ def load_grid(filename="filename"):
 def main():
     grid = load_grid()
 
-    global SCREEN
     screen = pygame.display.set_mode([len(grid[0]) * SCALE, len(grid) * SCALE])
-    SCREEN = screen
 
     sim = SimLayer(grid)
 

@@ -11,8 +11,8 @@ class SimLayer():
     def __init__(self, grid):
         self.wall_container = None
         self.instances = []
-        self.scale = 90
-        self.size = SCALE
+        self.scale = SCALE
+        self.size = 90
         self.spawn_wall_container(grid)
 
     def spawn_wall_container(self, grid):
@@ -25,15 +25,15 @@ class SimLayer():
             for cell_i in range(0, len(grid[row_i])):
                 cell = grid[row_i][cell_i]
                 if cell == 1:
-                    y_1 = row_i * self.size
-                    y_2 = y_1 + self.size
-                    x_1 = cell_i * self.size
-                    x_2 = x_1 + self.size
+                    y_1 = row_i * self.scale
+                    y_2 = y_1 + self.scale
+                    x_1 = cell_i * self.scale
+                    x_2 = x_1 + self.scale
 
                     self.wall_container.add(Wall(x_1, y_1, x_2, y_2))
 
     def spawn_instance(self, name):
-        new_instance = SimThread(self.wall_container, self.scale)
+        new_instance = SimThread(self.wall_container, self.size)
         new_instance.start()
         new_instance.setName(name)
 
