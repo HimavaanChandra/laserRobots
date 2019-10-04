@@ -55,6 +55,7 @@ void loop() { ////REDO BY MANUAL DOING MOVEMENTS AND RECORDING IT THEN COPY PAST
     moveForward();
     //ledBlink(500);
     motorGo();
+    
 
   }
 
