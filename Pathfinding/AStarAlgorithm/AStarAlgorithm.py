@@ -146,7 +146,7 @@ def astar(maze, size, start, end):
                 unit_vector = (path[i-1][0] - path[i][0], path[i-1][1] - path[i][1]) #path[i][0] == x, path[i][1] == y - Minuses the previous coordinate from each coordinate to get a unit vector
                 
                 # Bearing(0)
-
+                
                 if  unit_vector == (0,-1): 
                     unit_vector='N'
                 elif unit_vector == (1,-1): 
@@ -166,7 +166,8 @@ def astar(maze, size, start, end):
                 elif unit_vector == (0,0): 
                     unit_vector='NONE'
                 
-                directions.append(unit_vector)
+                for x in range(5): # Repeats each direction 5 times for each movement. This gives the required resolution to the stepper motor/movement code
+                    directions.append(unit_vector)
 
             # return path[::-1]  # Return reversed path
             return directions[::-1]  # Return reversed path
@@ -287,7 +288,7 @@ def main():
     cell_map = np.loadtxt("filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
    
-    aStar = AStar(cell_array, (0, 0), (2, 0)) # maze, start, end - Object "aStar" sets start and coordinates for robot
+    aStar = AStar(cell_array, (0, 0), (11, 7)) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     print(path) #Prints coordinates of path to terminal
     # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)

@@ -15,7 +15,7 @@ if __name__ == '__main__':
     mouse_click = False
     mouse_button = None
     GRID.draw()
-    EXPORT_FILENAME = "../AStarAlgorithm/filename"
+    EXPORT_FILENAME = "../Pathfinding/filename"
 
     while True:
 
@@ -50,10 +50,10 @@ if __name__ == '__main__':
                         GRID.lg_remove(lg_grid_position)
                         # GRID.convert(grid_position)
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_HOME:
+                if event.key == pygame.K_i:
                     GRID.import_csv(EXPORT_FILENAME)
                     print("imported: " + EXPORT_FILENAME)
-                elif event.key == pygame.K_END:
+                elif event.key == pygame.K_e:
                     GRID.export_csv(EXPORT_FILENAME)
                     print("exported: " + EXPORT_FILENAME)
 
