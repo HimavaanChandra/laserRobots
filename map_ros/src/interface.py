@@ -3,6 +3,10 @@ import pygame as pygame
 
 from simlayer import SimLayer
 from config import SCALE
+import rospkg
+import rospy
+from vision_ros.msg import vision_comms
+from map_ros.msg import msg_comms
 
 
 def load_grid(filename="filename"):
@@ -12,6 +16,7 @@ def load_grid(filename="filename"):
 
 
 def main():
+	print(vsion_comms.xThomas)
     grid = load_grid()
 
     screen = pygame.display.set_mode([len(grid[0]) * SCALE, len(grid) * SCALE])
