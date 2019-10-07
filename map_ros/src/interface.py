@@ -14,60 +14,35 @@ def load_grid(filename="filename"):
     grid_list = np.array(grid_csv).tolist()
     return grid_list
 
+def callback(data):
+    rospy.loginfo("Thomas %d is : %d" % (data.xThomas, data.yThomas))
+    rospy.loginfo("Lightning %d is : %d" % (data.xLightning, data.yLightning))
+
+    print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
+    print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
 
 def main():
-	print(vsion_comms.xThomas)
-    grid = load_grid()
+    done = False
+    while not done:
+        rospy.init_node('map_listener', anonymous=True)
+        rospy.Subscriber("map_chatter", vision_comms, callback)
 
-    screen = pygame.display.set_mode([len(grid[0]) * SCALE, len(grid) * SCALE])
+        # spin() simply keeps python from exiting until this node is stopped
+        rospy.spin()
+
+    grid = load_grid()
 
     sim = SimLayer(grid)
 
-    tests = []
-
-    for i in range(0, 10):
-        test = sim.spawn_instance("Test " + str(i))
-        test.spawn_robots(0, 0, 300, 300)
-        tests.append(test)
-
-    pygame.display.set_caption('MAP Sim')
-    clock = pygame.time.Clock()
+    test = sim.spawn_instance("Test " + str(i))
+    test.spawn_robots(0, 0, 300, 300)
 
     done = False
     m_unit = 1
     while not done:
-        instance = input("Enter instance: ")
-        robot = input("Enter robot: ")
-        x = input("Enter movement x: ")
-        y = input("Enter movement y: ")
-
-        try:
-            instance = int(instance)
-            robot = int(robot)
-            x = int(x)
-            y = int(y)
-        except ValueError:
-            print("Bad input!")
-            continue
-
-        if len(tests) > instance:
-            test = tests[instance]
-        else:
-            print("Bad input!")
-            continue
-
-        test.move(robot, [int(x) * m_unit, int(y) * m_unit])
-
-        # --- Drawing ---
-        screen.fill((0, 0, 0))
-        test.debug_draw(screen)
-        print(test.data(robot))
-        pygame.display.flip()
-
-        clock.tick(60)
-
-    pygame.quit()
-
+        test.move(robot, [int(x) * m_unit, int(y) * m_unit]
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except rospy.ROSInterruptException: pass
