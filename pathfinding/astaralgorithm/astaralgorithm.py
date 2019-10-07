@@ -39,13 +39,13 @@ class AStar(): #Setting up "class" "AStar"
         self.start = start
         self.end=end
 
-    def setStart(self, start): #Can be called using "aStar.setStart((#,#))" to set start positon
+    def setStart(self, start): # Can be called using "aStar.setStart((#,#))" to set start positon
         self.start=start
         
-    def setEnd(self, end): #Can be called using "aStar.setEnd((#,#))" to set end positon
+    def setEnd(self, end): # Can be called using "aStar.setEnd((#,#))" to set end positon
         self.end=end
         
-    def calculatePath(self): #Can be called using "path=aStar.calculatePath()" to run the "astar" function based on the predecided "maze, start and end" conditions
+    def calculatePath(self): # Can be called using "path=aStar.calculatePath()" to run the "astar" function based on the predecided "maze, start and end" conditions
         return astar(self.maze, self.size, self.start, self.end)
 
 # unit_vector = None # Variable must exist in global namespace first
