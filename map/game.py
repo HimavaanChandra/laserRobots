@@ -85,15 +85,23 @@ class Robot(Square):
         length = 500
 
         left = self._generate_distance_line(center, [0, length])
+        left_up = self._generate_distance_line(center, [length, length])
         right = self._generate_distance_line(center, [0, -length])
+        right_up = self._generate_distance_line(center, [length, -length])
         up = self._generate_distance_line(center, [length, 0])
+        left_down = self._generate_distance_line(center, [-length, length])
         down = self._generate_distance_line(center, [-length, 0])
+        right_down = self._generate_distance_line(center, [-length, -length])
 
         self.distance_lines.clear()
         self.distance_lines.append(left)
-        self.distance_lines.append(right)
+        self.distance_lines.append(left_up)
         self.distance_lines.append(up)
+        self.distance_lines.append(right_up)
+        self.distance_lines.append(right)        
+        self.distance_lines.append(right_down)
         self.distance_lines.append(down)
+        self.distance_lines.append(left_down)
 
     def move(self, m_vector, wall_container):
         super().move(m_vector)
