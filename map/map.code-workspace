@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {},
+    "editor.wordWrap": "on",
+    "editor.formatOnType": true,
+    "files.autoSave": "afterDelay",
+    "python.autoComplete.addBrackets": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pep8Enabled": true,
+    "python.linting.mypyEnabled": false,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+      "--extension-pkg-whitelist=pygame"
+    ]
+  }
+}
