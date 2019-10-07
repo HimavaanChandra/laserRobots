@@ -11,10 +11,11 @@ Date: ##/##/2019
 
 '''
 
-import rospkg
-import rospy
-from vision_ros.msg import vision_comms
-from map_ros.msg import msg_comms
+# import rospkg
+# import rospy
+# from vision_ros.msg import vision_comms
+# from map_ros.msg import msg_comms
+# from astar_ros.msg import astar_comms
 
 import numpy as np
 from numpy import genfromtxt

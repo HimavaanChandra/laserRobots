@@ -15,7 +15,7 @@ if __name__ == '__main__':
     mouse_click = False
     mouse_button = None
     GRID.draw()
-    EXPORT_FILENAME = "../Pathfinding/filename"
+    EXPORT_FILENAME = "../filename"
 
     while True:
 
