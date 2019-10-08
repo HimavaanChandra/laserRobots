@@ -32,7 +32,7 @@ void Laser_Angle_Correction (int Laser_Angle, int Robot_Rotation_Angle)
 
 void Servo_Sweep(int AOE) // "AOE" equals the spray angle of the laser
 {
-    if (Laser_Angle_Corrected >= 0 && Laser_Angle_Corrected <= 180) // Include if 360 degree servos not available
+    if (Laser_Angle_Corrected >= 45 && Laser_Angle_Corrected <= 135) // Include if 360 degree servos not available
     {
         if (Position == 0)
         {
@@ -45,6 +45,7 @@ void Servo_Sweep(int AOE) // "AOE" equals the spray angle of the laser
             Position = 0;
         }
     }
+// Laser_Servo.write(Laser_Angle);
 }
  
 
@@ -58,8 +59,8 @@ void loop()
    
     Laser_Angle_Correction (Laser_Angle, Robot_Rotation_Angle);
     
-    Servo_Sweep(10);
+    Servo_Sweep(45);
     delay(5);
-    Servo_Sweep(10);
+    Servo_Sweep(45);
     delay(5);
 }
