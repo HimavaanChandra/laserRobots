@@ -41,10 +41,11 @@ def main():
     done = False
     m_unit = 1
     while not done:
-        test.move(robot, [int(x) * m_unit, int(y) * m_unit]
-
+        test.move(robot, [int(x) * m_unit, int(y) * m_unit])
+    
 
 if __name__ == '__main__':
     try:
         main()
     except rospy.ROSInterruptException: pass
+
