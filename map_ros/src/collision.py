@@ -1,5 +1,5 @@
 # from entity import Square, Line, Point
-from config import DEBUG, ITEM_LIMIT
+from .config import DEBUG, ITEM_LIMIT
 
 
 class Collision():
