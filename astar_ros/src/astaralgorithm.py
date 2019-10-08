@@ -13,8 +13,7 @@ Date: ##/##/2019
 
 import rospkg
 import rospy
-from vision_ros.msg import vision_comms
-from map_ros.msg import msg_comms
+from map_ros.msg import map_comms
 from astar_ros.msg import astar_comms
 
 import numpy as np
@@ -22,7 +21,7 @@ from numpy import genfromtxt
 import operator
 
 #!/usr/bin/env python
-def callback(data):
+def callback(data): # Runs when what I am subscribed to publishes something
     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
     rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
 
@@ -299,11 +298,11 @@ def astar(maze, size, start, end):
 
 def main():
 
-    rospy.init_node('astar_listener', anonymous=True)
-    rospy.Subscriber("astar_chatter", vision_comms, callback)
+    rospy.init_node('astar_listener', anonymous=True) 
+    rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
 
     # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin() 
+    rospy.spin() # Acts like a while loop to continually check for chatter
 
     cell_map = np.loadtxt("filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
@@ -315,6 +314,13 @@ def main():
     # aStar.setEnd((7,7)) #Sets end positon
     # path=aStar.calculatePath() #Run the "astar" function based on the predecided "maze, start and end" conditions
     # print(path) #Prints coordinates of path to terminal
+    
+    if not rospy.is_shutdown():
+      msg = astar_comms()
+      msg.path = path
+      rospy.loginfo(msg)
+      pub.publish(msg)
+      rate.sleep()     
         
 if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
     main()
