@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # from entity import Square, Line, Point
 from .config import DEBUG, ITEM_LIMIT
 
