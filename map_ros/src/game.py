@@ -2,9 +2,9 @@
 import pygame as pygame
 import math
 
-from .entity import Square, Line, Point
-from .collision import Collision
-from .config import DEBUG
+from entity import Square, Line, Point
+from collision import Collision
+from config import DEBUG
 
 
 class Wall(Square):

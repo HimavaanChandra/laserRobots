@@ -4,10 +4,10 @@ import pygame as pygame
 import rospkg
 import rospy
 from vision_ros.msg import vision_comms
-from map_ros.msg import msg_comms
+from map_ros.msg import map_comms
 
-from .simlayer import SimLayer
-from .config import SCALE
+from simlayer import SimLayer
+from config import SCALE
 
 
 def load_grid(filename="filename"):
@@ -41,10 +41,11 @@ def main():
     done = False
     m_unit = 1
     while not done:
-        test.move(robot, [int(x) * m_unit, int(y) * m_unit]
-
+        test.move(robot, [int(x) * m_unit, int(y) * m_unit])
+    
 
 if __name__ == '__main__':
     try:
         main()
     except rospy.ROSInterruptException: pass
+
