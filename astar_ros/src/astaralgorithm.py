@@ -1,16 +1,3 @@
-'''
-A* Algorithm Code
-
-Original code Author: Nicholas Swift
-Date: 28/02/2017 
-Nicholas Swift "Easy A* (star) Pathfinding" webpage: https://medium.com/@nicholas.w.swift/easy-a-star-pathfinding-7e6689c7f7b2
-Nicholas Swift Github: https://github.com/Nicholas-Swift
-
-Modifications: Thomas Harrison
-Date: ##/##/2019
-
-'''
-
 import rospkg
 import rospy
 from map_ros.msg import map_comms
