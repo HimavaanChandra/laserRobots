@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 import time as time
+import os
 import pygame as pygame
 import json as json
 import rospkg
@@ -13,7 +14,8 @@ from config import SCALE
 
 
 def load_grid(filename="filename"):
-    grid_csv = np.loadtxt(filename + ".csv", delimiter=',')
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    grid_csv = np.loadtxt(dir_path + "/" + filename + ".csv", delimiter=',')
     grid_list = np.array(grid_csv).tolist()
     return grid_list
     
@@ -26,14 +28,13 @@ class Interface():
         self.test = self.sim.spawn_instance("Test")
         self.test.spawn_robots(0, 0, 0, 0)
 
-        self.pub = rospy.Publisher('map_chatter', map_comms)
-        rospy.init_node('map_talker', anonymous=True)
+        rospy.init_node('map_node', anonymous=True)
+        self.pub = rospy.Publisher('map_chatter', map_comms, queue_size=10)
         self.r = rospy.Rate(10) #10hz
 
         # self.test.spawn_robots(0, 0, 300, 300)
 
     def listen(self):
-        rospy.init_node('map_listener', anonymous=True)
         rospy.Subscriber("robot_positions", vision_comms, self._update_pos)
 
         # spin() simply keeps python from exiting until this node is stopped
@@ -48,18 +49,18 @@ class Interface():
         self.test.set(0, [xThomas, yThomas])
         self.test.set(1, [xLightning, yLightning])
 
-    def broadcast(self, robot):
-        data = json.loads(self.test.data(robot))
+    def broadcast(self):
+        data = json.loads(self.test.data(0))
         
         msg = map_comms()
 
-        msg.can_shoot = data.can_shoot
-        msg.line_of_sight = data.line_of_sight
-        msg.distances = data.distances
-        msg.xThomas = data.xThomas
-        msg.yThomas = data.yThomas
-        msg.xLightning = data.xLightning
-        msg.yLightning = data.yLightning
+        msg.can_shoot = data["can_shoot"]
+        msg.line_of_sight = data["line_of_sight"]
+        msg.distances = data["distances"]
+        msg.xThomas = data["player_x"]
+        msg.yThomas = data["player_y"]
+        msg.xLightning = data["enemy_x"]
+        msg.yLightning = data["enemy_y"]
 
         while not rospy.is_shutdown():
             rospy.loginfo(msg)
@@ -88,16 +89,27 @@ def main():
     interface.listen()
     done = False
     while not done:
-        interface.broadcast(0)
-        interface.broadcast(1)
-        time.sleep(5)
+        interface.broadcast()
+        # interface.broadcast(1)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+                break
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    done = True
+                    break
 
         screen.fill((0, 0, 0))
         interface.test.debug_draw(screen)
         pygame.display.flip()
+        clock.tick(60)
+        time.sleep(5)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()    
+    pygame.quit()
 
 if __name__ == '__main__':
     try:
