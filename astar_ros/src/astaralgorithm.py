@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import rospkg
 import rospy
 from map_ros.msg import map_comms
@@ -9,13 +10,29 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
-def callback(data): # Runs when what I am subscribed to publishes something
-    rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
-    rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
-    # Include respawn point
+def Print_Path(robot_position, respawn_point):
+    
+    aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
+    path=aStar.calculatePath() 
+    print(path) # Prints coordinates of path to terminal
+    
+    if not rospy.is_shutdown():
+      msg = astar_comms()
+      msg.path = path
+      rospy.loginfo(msg)
+      pub.publish(msg)
+      rate.sleep()     
 
     print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
     print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
+
+def callback(data): # Runs when what I am subscribed to publishes something
+    rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
+    rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
+    
+    Print_Path((data.xThomas, data.yThomas ), (0,0)) # robot_position, respawn_point
+
+ 
 
 class Node(): # Setting up "class" "Node"
 
@@ -293,23 +310,24 @@ def main():
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin() # Acts like a while loop to continually check for chatter
 
-    cell_map = np.loadtxt("filename.csv", delimiter=",")
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
    
-    aStar = AStar(cell_array, (0, 0), (11, 7)) # maze, start, end - Object "aStar" sets start and coordinates for robot
-    path=aStar.calculatePath() 
-    print(path) #Prints coordinates of path to terminal
-    # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)
-    # aStar.setEnd((7,7)) #Sets end positon
-    # path=aStar.calculatePath() #Run the "astar" function based on the predecided "maze, start and end" conditions
+    # aStar = AStar(cell_array, (0, 0), (0, 0)) # maze, start, end - Object "aStar" sets start and coordinates for robot
+    # path=aStar.calculatePath() 
     # print(path) #Prints coordinates of path to terminal
+    # # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)
+    # # aStar.setEnd((7,7)) #Sets end positon
+    # # path=aStar.calculatePath() #Run the "astar" function based on the predecided "maze, start and end" conditions
+    # # print(path) #Prints coordinates of path to terminal
     
-    if not rospy.is_shutdown():
-      msg = astar_comms()
-      msg.path = path
-      rospy.loginfo(msg)
-      pub.publish(msg)
-      rate.sleep()     
+    # if not rospy.is_shutdown():
+    #   msg = astar_comms()
+    #   msg.path = path
+    #   rospy.loginfo(msg)
+    #   pub.publish(msg)
+    #   rate.sleep()     
         
 if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
     main()
