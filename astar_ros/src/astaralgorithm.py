@@ -314,6 +314,13 @@ def main():
     # aStar.setEnd((7,7)) #Sets end positon
     # path=aStar.calculatePath() #Run the "astar" function based on the predecided "maze, start and end" conditions
     # print(path) #Prints coordinates of path to terminal
+    
+    if not rospy.is_shutdown():
+      msg = astar_comms()
+      msg.path = path
+      rospy.loginfo(msg)
+      pub.publish(msg)
+      rate.sleep()     
         
 if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
     main()
