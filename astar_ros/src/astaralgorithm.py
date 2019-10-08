@@ -32,8 +32,6 @@ def callback(data): # Runs when what I am subscribed to publishes something
     
     Print_Path((data.xThomas, data.yThomas ), (0,0)) # robot_position, respawn_point
 
- 
-
 class Node(): # Setting up "class" "Node"
 
     """A node class for A* Pathfinding"""
