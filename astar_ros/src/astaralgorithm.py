@@ -23,17 +23,11 @@ import operator
 
 #!/usr/bin/env python
 def callback(data):
-    rospy.loginfo("%s is age: %d" % (data.name, data.age))
+    rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
+    rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
 
-def listener():
-    rospy.init_node('custom_listener', anonymous=True)
-    rospy.Subscriber("custom_chatter", Person, callback)
-
-# spin() simply keeps python from exiting until this node is stopped
-rospy.spin()
-
-if __name__ == '__main__':
-    listener()
+    print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
+    print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
 
 class Node(): # Setting up "class" "Node"
 
@@ -303,7 +297,13 @@ def astar(maze, size, start, end):
                     # Add the child to the open list
                     open_list.append(child) #This also link "current_node" to the "new_node" object as "current_node = open_list[0]"??
 
-def main(): 
+def main():
+
+    rospy.init_node('astar_listener', anonymous=True)
+    rospy.Subscriber("astar_chatter", vision_comms, callback)
+
+    # spin() simply keeps python from exiting until this node is stopped
+    rospy.spin() 
 
     cell_map = np.loadtxt("filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
