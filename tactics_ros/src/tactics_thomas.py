@@ -8,7 +8,7 @@ heading = 0
 choice = 0
 final_choice = 0
 
-pub = rospy.Publisher('robot_choice', tactic_msg, queue_size=10)
+pub = rospy.Publisher('robot_choice', tactics, queue_size=10)
 rospy.init_node('robot_choice', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
@@ -18,19 +18,19 @@ def reader(data):
 def get_inputs():
 
 	rospy.init_node('tactics_listener', anonymous=True)
-	rospy.Subscriber("robot_positions", vision_comms, reader)
+	rospy.Subscriber("robot_positions", map_comms, reader)
 	rospy.spin()
 
-	left_dis = data[0]
-	front_left_dis = data[1]
-	front_dis = data[2]
-	front_right_dis = data[3]
-	right_dis = data[4]
-	back_dis = data[5]
-	my.x = data.xlightning
-	my.y = data.ylightning
-	enemy.x = data.xthomas
-	enemy.y = data.ythomas
+	left_dis = data.distances[0]
+	front_left_dis = data.distances[1]
+	front_dis = data.distances[2]
+	front_right_dis = data.distances[3]
+	right_dis = data.distances[4]
+	back_dis = data.distances[5]
+	my.x = data.lightning_x
+	my.y = data.lightning_y
+	enemy.x = data.thomas_x
+	enemy.y = data.thomas_y
 	x_dif = my.x - enemy.x
 	y_dif = my.y - enemy.y
 
