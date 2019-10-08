@@ -1,13 +1,43 @@
-#!/user/bin/env python
 import serial
-import re
+import time
 port="/dev/ttyACM0"
 
 s1=serial.Serial(port,9600)
 s1.flushInput()
 
-done = False
+#Send to Arduino
+time.sleep(2)
+s1.write("N\n".encode())
+time.sleep(2)
+s1.write("NE\n".encode())
+time.sleep(2)
+s1.write("E\n".encode())
+time.sleep(2)
+s1.write("SE\n".encode())
+time.sleep(2)
+s1.write("S\n".encode())
+time.sleep(2)
+s1.write("SW\n".encode())
+time.sleep(2)
+s1.write("W\n".encode())
+time.sleep(2)
+s1.write("NW\n".encode())
+time.sleep(2)
+s1.write("Shoot\n".encode())
+time.sleep(2)
+s1.write("Hit\n".encode())
+time.sleep(2)
+s1.write("Reset\n".encode())
+time.sleep(2)
+s1.write("s_angle\n".encode())
+#s_angle=345
+#s1.write(str(s_angle).encode())
+#time.sleep(2)
 
+
+
+#Read from Arduino 
+done = False
 while not done:
 
     my_string = ""
@@ -37,8 +67,3 @@ while not done:
         print(value)
     if command == "Hit":
         print(value)
-        
-    #if re.match('Angle:',my_string):
-        #print("Angle Found")
-    #if re.match('Health:',my_string):
-        #print("Health Found")
