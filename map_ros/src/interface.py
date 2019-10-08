@@ -26,7 +26,7 @@ def main():
     done = False
     while not done:
         rospy.init_node('map_listener', anonymous=True)
-        rospy.Subscriber("map_chatter", vision_comms, callback)
+        rospy.Subscriber("robot_positions", vision_comms, callback)
 
         # spin() simply keeps python from exiting until this node is stopped
         rospy.spin()
