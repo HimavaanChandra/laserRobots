@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import rospkg
 import rospy
 from map_ros.msg import map_comms
@@ -293,7 +294,8 @@ def main():
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin() # Acts like a while loop to continually check for chatter
 
-    cell_map = np.loadtxt("filename.csv", delimiter=",")
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
    
     aStar = AStar(cell_array, (0, 0), (11, 7)) # maze, start, end - Object "aStar" sets start and coordinates for robot
