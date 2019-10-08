@@ -11,15 +11,29 @@ Date: ##/##/2019
 
 '''
 
-# import rospkg
-# import rospy
-# from vision_ros.msg import vision_comms
-# from map_ros.msg import msg_comms
-# from astar_ros.msg import astar_comms
+import rospkg
+import rospy
+from vision_ros.msg import vision_comms
+from map_ros.msg import msg_comms
+from astar_ros.msg import astar_comms
 
 import numpy as np
 from numpy import genfromtxt
 import operator
+
+#!/usr/bin/env python
+   5 def callback(data):
+   6     rospy.loginfo("%s is age: %d" % (data.name, data.age))
+   7 
+   8 def listener():
+   9     rospy.init_node('custom_listener', anonymous=True)
+  10     rospy.Subscriber("custom_chatter", Person, callback)
+  11 
+  12     # spin() simply keeps python from exiting until this node is stopped
+  13     rospy.spin()
+  14 
+  15 if __name__ == '__main__':
+  16     listener()
 
 class Node(): # Setting up "class" "Node"
 
