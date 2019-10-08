@@ -6,7 +6,7 @@ import random
 
 import soundfx as soundfx
 
-from tactics_ros.msg import tactic_comms 
+from tactics_ros.msg import tactics_comms 
 
 
 
