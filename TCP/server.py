@@ -61,7 +61,7 @@ class ROS_TCP_Thread(tcp.TCP_Thread):
 
 def Main():
 
-    server = ROS_TCP_Server("localhost", 3322, 3)
+    server = ROS_TCP_Server("0.0.0.0", 3322, 3)
     server.listen()
 
     # server = TCPServer("localhost", 3322)
