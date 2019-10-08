@@ -5,6 +5,7 @@ from tkinter import ttk
 import rospkg
 import rospy
 from vision_ros.msg import vision_comms
+global temp = None
 
 def callback(data):
     rospy.loginfo("Thomas %d is : %d" % (data.xThomas, data.yThomas))
@@ -12,21 +13,21 @@ def callback(data):
 
     print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
     print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
-    global temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
+    temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
 
-def main():
-    done = False
-    while not done:
-        rospy.init_node('map_listener', anonymous=True)
-        rospy.Subscriber("map_chatter", vision_comms, callback)
+# def main():
+#     done = False
+#     while not done:
+rospy.init_node('map_listener', anonymous=True)
+rospy.Subscriber("map_chatter", vision_comms, callback)
 
         # spin() simply keeps python from exiting until this node is stopped
         # rospy.spin()
 
-if __name__ == '__main__':
-    try:
-        main()
-    except rospy.ROSInterruptException: pass
+# if __name__ == '__main__':
+#     try:
+#         main()
+#     except rospy.ROSInterruptException: pass
 
 
 root = Tk()
@@ -112,17 +113,27 @@ ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E
 ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
 ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
 
-ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
-ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
+if temp is not None
+    mcqueenx = StringVar()
+    mcqueenx.set(temp[0])
+    mcqueeny = StringVar()
+    mcqueeny.set(temp[1])
+    thomasx = StringVar(rootthomas)
+    thomasx.set(temp[2])
+    thomasy = StringVar(rootthomas)
+    thomasy.set(temp[3])
 
-ttk.Label(mainframe, text='x=').grid(column=1, row=5)
-ttk.Label(mainframe, textvariable=mcqueenx).grid(column=2, columnspan=2, row=5)
-ttk.Label(mainframe, text='y=').grid(column=4, row=5)
-ttk.Label(mainframe, textvariable=mcqueeny).grid(column=5, columnspan=2, row=5)
-ttk.Label(mainframe2, text='x=').grid(column=1, row=5)
-ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
-ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
-ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
+    ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
+    ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
+
+    ttk.Label(mainframe, text='x=').grid(column=1, row=5)
+    ttk.Label(mainframe, textvariable=mcqueenx).grid(column=2, columnspan=2, row=5)
+    ttk.Label(mainframe, text='y=').grid(column=4, row=5)
+    ttk.Label(mainframe, textvariable=mcqueeny).grid(column=5, columnspan=2, row=5)
+    ttk.Label(mainframe2, text='x=').grid(column=1, row=5)
+    ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
+    ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
+    ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 
 
 root.mainloop()
