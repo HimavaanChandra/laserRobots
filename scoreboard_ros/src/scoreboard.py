@@ -25,7 +25,7 @@ rospy.init_node('scoreboard_listener_node', anonymous=True)
 rospy.Subscriber("scoreboard_listener", vision_comms, callback)
 
         # spin() simply keeps python from exiting until this node is stopped
-        # rospy.spin()
+rospy.spin()
 
 # if __name__ == '__main__':
 #     try:
