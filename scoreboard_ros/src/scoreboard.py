@@ -5,7 +5,8 @@ from tkinter import ttk
 import rospkg
 import rospy
 from vision_ros.msg import vision_comms
-global temp = None
+global temp 
+temp = None
 
 def callback(data):
     rospy.loginfo("Thomas %d is : %d" % (data.xThomas, data.yThomas))
