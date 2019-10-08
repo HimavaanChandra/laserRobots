@@ -1,10 +1,10 @@
 import numpy as np
 import pygame as pygame
 
-from simlayer import SimLayer
-from game import add_vectors
-from collision import Collision
-from config import SCREEN, SCALE
+from .simlayer import SimLayer
+from .game import add_vectors
+from .collision import Collision
+from .config import SCREEN, SCALE
 
 
 def load_grid(filename="filename"):
