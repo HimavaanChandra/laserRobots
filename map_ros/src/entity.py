@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import pygame
 
-from .collision import Collision
-from .config import DEBUG
+from collision import Collision
+from config import DEBUG
 
 
 class SimEntity():
