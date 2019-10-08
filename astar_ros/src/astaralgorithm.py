@@ -24,6 +24,7 @@ import operator
 def callback(data): # Runs when what I am subscribed to publishes something
     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
     rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
+    # Include respawn point
 
     print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
     print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
