@@ -1,8 +1,8 @@
 bool can_shoot
-int16[] line_of_sight_start
-int16[] line_of_sight_end
+float32[] line_of_sight_start
+float32[] line_of_sight_end
 
-int16[] distances
+float32[] distances
 int16 xThomas
 int16 yThomas
 int16 xLightning
