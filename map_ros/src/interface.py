@@ -91,14 +91,25 @@ def main():
     while not done:
         interface.broadcast()
         # interface.broadcast(1)
-        time.sleep(5)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+                break
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    done = True
+                    break
 
         screen.fill((0, 0, 0))
         interface.test.debug_draw(screen)
         pygame.display.flip()
+        clock.tick(60)
+        time.sleep(5)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()    
+    pygame.quit()
 
 if __name__ == '__main__':
     try:
