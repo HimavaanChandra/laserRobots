@@ -27,10 +27,10 @@ def get_inputs():
 	front_right_dis = data[3]
 	right_dis = data[4]
 	back_dis = data[5]
-	my.x = data[6]
-	my.y = data[7]
-	enemy.x = data[8]
-	enemy.y = data[9]
+	my.x = data.xlightning
+	my.y = data.ylightning
+	enemy.x = data.xthomas
+	enemy.y = data.ythomas
 	x_dif = my.x - enemy.x
 	y_dif = my.y - enemy.y
 
