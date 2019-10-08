@@ -131,10 +131,10 @@ ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
 ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
 ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 
-if mcqueenHasShot = 1:
-    ttk.Label(mainframe, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
-if thomasHasShot = 1:
-    ttk.Label(mainframe2, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
+# if mcqueenHasShot = 1:
+#     ttk.Label(mainframe, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
+# if thomasHasShot = 1:
+#     ttk.Label(mainframe2, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
 
 root.mainloop()
 rootthomas.mainloop()
