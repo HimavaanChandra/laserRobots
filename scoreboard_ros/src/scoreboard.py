@@ -1,5 +1,33 @@
+#!/usr/bin/env python3
 from tkinter import *
 from tkinter import ttk
+
+import rospkg
+import rospy
+from vision_ros.msg import vision_comms
+
+def callback(data):
+    rospy.loginfo("Thomas %d is : %d" % (data.xThomas, data.yThomas))
+    rospy.loginfo("Lightning %d is : %d" % (data.xLightning, data.yLightning))
+
+    print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
+    print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
+
+def main():
+    done = False
+    while not done:
+        rospy.init_node('map_listener', anonymous=True)
+        rospy.Subscriber("map_chatter", vision_comms, callback)
+
+        # spin() simply keeps python from exiting until this node is stopped
+        rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException: pass
+
+
 root = Tk()
 root.title("Scoreboard")
 
@@ -47,13 +75,13 @@ if mcqueenhp<2: mcqueenhp2.set('X')
 if mcqueenhp<1: mcqueenhp1.set('X')
 
 mcqueenx = StringVar()
-mcqueenx.set(131.3)
+mcqueenx.set(data.xLightning)
 mcqueeny = StringVar()
-mcqueeny.set(42.04)
+mcqueeny.set(data.yLightning)
 thomasx = StringVar(rootthomas)
-thomasx.set(250)
+thomasx.set(data.xThomas)
 thomasy = StringVar(rootthomas)
-thomasy.set(554.321)
+thomasy.set(data.yThomas)
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
