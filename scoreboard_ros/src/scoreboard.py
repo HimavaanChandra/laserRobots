@@ -109,7 +109,7 @@ ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E
 ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
 ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
 
-if temp is not None
+if temp is not None:
     mcqueenx = StringVar()
     mcqueenx.set(temp[0])
     mcqueeny = StringVar()
