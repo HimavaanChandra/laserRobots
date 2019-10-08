@@ -21,7 +21,7 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
-class Node(): #Setting up "class" "Node"
+class Node(): # Setting up "class" "Node"
 
     """A node class for A* Pathfinding"""
 
