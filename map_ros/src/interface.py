@@ -49,18 +49,18 @@ class Interface():
         self.test.set(0, [xThomas, yThomas])
         self.test.set(1, [xLightning, yLightning])
 
-    def broadcast(self, robot):
-        data = json.loads(self.test.data(robot))
+    def broadcast(self):
+        data = json.loads(self.test.data(0))
         
         msg = map_comms()
 
         msg.can_shoot = data["can_shoot"]
         msg.line_of_sight = data["line_of_sight"]
         msg.distances = data["distances"]
-        msg.xThomas = data["xThomas"]
-        msg.yThomas = data["yThomas"]
-        msg.xLightning = data["xLightning"]
-        msg.yLightning = data["yLightning"]
+        msg.xThomas = data["player_x"]
+        msg.yThomas = data["player_y"]
+        msg.xLightning = data["enemy_x"]
+        msg.yLightning = data["enemy_y"]
 
         while not rospy.is_shutdown():
             rospy.loginfo(msg)
@@ -89,8 +89,8 @@ def main():
     interface.listen()
     done = False
     while not done:
-        interface.broadcast(0)
-        interface.broadcast(1)
+        interface.broadcast()
+        # interface.broadcast(1)
         time.sleep(5)
 
         screen.fill((0, 0, 0))
