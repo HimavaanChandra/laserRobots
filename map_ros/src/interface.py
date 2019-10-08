@@ -55,7 +55,8 @@ class Interface():
         msg = map_comms()
 
         msg.can_shoot = data["can_shoot"]
-        msg.line_of_sight = data["line_of_sight"]
+        msg.line_of_sight_start = data["line_of_sight"][0]
+        msg.line_of_sight_end = data["line_of_sight"][1]
         msg.distances = data["distances"]
         msg.xThomas = data["player_x"]
         msg.yThomas = data["player_y"]
@@ -108,7 +109,7 @@ def main():
         # time.sleep(5)
 
     # spin() simply keeps python from exiting until this node is stopped
-    rospy.spinOnce()    
+    rospy.spin()    
     pygame.quit()
 
 if __name__ == '__main__':
