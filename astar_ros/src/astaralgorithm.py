@@ -1,3 +1,4 @@
+#!/usr/bin/env python2
 #!/usr/bin/env python3
 
 import os
@@ -10,21 +11,24 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
+cell_array = None
+
+pub = rospy.Publisher('astar_path', astar_comms, queue_size=10)
+rospy.init_node('astar_path', anonymous=True)
+rate = rospy.Rate(10)  #10hz
+
 def Print_Path(robot_position, respawn_point):
-    
+    global cell_array
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     print(path) # Prints coordinates of path to terminal
     
     if not rospy.is_shutdown():
-      msg = astar_comms()
-      msg.path = path
-      rospy.loginfo(msg)
-      pub.publish(msg)
-      rate.sleep()     
-
-    print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
-    print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
+        msg = astar_comms()
+        msg.path = path
+        rospy.loginfo(msg)
+        pub.publish(msg)
+        rate.sleep()
 
 def callback(data): # Runs when what I am subscribed to publishes something
     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
