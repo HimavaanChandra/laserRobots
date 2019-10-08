@@ -22,18 +22,18 @@ from numpy import genfromtxt
 import operator
 
 #!/usr/bin/env python
-   5 def callback(data):
-   6     rospy.loginfo("%s is age: %d" % (data.name, data.age))
-   7 
-   8 def listener():
-   9     rospy.init_node('custom_listener', anonymous=True)
-  10     rospy.Subscriber("custom_chatter", Person, callback)
-  11 
-  12     # spin() simply keeps python from exiting until this node is stopped
-  13     rospy.spin()
-  14 
-  15 if __name__ == '__main__':
-  16     listener()
+def callback(data):
+    rospy.loginfo("%s is age: %d" % (data.name, data.age))
+
+def listener():
+    rospy.init_node('custom_listener', anonymous=True)
+    rospy.Subscriber("custom_chatter", Person, callback)
+
+# spin() simply keeps python from exiting until this node is stopped
+rospy.spin()
+
+if __name__ == '__main__':
+    listener()
 
 class Node(): # Setting up "class" "Node"
 
