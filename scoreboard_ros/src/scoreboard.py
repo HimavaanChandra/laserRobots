@@ -12,6 +12,7 @@ def callback(data):
 
     print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
     print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
+    global temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
 
 def main():
     done = False
@@ -20,7 +21,7 @@ def main():
         rospy.Subscriber("map_chatter", vision_comms, callback)
 
         # spin() simply keeps python from exiting until this node is stopped
-        rospy.spin()
+        # rospy.spin()
 
 if __name__ == '__main__':
     try:
@@ -75,13 +76,13 @@ if mcqueenhp<2: mcqueenhp2.set('X')
 if mcqueenhp<1: mcqueenhp1.set('X')
 
 mcqueenx = StringVar()
-mcqueenx.set(data.xLightning)
+mcqueenx.set(temp[0])
 mcqueeny = StringVar()
-mcqueeny.set(data.yLightning)
+mcqueeny.set(temp[1])
 thomasx = StringVar(rootthomas)
-thomasx.set(data.xThomas)
+thomasx.set(temp[2])
 thomasy = StringVar(rootthomas)
-thomasy.set(data.yThomas)
+thomasy.set(temp[3])
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
