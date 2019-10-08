@@ -62,7 +62,7 @@ class Interface():
         msg.xLightning = data["enemy_x"]
         msg.yLightning = data["enemy_y"]
 
-        while not rospy.is_shutdown():
+        if not rospy.is_shutdown():
             rospy.loginfo(msg)
             self.pub.publish(msg)
             self.r.sleep()
@@ -89,7 +89,6 @@ def main():
     interface.listen()
     done = False
     while not done:
-        interface.broadcast()
         # interface.broadcast(1)
         
         for event in pygame.event.get():
@@ -105,10 +104,11 @@ def main():
         interface.test.debug_draw(screen)
         pygame.display.flip()
         clock.tick(60)
-        time.sleep(5)
+        interface.broadcast()
+        # time.sleep(5)
 
     # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin()    
+    rospy.spinOnce()    
     pygame.quit()
 
 if __name__ == '__main__':
