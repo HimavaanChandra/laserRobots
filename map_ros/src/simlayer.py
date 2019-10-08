@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 import threading
 # import json
 
-from entity import Line, Point
-from collision import Collision
-from game import Wall, WallContainer, Robot
-from config import SCALE, DEBUG
+from .entity import Line, Point
+from .collision import Collision
+from .game import Wall, WallContainer, Robot
+from .config import SCALE, DEBUG
 
 
 class SimLayer():

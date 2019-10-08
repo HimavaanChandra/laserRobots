@@ -1,12 +1,13 @@
+#!/usr/bin/env python3
 import numpy as np
 import pygame as pygame
-
-from simlayer import SimLayer
-from config import SCALE
 import rospkg
 import rospy
 from vision_ros.msg import vision_comms
 from map_ros.msg import msg_comms
+
+from .simlayer import SimLayer
+from .config import SCALE
 
 
 def load_grid(filename="filename"):
@@ -41,6 +42,7 @@ def main():
     m_unit = 1
     while not done:
         test.move(robot, [int(x) * m_unit, int(y) * m_unit]
+
 
 if __name__ == '__main__':
     try:
