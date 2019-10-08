@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import rospkg
 import rospy
 from map_ros.msg import map_comms
@@ -7,7 +9,6 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
-#!/usr/bin/env python
 def callback(data): # Runs when what I am subscribed to publishes something
     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
     rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
