@@ -16,21 +16,16 @@ def reader(data):
 	rospy.loginfo(data)
 
 def get_inputs():
-
-	rospy.init_node('tactics_listener', anonymous=True)
-	rospy.Subscriber("robot_positions", map_comms, reader)
-	rospy.spin()
-
 	left_dis = data.distances[0]
 	front_left_dis = data.distances[1]
 	front_dis = data.distances[2]
 	front_right_dis = data.distances[3]
 	right_dis = data.distances[4]
 	back_dis = data.distances[5]
-	my.x = data.lightning_x
-	my.y = data.lightning_y
-	enemy.x = data.thomas_x
-	enemy.y = data.thomas_y
+	my.x = data.xThomas
+	my.y = data.yThomas
+	enemy.x = data.xLightning
+	enemy.y = data.yLightning
 	x_dif = my.x - enemy.x
 	y_dif = my.y - enemy.y
 
@@ -47,6 +42,22 @@ def make_choice():
 	front_right_dis = inputs[5]
 	right_dis = inputs[6]
 	back_dis = inputs[7]
+
+	if x_dif_input>-100 or x_dif_input<100:
+		if y_dif_input>0:
+			if (front_dis > 200 or front_right_dis>200 or front_left_dis>200) and (heading == 0 or heading == 45 or heading == -45):
+				return 9
+		elif y_dif_input<0:
+			if (back_dis > 200) and (heading == 135 or heading == 180 or heading == -135):
+				return 9
+
+	elif y_dif_input>-100 or y_dif_input<100:
+		if x_dif_input>0:
+			if (front_dis > 200 or front_right_dis>200 or front_left_dis>200) and (heading == 0 or heading == 45 or heading == -45):
+				return 9
+		elif x_dif_input<0:
+			if (back_dis > 200) and (heading == 135 or heading == 180 or heading == -135):
+				return 9
 
 	#what to do if enemy is at the same x-level
 	if x_dif_input==0:
@@ -145,7 +156,7 @@ def send_choice():
 	pre_heading = heading
 
 	if decision == 0:
-		final_choice=''
+		final_choice='A'
 		heading = pre_heading
 	if decision == 1:
 		if front_dis < 50:
@@ -255,9 +266,18 @@ def send_choice():
 		final_choice = 'F'
 		heading=pre_heading
 
-if not rospy.is_shutdown():
-	msg = tactics_msg()
+def main():
+
+	rospy.init_node('tactics_listener', anonymous=True)
+	rospy.Subscriber("robot_positions", map_comms, reader)
+	rospy.spin()
+
+	if not rospy.is_shutdown():
+	msg = tactics()
 	msg.final_choice = final_choice
 	rospy.loginfo(msg)
 	pub.publish(msg)
 	rate.sleep()  
+
+if __name__ =='__main__':
+	main()
