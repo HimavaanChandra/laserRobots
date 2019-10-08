@@ -2,13 +2,13 @@ import numpy as np
 import random
 import rospkg
 import rospy
-from tactics.msg import tactics
+from tactics.msg import tactics_comms_l
 
 heading = 0
 choice = 0
 final_choice = 0
 
-pub = rospy.Publisher('robot_choice', tactics, queue_size=10)
+pub = rospy.Publisher('robot_choice', tactics_comms_l, queue_size=10)
 rospy.init_node('robot_choice', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
@@ -272,8 +272,10 @@ def main():
 	rospy.Subscriber("robot_positions", map_comms, reader)
 	rospy.spin()
 
+	send_choice()
+
 	if not rospy.is_shutdown():
-	msg = tactics()
+	msg = tactics_comms_l()
 	msg.final_choice = final_choice
 	rospy.loginfo(msg)
 	pub.publish(msg)
