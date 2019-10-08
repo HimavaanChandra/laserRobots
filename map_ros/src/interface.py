@@ -58,10 +58,10 @@ class Interface():
         msg.line_of_sight_start = data["line_of_sight"][0]
         msg.line_of_sight_end = data["line_of_sight"][1]
         msg.distances = data["distances"]
-        msg.xThomas = data["player_x"]
-        msg.yThomas = data["player_y"]
-        msg.xLightning = data["enemy_x"]
-        msg.yLightning = data["enemy_y"]
+        msg.xThomas = int(data["player_x"])
+        msg.yThomas = int(data["player_y"])
+        msg.xLightning = int(data["enemy_x"])
+        msg.yLightning = int(data["enemy_y"])
 
         if not rospy.is_shutdown():
             rospy.loginfo(msg)
