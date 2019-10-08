@@ -109,15 +109,20 @@ ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E
 ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
 ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
 
+mcqueenx = StringVar()
+mcqueeny = StringVar()
+thomasx = StringVar(rootthomas)
+thomasy = StringVar(rootthomas)
 if temp is not None:
-    mcqueenx = StringVar()
     mcqueenx.set(temp[0])
-    mcqueeny = StringVar()
     mcqueeny.set(temp[1])
-    thomasx = StringVar(rootthomas)
     thomasx.set(temp[2])
-    thomasy = StringVar(rootthomas)
     thomasy.set(temp[3])
+else:
+    mcqueenx.set(None)
+    mcqueeny.set(None)
+    thomasx.set(None)
+    thomasy.set(None)
 
 ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
 ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
