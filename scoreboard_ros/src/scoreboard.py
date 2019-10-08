@@ -15,6 +15,57 @@ def callback(data):
     print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
 
+    mcqueenhp = 4
+    thomashp = 2
+
+    mcqueenhp1 = StringVar()
+    mcqueenhp2 = StringVar()
+    mcqueenhp3 = StringVar()
+    mcqueenhp4 = StringVar()
+    mcqueenhp5 = StringVar()
+
+    thomashp1 = StringVar(rootthomas)
+    thomashp2 = StringVar(rootthomas)
+    thomashp3 = StringVar(rootthomas)
+    thomashp4 = StringVar(rootthomas)
+    thomashp5 = StringVar(rootthomas)
+
+    if thomashp <= 5:
+        thomashp1.set('O')
+        thomashp2.set('O')
+        thomashp3.set('O')
+        thomashp4.set('O')
+        thomashp5.set('O')
+
+    if thomashp<5: thomashp5.set('X')
+    if thomashp<4: thomashp4.set('X')
+    if thomashp<3: thomashp3.set('X')
+    if thomashp<2: thomashp2.set('X')
+    if thomashp<1: thomashp1.set('X')
+
+    if mcqueenhp <= 5:
+        mcqueenhp1.set('O')
+        mcqueenhp2.set('O')
+        mcqueenhp3.set('O')
+        mcqueenhp4.set('O')
+        mcqueenhp5.set('O')
+
+    if mcqueenhp<5: mcqueenhp5.set('X')
+    if mcqueenhp<4: mcqueenhp4.set('X')
+    if mcqueenhp<3: mcqueenhp3.set('X')
+    if mcqueenhp<2: mcqueenhp2.set('X')
+    if mcqueenhp<1: mcqueenhp1.set('X')
+
+    if temp is not None
+        mcqueenx = StringVar()
+        mcqueenx.set(temp[0])
+        mcqueeny = StringVar()
+        mcqueeny.set(temp[1])
+        thomasx = StringVar(rootthomas)
+        thomasx.set(temp[2])
+        thomasy = StringVar(rootthomas)
+        thomasy.set(temp[3])
+
 # def main():
 #     done = False
 #     while not done:
@@ -35,55 +86,6 @@ root.title("Scoreboard")
 
 rootthomas = Tk()
 rootthomas.title("Scoreboard")
-mcqueenhp = 4
-thomashp = 2
-
-mcqueenhp1 = StringVar()
-mcqueenhp2 = StringVar()
-mcqueenhp3 = StringVar()
-mcqueenhp4 = StringVar()
-mcqueenhp5 = StringVar()
-
-thomashp1 = StringVar(rootthomas)
-thomashp2 = StringVar(rootthomas)
-thomashp3 = StringVar(rootthomas)
-thomashp4 = StringVar(rootthomas)
-thomashp5 = StringVar(rootthomas)
-
-if thomashp <= 5:
-    thomashp1.set('O')
-    thomashp2.set('O')
-    thomashp3.set('O')
-    thomashp4.set('O')
-    thomashp5.set('O')
-
-if thomashp<5: thomashp5.set('X')
-if thomashp<4: thomashp4.set('X')
-if thomashp<3: thomashp3.set('X')
-if thomashp<2: thomashp2.set('X')
-if thomashp<1: thomashp1.set('X')
-
-if mcqueenhp <= 5:
-    mcqueenhp1.set('O')
-    mcqueenhp2.set('O')
-    mcqueenhp3.set('O')
-    mcqueenhp4.set('O')
-    mcqueenhp5.set('O')
-
-if mcqueenhp<5: mcqueenhp5.set('X')
-if mcqueenhp<4: mcqueenhp4.set('X')
-if mcqueenhp<3: mcqueenhp3.set('X')
-if mcqueenhp<2: mcqueenhp2.set('X')
-if mcqueenhp<1: mcqueenhp1.set('X')
-
-mcqueenx = StringVar()
-mcqueenx.set(temp[0])
-mcqueeny = StringVar()
-mcqueeny.set(temp[1])
-thomasx = StringVar(rootthomas)
-thomasx.set(temp[2])
-thomasy = StringVar(rootthomas)
-thomasy.set(temp[3])
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
@@ -113,27 +115,19 @@ ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E
 ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
 ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
 
-if temp is not None
-    mcqueenx = StringVar()
-    mcqueenx.set(temp[0])
-    mcqueeny = StringVar()
-    mcqueeny.set(temp[1])
-    thomasx = StringVar(rootthomas)
-    thomasx.set(temp[2])
-    thomasy = StringVar(rootthomas)
-    thomasy.set(temp[3])
 
-    ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
-    ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
 
-    ttk.Label(mainframe, text='x=').grid(column=1, row=5)
-    ttk.Label(mainframe, textvariable=mcqueenx).grid(column=2, columnspan=2, row=5)
-    ttk.Label(mainframe, text='y=').grid(column=4, row=5)
-    ttk.Label(mainframe, textvariable=mcqueeny).grid(column=5, columnspan=2, row=5)
-    ttk.Label(mainframe2, text='x=').grid(column=1, row=5)
-    ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
-    ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
-    ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
+ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
+ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
+
+ttk.Label(mainframe, text='x=').grid(column=1, row=5)
+ttk.Label(mainframe, textvariable=mcqueenx).grid(column=2, columnspan=2, row=5)
+ttk.Label(mainframe, text='y=').grid(column=4, row=5)
+ttk.Label(mainframe, textvariable=mcqueeny).grid(column=5, columnspan=2, row=5)
+ttk.Label(mainframe2, text='x=').grid(column=1, row=5)
+ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
+ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
+ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 
 
 root.mainloop()
