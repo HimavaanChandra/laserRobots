@@ -4,7 +4,7 @@ import pygame as pygame
 import rospkg
 import rospy
 from vision_ros.msg import vision_comms
-from map_ros.msg import msg_comms
+from map_ros.msg import map_comms
 
 from .simlayer import SimLayer
 from .config import SCALE
