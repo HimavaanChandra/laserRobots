@@ -8,13 +8,6 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
-## Generate messages in the 'msg' folder
- add_message_files(
-	DIRECTORY msg
-  FILES
-
-)
-
 ## Generate added messages and services with any dependencies listed here
  generate_messages(
    DEPENDENCIES
