@@ -5,7 +5,7 @@ port="/dev/ttyACM0"
 s1=serial.Serial(port,9600)
 s1.flushInput()
 
-#Send to Arduino
+#3Send to Arduino
 time.sleep(2)
 s1.write("N\n".encode())
 time.sleep(2)
