@@ -13,22 +13,25 @@ temp = None
 t_health = 10
 
 def callback(data):
-    rospy.loginfo("Thomas is at %d : %d" % (data.xThomas, data.yThomas))
-    rospy.loginfo("Lightning is at %d : %d" % (data.xLightning, data.yLightning))
+    # rospy.loginfo("Thomas is at %d : %d" % (data.xThomas, data.yThomas))
+    # rospy.loginfo("Lightning is at %d : %d" % (data.xLightning, data.yLightning))
 
     global temp
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
-    print(temp)
+    # print(temp)
     root.after(200, function)
 def callback2(data):
-    rospy.loginfo("This is health %d" % (data.health))
+    # rospy.loginfo("This is health %d" % (data.health))
     global t_health
     if t_health > data.health:
         now = datetime.now()
         time_string = now.strftime("%H:%M:%S")
-        print(time_string + ":Robot has been hit")
+        if t_health == 0:
+            print(time_string + ":Robot has been destroyed")
+        else:
+            print(time_string + ":Robot has been hit")
     t_health = data.health
-    print(t_health)
+    # print(t_health)
     root.after(200, function)
 
 rospy.init_node('scoreboard', anonymous=True)
