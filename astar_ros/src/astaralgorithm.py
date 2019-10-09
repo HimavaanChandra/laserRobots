@@ -238,7 +238,7 @@ def main():
         
         print("Path" + str(path)) # Prints coordinates of path to terminal
         
-        for path_item in p ath: # Set path_item to each iterative index in path 
+        for path_item in path: # Set path_item to each iterative index in path 
             if not rospy.is_shutdown():
                 msg = astar_comms()
                 msg.path = path_item # message being published
