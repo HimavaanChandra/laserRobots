@@ -53,8 +53,8 @@ mcqueeny = StringVar()
 thomasx = StringVar(rootthomas)
 thomasy = StringVar(rootthomas)
 
-def function(self):
-    global temp
+def function(temp):
+    print("help")
     if temp is not None:
         mcqueenx.set(temp[0])
         mcqueeny.set(temp[1])
@@ -95,8 +95,8 @@ def function(self):
     if mcqueenhp<3: mcqueenhp3.set('X')
     if mcqueenhp<2: mcqueenhp2.set('X')
     if mcqueenhp<1: mcqueenhp1.set('X')
-    self.root.after(1000, self.function)
-    self.rootthomas.after(1000, self.function)
+    root.after(1000, function)
+    rootthomas.after(1000, function)
 
 function()
 
@@ -131,13 +131,13 @@ ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E
 ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
 ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
 
-ttk.Label(mainframe, text='x=').grid(column=1, row=5)
+ttk.Label(mainframe, text='x =').grid(column=1, row=5)
 ttk.Label(mainframe, textvariable=mcqueenx).grid(column=2, columnspan=2, row=5)
-ttk.Label(mainframe, text='y=').grid(column=4, row=5)
+ttk.Label(mainframe, text='y =').grid(column=4, row=5)
 ttk.Label(mainframe, textvariable=mcqueeny).grid(column=5, columnspan=2, row=5)
-ttk.Label(mainframe2, text='x=').grid(column=1, row=5)
+ttk.Label(mainframe2, text='x =').grid(column=1, row=5)
 ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
-ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
+ttk.Label(mainframe2, text='y =').grid(column=4, row=5)
 ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 
 # if mcqueenHasShot = 1:

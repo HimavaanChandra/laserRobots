@@ -11,30 +11,48 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
+global pathy
+
 cell_array = None
 
-pub = rospy.Publisher('astar_path', astar_comms, queue_size=10)
-rospy.init_node('astar_path', anonymous=True)
-rate = rospy.Rate(10)  #10hz
+# Publisher
+pub = rospy.Publisher('astar_path', astar_comms, queue_size=10) # Topic Name
+rospy.init_node('astar_path', anonymous=True) # Node Name
+rate = rospy.Rate(10) # 10hz
+
+def callback(data):
+
+    global my_x
+    global my_y
+    global enemy_x
+    global enemy_y
+    global robot_position
+    global respawn_point
+
+    rospy.loginfo(data)
+    my_x = data.xThomas
+    my_y = data.yThomas
+    
+    # my_x = data.xLightning
+    # my_y = data.yLightning
+
+    robot_position = (my_x, my_y)
+    respawn_point = (0,0)
 
 def Print_Path(robot_position, respawn_point):
+   
+    global pathy
+
     global cell_array
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
-    path=aStar.calculatePath() 
-    print(path) # Prints coordinates of path to terminal
-    
-    if not rospy.is_shutdown():
-        msg = astar_comms()
-        msg.path = path
-        rospy.loginfo(msg)
-        pub.publish(msg)
-        rate.sleep()
+    pathy=aStar.calculatePath() 
+    print(pathy) # Prints coordinates of path to terminal
 
-def callback(data): # Runs when what I am subscribed to publishes something
-    rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
-    rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
+# def callback(data): # Runs when what I am subscribed to publishes something
+#     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
+#     rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
     
-    Print_Path((data.xThomas, data.yThomas ), (0,0)) # robot_position, respawn_point
+#     Print_Path((data.xThomas, data.yThomas ), (0,0)) # robot_position, respawn_point
 
 class Node(): # Setting up "class" "Node"
 
@@ -306,33 +324,31 @@ def astar(maze, size, start, end):
 
 def main():
 
-    rospy.init_node('astar_listener', anonymous=True) 
-    rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
+    # rospy.init_node('astar_listener', anonymous=True) 
+    # rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
 
-    # spin() simply keeps python from exiting until this node is stopped
-    rospy.spin() # Acts like a while loop to continually check for chatter
+    if not rospy.is_shutdown():
+            msg = astar_comms()
+            msg.path = pathy # message being published
+            rospy.loginfo(msg)
+            pub.publish(msg)
+            rate.sleep()  
+
+    rospy.Subscriber("map_chatter", map_comms, callback)
+
+    # # spin() simply keeps python from exiting until this node is stopped
+    # rospy.spin() # Acts like a while loop to continually check for chatter
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
     cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
-   
-    # aStar = AStar(cell_array, (0, 0), (0, 0)) # maze, start, end - Object "aStar" sets start and coordinates for robot
-    # path=aStar.calculatePath() 
-    # print(path) #Prints coordinates of path to terminal
-    # # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)
-    # # aStar.setEnd((7,7)) #Sets end positon
-    # # path=aStar.calculatePath() #Run the "astar" function based on the predecided "maze, start and end" conditions
-    # # print(path) #Prints coordinates of path to terminal
-    
-    # if not rospy.is_shutdown():
-    #   msg = astar_comms()
-    #   msg.path = path
-    #   rospy.loginfo(msg)
-    #   pub.publish(msg)
-    #   rate.sleep()     
-        
-if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
-    main()
+
+    Print_Path(robot_position, respawn_point)
+
+
+while(1):   
+    if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
+        main()
 
 
 
