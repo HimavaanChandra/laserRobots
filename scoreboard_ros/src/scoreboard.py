@@ -14,20 +14,20 @@ def callback(data):
 
     print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
     print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
-    global temp
+    # global temp
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
     print(temp)
 
-def main():
-    done = False
-    while not done:
-        rospy.init_node('scoreboard_listener_node', anonymous=True)
-        rospy.Subscriber("scoreboard_listener", vision_comms, callback)
+# def main():
+#     done = False
+#     while not done:
+rospy.init_node('map_node', anonymous=True)
+rospy.Subscriber("robot_positions", vision_comms, callback)
 
-if __name__ == '__main__':
-    try:
-        main()
-    except rospy.ROSInterruptException: pass
+# if __name__ == '__main__':
+#     try:
+#         main()
+#     except rospy.ROSInterruptException: pass
 
 
 root = Tk()
@@ -35,8 +35,6 @@ root.title("Scoreboard")
 
 rootthomas = Tk()
 rootthomas.title("Scoreboard")
-mcqueenhp = 4
-thomashp = 2
 
 mcqueenhp1 = StringVar()
 mcqueenhp2 = StringVar()
@@ -49,6 +47,25 @@ thomashp2 = StringVar(rootthomas)
 thomashp3 = StringVar(rootthomas)
 thomashp4 = StringVar(rootthomas)
 thomashp5 = StringVar(rootthomas)
+
+mcqueenx = StringVar()
+mcqueeny = StringVar()
+thomasx = StringVar(rootthomas)
+thomasy = StringVar(rootthomas)
+if temp is not None:
+    mcqueenx.set(temp[0])
+    mcqueeny.set(temp[1])
+    thomasx.set(temp[2])
+    thomasy.set(temp[3])
+    mcqueenhp = temp[4]
+    thomashp = temp[5]
+else:
+    mcqueenx.set(None)
+    mcqueeny.set(None)
+    thomasx.set(None)
+    thomasy.set(None)
+    mcqueenhp = 4
+    thomashp = 2
 
 if thomashp <= 5:
     thomashp1.set('O')
@@ -75,7 +92,6 @@ if mcqueenhp<4: mcqueenhp4.set('X')
 if mcqueenhp<3: mcqueenhp3.set('X')
 if mcqueenhp<2: mcqueenhp2.set('X')
 if mcqueenhp<1: mcqueenhp1.set('X')
-
 
 
 mainframe = ttk.Frame(root, padding="10")
@@ -105,21 +121,6 @@ ttk.Label(mainframe2, textvariable=thomashp2).grid(column=2, row=3, sticky=(W, E
 ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E))
 ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
 ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
-
-mcqueenx = StringVar()
-mcqueeny = StringVar()
-thomasx = StringVar(rootthomas)
-thomasy = StringVar(rootthomas)
-if temp is not None:
-    mcqueenx.set(temp[0])
-    mcqueeny.set(temp[1])
-    thomasx.set(temp[2])
-    thomasy.set(temp[3])
-else:
-    mcqueenx.set(None)
-    mcqueeny.set(None)
-    thomasx.set(None)
-    thomasy.set(None)
 
 ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
 ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
