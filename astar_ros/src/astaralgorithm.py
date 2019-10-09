@@ -11,7 +11,12 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
-global pathy
+global path
+path = None
+global robot_position
+robot_position = None
+global respawn_point
+respawn_point = None
 
 cell_array = None
 
@@ -21,13 +26,6 @@ rospy.init_node('astar_path', anonymous=True) # Node Name
 rate = rospy.Rate(10) # 10hz
 
 def callback(data):
-
-    global my_x
-    global my_y
-    global enemy_x
-    global enemy_y
-    global robot_position
-    global respawn_point
 
     rospy.loginfo(data)
     my_x = data.xThomas
@@ -41,12 +39,12 @@ def callback(data):
 
 def Print_Path(robot_position, respawn_point):
    
-    global pathy
+    global path
 
     global cell_array
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
-    pathy=aStar.calculatePath() 
-    print(pathy) # Prints coordinates of path to terminal
+    path=aStar.calculatePath() 
+    print(path) # Prints coordinates of path to terminal
 
 # def callback(data): # Runs when what I am subscribed to publishes something
 #     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
@@ -329,7 +327,7 @@ def main():
 
     if not rospy.is_shutdown():
             msg = astar_comms()
-            msg.path = pathy # message being published
+            msg.path = path # message being published
             rospy.loginfo(msg)
             pub.publish(msg)
             rate.sleep()  
