@@ -234,7 +234,7 @@ def main():
         continue
     
     else
-        path_item in path: # Set path_item to each iterative index in path 
+        path_item in p ath: # Set path_item to each iterative index in path 
             if not rospy.is_shutdown():
                 msg = astar_comms()
                 msg.path = path_item # message being published
