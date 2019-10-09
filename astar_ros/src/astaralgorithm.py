@@ -321,6 +321,11 @@ def main():
     global path
     # rospy.init_node('astar_listener', anonymous=True) 
     # rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
+    cell_array = np.array(cell_map).tolist()
+    
+    Print_Path(robot_position, respawn_point)
 
     if not rospy.is_shutdown():
             msg = astar_comms()
@@ -329,15 +334,11 @@ def main():
             pub.publish(msg)
             rate.sleep()  
 
-
     # # spin() simply keeps python from exiting until this node is stopped
     # rospy.spin() # Acts like a while loop to continually check for chatter
 
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
-    cell_array = np.array(cell_map).tolist()
+    
 
-    Print_Path(robot_position, respawn_point)
 
 rospy.Subscriber("map_chatter", map_comms, callback)
 
