@@ -269,12 +269,10 @@ def main():
 
     path = Print_Path(robot_position, respawn_point)
 
-    if check == path:
+    if check == path: # When robot position is constant
         return
 
-    else:
-
-        print("Path" + str(path))  # Prints coordinates of path to terminal
+    else: # When robot position changes
 
         for path_item in path:  # Set path_item to each iterative index in path
             if not rospy.is_shutdown():
@@ -287,6 +285,7 @@ def main():
         # # spin() simply keeps python from exiting until this node is stopped
         # rospy.spin() # Acts like a while loop to continually check for chatter
 
+        print("Path" + str(path))  # Prints coordinates of path to terminal
 
 if __name__ == '__main__':  # So that when/if this file is created as a header file. Only the main loop of the overall file
 
