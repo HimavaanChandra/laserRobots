@@ -273,7 +273,6 @@ def send_choice():
 def main():
 
 	rospy.Subscriber("map_chatter", map_comms, reader)
-	rospy.spin()
 
 	send_choice()
 	print(final_choice)
