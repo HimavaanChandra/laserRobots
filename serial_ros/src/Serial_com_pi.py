@@ -12,9 +12,9 @@ from astar_ros.msg import astar_comms
 
 
 def send_to_ardunio(data):
-    if data.final_choice not None:
+    if data.final_choice is not None:
         command = data.final_choice
-    elif data.path not None:
+    elif data.path is not None:
         command = data.path
     else:
         rospy.logwarn("Command not recognised")
@@ -53,7 +53,7 @@ def read_from_ardunio():
         
     if not rospy.is_shutdown():
         msg = serial_comms()
-        msg.Health = health
+        msg.health = health
         rospy.loginfo(msg)
         pub.publish(msg)
         rate.sleep()
