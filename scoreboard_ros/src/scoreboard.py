@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from tkinter import *
 from tkinter import ttk
+from datetime import datetime
 
 import rospkg
 import rospy
@@ -22,7 +23,11 @@ def callback(data):
 def callback2(data):
     rospy.loginfo("This is health %d" % (data.health))
     global t_health
-    t_health.append(data.health)
+    if t_health > data.health:
+        now = datetime.now()
+        time_string = now.strftime("%H:%M:%S")
+        print(time_string + ":Robot has been hit")
+    t_health = data.health
     print(t_health)
     root.after(200, function)
 
