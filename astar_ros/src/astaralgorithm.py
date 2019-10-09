@@ -13,6 +13,10 @@ import operator
 
 global path
 path = None
+global robot_position = None
+robot_position = None
+global respawn_point
+respawn_point = None
 
 cell_array = None
 
@@ -22,13 +26,6 @@ rospy.init_node('astar_path', anonymous=True) # Node Name
 rate = rospy.Rate(10) # 10hz
 
 def callback(data):
-
-    global my_x
-    global my_y
-    global enemy_x
-    global enemy_y
-    global robot_position
-    global respawn_point
 
     rospy.loginfo(data)
     my_x = data.xThomas
