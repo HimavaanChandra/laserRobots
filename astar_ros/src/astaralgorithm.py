@@ -13,12 +13,12 @@ import operator
 
 robot_position = None
 respawn_point = None
-scaling_factor = 200
+scaling_factor = 200 # Scales down the grid to match Excel map size
 
 cell_array = None
 
 
-def callback(data):
+def callback(data): # Updates robot position data when called
     global robot_position
     global respawn_point
 
@@ -26,8 +26,8 @@ def callback(data):
     my_x = int(data.xThomas / scaling_factor)
     my_y = int(data.yThomas / scaling_factor)
     
-    # my_x = data.xLightning
-    # my_y = data.yLightning
+    # my_x = int(data.xLightning / scaling_factor)
+    # my_y = int(data.yLightning / scaling_factor)
 
     robot_position = (my_x, my_y)
     respawn_point = (0,0)
@@ -37,12 +37,6 @@ def Print_Path(robot_position, respawn_point):
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     return path
-
-# def callback(data): # Runs when what I am subscribed to publishes something
-#     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
-#     rospy.loginfo("xLightning %d : yLightning %d" % (data.xLightning, data.yLightning))
-    
-#     Print_Path((data.xThomas, data.yThomas ), (0,0)) # robot_position, respawn_point
 
 class Node(): # Setting up "class" "Node"
 
@@ -76,54 +70,6 @@ class AStar(): #Setting up "class" "AStar"
         
     def calculatePath(self): # Can be called using "path=aStar.calculatePath()" to run the "astar" function based on the predecided "maze, start and end" conditions
         return astar(self.maze, self.size, self.start, self.end)
-
-# unit_vector = None # Variable must exist in global namespace first
-
-# def Bearing(bearing_mode): #COMPASS MODE = 0, DEGREES MODE = 1
-
-#     global unit_vector #this creates a local variable that is linked to the global variable
-    
-#     if bearing_mode == 0:
-#         if  unit_vector == (0,-1): 
-#             unit_vector='N'
-#         elif unit_vector == (1,-1): 
-#             unit_vector='NE'
-#         elif unit_vector == (1,0): 
-#             unit_vector='E'
-#         elif unit_vector == (1,1): 
-#             unit_vector='SE'    
-#         elif unit_vector == (0,1):
-#             unit_vector='S'
-#         elif unit_vector == (-1,1):
-#             unit_vector='SW'
-#         elif unit_vector == (-1,0):
-#             unit_vector='W'
-#         elif unit_vector == (-1,-1): 
-#             unit_vector='NW'
-#         elif unit_vector == (0,0): 
-#             unit_vector='NONE'
-
-#     elif bearing_mode == 1:
-#         if unit_vector == (0,-1): 
-#             unit_vector='0'
-#         elif unit_vector == (1,-1): 
-#             unit_vector='45'
-#         elif unit_vector == (1,0): 
-#             unit_vector='90'
-#         elif unit_vector == (1,1): 
-#             unit_vector='135'    
-#         elif unit_vector == (0,1):
-#             unit_vector='180'
-#         elif unit_vector == (-1,1):
-#             unit_vector='225'
-#         elif unit_vector == (-1,0):
-#             unit_vector='270'
-#         elif unit_vector == (-1,-1): 
-#             unit_vector='315'
-#         elif unit_vector == (0,0): 
-#             unit_vector='NONE'
-
-    
 
 def astar(maze, size, start, end):
     """Returns a list of tuples as a path from the given start to the given end in the given maze"""
@@ -209,7 +155,7 @@ def astar(maze, size, start, end):
             # Get node position
             node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1]) #"current_node.position" links to the object "new_node = Node(current_node, node_position)" further down in code
 
-            #If the current node is already on the closed list. No need to add it to the open list to be checked again
+            # If the current node is already on the closed list. No need to add it to the open list to be checked again
             if Node(current_node,node_position) in closed_list: 
                 continue 
 
@@ -244,39 +190,6 @@ def astar(maze, size, start, end):
                     continue
                 if maze[node_position[1] - 1][node_position[0]]:
                     continue
-
-            # # Map range check
-            # out_range = False     
-            # if node_position[1]+size > (len(maze) - 1) or node_position[1]+size < 0 or node_position[0]+size > (len(maze[len(maze)-1]) - 1) or node_position[0]+size < 0: # Diagonal from bottom left to top right
-            #     out_range = True
-
-            # # If not in map
-            # if out_range == True:
-            #     continue
-            
-            # # Below is a wall check
-            # collision = False
-            # for x in range(-size, size):
-            #     # Ignore zero since it is already checked
-            #     if x == 0:
-            #         continue
-
-            #     # Diagonal from bottom left to top right
-            #     if maze[node_position[1]+x][node_position[0]+x] != 0: # != 0 = 1 = if wall present
-            #         collision = True  
-            #     # Diagonal from top left to bottom right
-            #     elif maze[node_position[1]+x][node_position[0]-x] != 0:
-            #         collision = True
-            #     # Horizontal
-            #     elif maze[node_position[1]+x][node_position[0]] != 0:
-            #         collision = True 
-            #     # Vertical
-            #     elif maze[node_position[1]][node_position[0]+x] != 0:
-            #         collision = True
-            
-            # # If wall present
-            # if collision == True:
-            #     continue
 
             # Create new node
             new_node = Node(current_node, node_position) # Creating object for new child node that allows "current.parent" property to be called when the goal is found 
@@ -313,12 +226,10 @@ def astar(maze, size, start, end):
                     open_list.append(child) #This also link "current_node" to the "new_node" object as "current_node = open_list[0]"??
 
 def main():
-
-    # for i in range(0, len(path)):  
+ 
     path = Print_Path(robot_position, respawn_point)
     print("Path" + str(path)) # Prints coordinates of path to terminal
-        # path.pop(0)
-
+    
     if not rospy.is_shutdown():
         msg = astar_comms()
         msg.path = path # message being published
@@ -332,23 +243,21 @@ def main():
 
 if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file 
 
-    # Publisher
+    # Publisher (outputs compass bearing directions)
     pub = rospy.Publisher('astar_path', astar_comms, queue_size=10) # Topic Name
     rospy.init_node('astar_node', anonymous=True) # Node Name
     rate = rospy.Rate(10) # 10hz
-    rospy.Subscriber("map_chatter", map_comms, callback)
+    
+    # Subscriber (subscribed to map_comms robot coordiante output)
+    rospy.Subscriber("map_chatter", map_comms, callback) 
 
+    # Create map from .csv (Excel)
     dir_path = os.path.dirname(os.path.realpath(__file__))
     cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
     
     while True:
         main()
-
-
-
-
-
 
 
     # maze = np.genfromtxt('filename.csv', delimiter=',')
