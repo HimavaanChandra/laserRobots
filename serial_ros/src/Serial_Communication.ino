@@ -7,7 +7,7 @@ void setup()
   Serial.begin(9600);
   lcd.begin(16, 2);
 }
-health = 7;
+int health = 7;
 int m = 0, send_flag = 0;
 unsigned int integerValue = 0;
 
@@ -17,8 +17,8 @@ void loop()
   //get_from_pi();
   send_flag = 1;
   send_to_pi(health);
-  health++
-  delay(1000)
+  health++;
+  delay(1000);
 }
 
 void send_to_pi(int f_health)
