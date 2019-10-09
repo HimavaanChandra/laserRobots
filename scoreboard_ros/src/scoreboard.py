@@ -14,7 +14,7 @@ def callback(data):
 
     print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
     print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
-    # global temp
+    global temp
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
     print(temp)
 
@@ -139,9 +139,9 @@ ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 # if thomasHasShot = 1:
 #     ttk.Label(mainframe2, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
 
-# def test(*args):
-#     print("sucessfull test")
-# ttk.Button(mainframe, text='test', command=test).grid(column=3, row=1)
+def test(*args):
+    print("sucessfull test")
+ttk.Button(mainframe, text='test', command=test).grid(column=6, row=1)
 
 root.mainloop()
 rootthomas.mainloop()
