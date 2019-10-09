@@ -102,31 +102,31 @@ def make_choice():
 
 	#what to do if enemy is at the same x-level
 	if x_dif_input==0:
-		random_factor = randomrandint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if (heading == 0 and y_dif_input>0):
 				if front_dis>200:
 					return 9
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			elif (heading == 180 or heading == -180 and y_dif_input<0):
 				if back_dis>200:
 					return 9
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			elif heading != 0 and y_dif_input>0:
 				return 1
 			elif heading != 0 and y_dif_input<0:
 				return 5
 		else:
-			choice = randomrandint(1,8)
+			choice = random.randint(1,8)
 			return choice
 
 	#what to do if the enemy is to the right
 	elif x_dif_input>0:
-		random_factor = randomrandint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
 				if heading == 90 and right_dis > 100:
@@ -139,12 +139,12 @@ def make_choice():
 					else:
 						return 5
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			else:
 				if (heading>0 and heading<=180):
 					if right_dis>200:
-						choice = randomrandint(2,4)
+						choice = random.randint(2,4)
 						return choice
 				elif (heading<=0 and heading>180):
 					if right_dis>=100:
@@ -155,12 +155,12 @@ def make_choice():
 						else:
 							return 5
 		else:
-			choice = randomrandint(1,8)
+			choice = random.randint(1,8)
 			return choice
 
 	#what to do if the enemy is to the left
 	elif x_dif_input<0:
-		random_factor = randomrandint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
 				if heading == 90 and right_dis > 100:
@@ -173,12 +173,12 @@ def make_choice():
 					else:
 						return 5
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			else:
 				if (heading<0 and heading>=180):
 					if left_dis>200:
-						choice = randomrandint(6,8)
+						choice = random.randint(6,8)
 						return choice
 				elif (heading>=0 and heading<180):
 					if left_dis>=100:
@@ -189,7 +189,7 @@ def make_choice():
 						else:
 							return 2
 		else:
-			choice = randomrandint(1,8)
+			choice = random.randint(1,8)
 			return choice
 
 def send_choice():
