@@ -23,8 +23,11 @@ def main():
     while not done:
         rospy.init_node('scoreboard_listener_node', anonymous=True)
         rospy.Subscriber("scoreboard_listener", vision_comms, callback)
-        root.mainloop()
-        rootthomas.mainloop()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException: pass
 
 
 root = Tk()
@@ -139,10 +142,6 @@ ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 #     print("sucessfull test")
 # ttk.Button(mainframe, text='test', command=test).grid(column=3, row=1)
 
-# root.mainloop()
-# rootthomas.mainloop()
+root.mainloop()
+rootthomas.mainloop()
 
-if __name__ == '__main__':
-    try:
-        main()
-    except rospy.ROSInterruptException: pass
