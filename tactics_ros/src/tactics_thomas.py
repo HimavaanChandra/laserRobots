@@ -92,7 +92,7 @@ def make_choice():
 			if (back_dis > 200) and (heading == 135 or heading == 180 or heading == -135):
 				return 9
 
-	elif y_dif_input>-100 or y_dif_input<100:
+	if y_dif_input>-100 or y_dif_input<100:
 		if x_dif_input>0:
 			if (front_dis > 200 or front_right_dis>200 or front_left_dis>200) and (heading == 0 or heading == 45 or heading == -45):
 				return 9
@@ -100,32 +100,32 @@ def make_choice():
 			if (back_dis > 200) and (heading == 135 or heading == 180 or heading == -135):
 				return 9
 
-	#what to do if enemy is at the same x-level
-	if x_dif_input==0:
-		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
-		if random_factor>970:
-			if (heading == 0 and y_dif_input>0):
-				if front_dis>200:
-					return 9
-				else:
-					choice = random.randint(1,8)
-					return choice
-			elif (heading == 180 or heading == -180 and y_dif_input<0):
-				if back_dis>200:
-					return 9
-				else:
-					choice = random.randint(1,8)
-					return choice
-			elif heading != 0 and y_dif_input>0:
-				return 1
-			elif heading != 0 and y_dif_input<0:
-				return 5
-		else:
-			choice = random.randint(1,8)
-			return choice
+	# #what to do if enemy is at the same x-level
+	# if x_dif_input==0:
+	# 	random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+	# 	if random_factor>970:
+	# 		if (heading == 0 and y_dif_input>0):
+	# 			if front_dis>200:
+	# 				return 9
+	# 			else:
+	# 				choice = random.randint(1,8)
+	# 				return choice
+	# 		elif (heading == 180 or heading == -180 and y_dif_input<0):
+	# 			if back_dis>200:
+	# 				return 9
+	# 			else:
+	# 				choice = random.randint(1,8)
+	# 				return choice
+	# 		elif heading != 0 and y_dif_input>0:
+	# 			return 1
+	# 		elif heading != 0 and y_dif_input<0:
+	# 			return 5
+	# 	else:
+	# 		choice = random.randint(1,8)
+	# 		return choice
 
 	#what to do if the enemy is to the right
-	elif x_dif_input>0:
+	if x_dif_input>0:
 		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
@@ -159,7 +159,7 @@ def make_choice():
 			return choice
 
 	#what to do if the enemy is to the left
-	elif x_dif_input<0:
+	if x_dif_input<0:
 		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
@@ -191,6 +191,7 @@ def make_choice():
 		else:
 			choice = random.randint(1,8)
 			return choice
+	return 0
 
 def send_choice():
 	global heading
