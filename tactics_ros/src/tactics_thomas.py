@@ -10,7 +10,6 @@ from map_ros.msg import map_comms
 
 heading = 0
 choice = 0
-final_choice = None
 left_dis = 0 
 front_left_dis = 0
 front_dis = 0
@@ -195,6 +194,7 @@ def make_choice():
 
 def send_choice():
 	global heading
+	final_choice=None
 	decision = make_choice()
 	pre_heading = heading
 
