@@ -10,7 +10,6 @@ from map_ros.msg import map_comms
 
 heading = 0
 choice = 0
-final_choice = 0
 left_dis = 0 
 front_left_dis = 0
 front_dis = 0
@@ -22,10 +21,11 @@ my_y = 0
 enemy_x = 0
 enemy_y = 0
 
-
 pub = rospy.Publisher('robot_choice_l', tactics_comms_l, queue_size=10)
 rospy.init_node('robot_choice_nodel', anonymous=True)
 rate = rospy.Rate(10)  #10hz
+
+
 
 def reader(data):
 	global left_dis 
@@ -92,7 +92,7 @@ def make_choice():
 			if (back_dis > 200) and (heading == 135 or heading == 180 or heading == -135):
 				return 9
 
-	elif y_dif_input>-100 or y_dif_input<100:
+	if y_dif_input>-100 or y_dif_input<100:
 		if x_dif_input>0:
 			if (front_dis > 200 or front_right_dis>200 or front_left_dis>200) and (heading == 0 or heading == 45 or heading == -45):
 				return 9
@@ -100,32 +100,32 @@ def make_choice():
 			if (back_dis > 200) and (heading == 135 or heading == 180 or heading == -135):
 				return 9
 
-	#what to do if enemy is at the same x-level
-	if x_dif_input==0:
-		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
-		if random_factor>970:
-			if (heading == 0 and y_dif_input>0):
-				if front_dis>200:
-					return 9
-				else:
-					choice = random.randint(1,8)
-					return choice
-			elif (heading == 180 or heading == -180 and y_dif_input<0):
-				if back_dis>200:
-					return 9
-				else:
-					choice = random.randint(1,8)
-					return choice
-			elif heading != 0 and y_dif_input>0:
-				return 1
-			elif heading != 0 and y_dif_input<0:
-				return 5
-		else:
-			choice = random.randint(1,8)
-			return choice
+	# #what to do if enemy is at the same x-level
+	# if x_dif_input==0:
+	# 	random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+	# 	if random_factor>970:
+	# 		if (heading == 0 and y_dif_input>0):
+	# 			if front_dis>200:
+	# 				return 9
+	# 			else:
+	# 				choice = random.randint(1,8)
+	# 				return choice
+	# 		elif (heading == 180 or heading == -180 and y_dif_input<0):
+	# 			if back_dis>200:
+	# 				return 9
+	# 			else:
+	# 				choice = random.randint(1,8)
+	# 				return choice
+	# 		elif heading != 0 and y_dif_input>0:
+	# 			return 1
+	# 		elif heading != 0 and y_dif_input<0:
+	# 			return 5
+	# 	else:
+	# 		choice = random.randint(1,8)
+	# 		return choice
 
 	#what to do if the enemy is to the right
-	elif x_dif_input>0:
+	if x_dif_input>0:
 		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
@@ -159,7 +159,7 @@ def make_choice():
 			return choice
 
 	#what to do if the enemy is to the left
-	elif x_dif_input<0:
+	if x_dif_input<0:
 		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
@@ -191,17 +191,18 @@ def make_choice():
 		else:
 			choice = random.randint(1,8)
 			return choice
+	return 0
 
 def send_choice():
 	global heading
-	global final_choice
+	final_choice=None
 	decision = make_choice()
 	pre_heading = heading
 
 	if decision == 0:
 		final_choice="A"
 		heading = pre_heading
-	if decision == 1:
+	elif decision == 1:
 		if front_dis < 50:
 			if right_dis>left_dis:
 				final_choice = "E"
@@ -212,7 +213,7 @@ def send_choice():
 		else:
 			final_choice = "N"
 			heading = 0
-	if decision == 2:
+	elif decision == 2:
 		if front_right_dis < 50:
 			if right_dis>front_dis:
 				final_choice = "E"
@@ -227,7 +228,7 @@ def send_choice():
 		else:
 			final_choice = "NE"
 			heading = 45
-	if decision == 3:
+	elif decision == 3:
 		if right_dis < 50:
 			if back_dis>front_dis:
 				final_choice = "S"
@@ -242,7 +243,7 @@ def send_choice():
 		else:
 			final_choice = "E"
 			heading = 90
-	if decision == 4:
+	elif decision == 4:
 		if back_dis < 50 or right_dis<50:
 			if right_dis>front_right_dis:
 				final_choice = "E"
@@ -253,7 +254,7 @@ def send_choice():
 		else:
 			final_choice = "SE"
 			heading = 135
-	if decision == 5:
+	elif decision == 5:
 		if back_dis < 50:
 			if right_dis>left_dis:
 				final_choice = "E"
@@ -264,7 +265,7 @@ def send_choice():
 		else:
 			final_choice = "S"
 			heading = 180
-	if decision == 6:
+	elif decision == 6:
 		if back_dis < 50 or left_dis < 50:
 			if left_dis>front_left_dis:
 				final_choice = "W"
@@ -275,7 +276,7 @@ def send_choice():
 		else:
 			final_choice = "SW"
 			heading = -135
-	if decision == 7:
+	elif decision == 7:
 		if left_dis < 50:
 			if back_dis>front_dis:
 				final_choice = "S"
@@ -290,7 +291,7 @@ def send_choice():
 		else:
 			final_choice = "W"
 			heading = -90
-	if decision == 8:
+	elif decision == 8:
 		if front_left_dis < 50:
 			if left_dis>front_dis:
 				final_choice = "W"
@@ -305,16 +306,16 @@ def send_choice():
 		else:
 			final_choice = "SW"
 			heading = -45
-	if decision == 9:
+	elif decision == 9:
 		final_choice = "F"
 		heading=pre_heading
+	return final_choice
+
+
 
 def main():
-	global final_choice
 
-	rospy.Subscriber("map_chatter", map_comms, reader)
-
-	send_choice()
+	final_choice = send_choice()
 	print(final_choice)
 
 	if not rospy.is_shutdown():
@@ -323,6 +324,8 @@ def main():
 		rospy.loginfo(msg)
 		pub.publish(msg)
 		rate.sleep()  
+
+rospy.Subscriber("map_chatter", map_comms, reader)
 
 while(1):
 	if __name__ =='__main__':
