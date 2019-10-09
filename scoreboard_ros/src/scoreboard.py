@@ -15,7 +15,6 @@ def callback(data):
     global temp
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
     print(temp)
-    function()
 
 rospy.init_node('map_node', anonymous=True)
 rospy.Subscriber("robot_positions", vision_comms, callback)
@@ -86,7 +85,10 @@ def function():
     if mcqueenhp<3: mcqueenhp3.set('X')
     if mcqueenhp<2: mcqueenhp2.set('X')
     if mcqueenhp<1: mcqueenhp1.set('X')
+    root.after(500, function)
+    rootthomas.after(500, function)
 
+function()
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
