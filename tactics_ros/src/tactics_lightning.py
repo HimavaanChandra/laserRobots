@@ -278,11 +278,11 @@ def main():
 	send_choice()
 
 	if not rospy.is_shutdown():
-	msg = tactics_comms_l()
-	msg.final_choice = final_choice
-	rospy.loginfo(msg)
-	pub.publish(msg)
-	rate.sleep()  
+		msg = tactics_comms_l()
+		msg.final_choice = final_choice
+		rospy.loginfo(msg)
+		pub.publish(msg)
+		rate.sleep()  
 
 if __name__ =='__main__':
 	main()

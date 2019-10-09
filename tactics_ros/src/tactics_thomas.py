@@ -276,11 +276,11 @@ def main():
 	rospy.spin()
 
 	if not rospy.is_shutdown():
-	msg = tactics_comms_t()
-	msg.final_choice = final_choice
-	rospy.loginfo(msg)
-	pub.publish(msg)
-	rate.sleep()  
+		msg = tactics_comms_t()
+		msg.final_choice = final_choice
+		rospy.loginfo(msg)
+		pub.publish(msg)
+		rate.sleep()  
 
 if __name__ =='__main__':
 	main()
