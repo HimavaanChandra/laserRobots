@@ -41,7 +41,7 @@ def Print_Path(robot_position, respawn_point):
     global cell_array
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
-    print(path) # Prints coordinates of path to terminal
+    print(path[0]) # Prints coordinates of path to terminal
 
 # def callback(data): # Runs when what I am subscribed to publishes something
 #     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
@@ -326,9 +326,9 @@ def main():
     cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
 
-    Print_Path(robot_position, respawn_point)
-
-    
+    for i in range(0, len(path)):  
+        Print_Path(robot_position, respawn_point)
+        path.pop(0)
 
     if not rospy.is_shutdown():
             msg = astar_comms()
