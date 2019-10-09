@@ -90,6 +90,8 @@ def function():
 
 function()
 
+print(data.xthomas)
+
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
 root.columnconfigure(0, weight=1)
