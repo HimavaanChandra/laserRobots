@@ -137,11 +137,11 @@ mainframe2.grid(column=0, row=0, sticky=(N, W, E, S))
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-ttk.Label(mainframe, text='Lightning McQueen', width=60).grid(column=1, row=1, columspan = 10, sticky=(W, E))
-ttk.Label(mainframe2, text='Thomas the Tank Engine', width=60).grid(column=1, row=1, columspan = 10, sticky=(W, E))
+ttk.Label(mainframe, text='Lightning McQueen', width=60).grid(column=1, row=1, columnspan = 10, sticky=(W, E))
+ttk.Label(mainframe2, text='Thomas the Tank Engine', width=60).grid(column=1, row=1, columnspan = 10, sticky=(W, E))
 
-ttk.Label(mainframe, text='HEALTH', width=60).grid(column=1, row=2, columspan = 10)
-ttk.Label(mainframe2, text='HEALTH', width=60).grid(column=1, row=2, columspan = 10)
+ttk.Label(mainframe, text='HEALTH', width=60).grid(column=1, row=2, columnspan = 10)
+ttk.Label(mainframe2, text='HEALTH', width=60).grid(column=1, row=2, columnspan = 10)
 
 ttk.Label(mainframe, textvariable=mcqueenhp1).grid(column=1, row=3)
 ttk.Label(mainframe, textvariable=mcqueenhp2).grid(column=2, row=3)
