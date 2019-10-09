@@ -41,6 +41,7 @@ def Print_Path(robot_position, respawn_point):
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     print(path) # Prints coordinates of path to terminal
+    return path
 
 # def callback(data): # Runs when what I am subscribed to publishes something
 #     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
@@ -321,12 +322,9 @@ def main():
     # number = "5"
     # rospy.init_node('astar_listener', anonymous=True) 
     # rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
-    dir_path = os.path.dirname(os.path.realpath(__file__))
-    cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
-    cell_array = np.array(cell_map).tolist()
 
     # for i in range(0, len(path)):  
-    Print_Path(robot_position, respawn_point)
+    path = Print_Path(robot_position, respawn_point)
         # path.pop(0)
 
     if not rospy.is_shutdown():
@@ -339,11 +337,15 @@ def main():
     # # spin() simply keeps python from exiting until this node is stopped
     # rospy.spin() # Acts like a while loop to continually check for chatter
 
+
+if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file 
     rospy.Subscriber("map_chatter", map_comms, callback)
 
-
-while(1):   
-    if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
+    cell_array = np.array(cell_map).tolist()
+    
+    while True:
         main()
 
 
