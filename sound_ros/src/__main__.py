@@ -19,7 +19,7 @@ def callback(data):
         time.sleep(3)
 
 def shoot_sound():
-    sounds = ["kachow.wav", "pew_pew.wav", "bang_bang.wav"]
+    sounds = ["kachow.wav", "pew_pew.wav", "bang_bang.wav", "gun.wav"]
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
     sound = soundfx.SoundFx(dir_path + "/" + random.choice(sounds))
