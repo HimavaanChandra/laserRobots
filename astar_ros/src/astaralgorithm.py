@@ -326,7 +326,7 @@ def main():
     cell_array = np.array(cell_map).tolist()
 
     # for i in range(0, len(path)):  
-        Print_Path(robot_position, respawn_point)
+    Print_Path(robot_position, respawn_point)
         # path.pop(0)
 
     if not rospy.is_shutdown():
