@@ -52,7 +52,9 @@ mcqueenx = StringVar()
 mcqueeny = StringVar()
 thomasx = StringVar(rootthomas)
 thomasy = StringVar(rootthomas)
-def function(self):
+
+def function():
+    global temp
     if temp is not None:
         mcqueenx.set(temp[0])
         mcqueeny.set(temp[1])
@@ -93,8 +95,10 @@ def function(self):
     if mcqueenhp<3: mcqueenhp3.set('X')
     if mcqueenhp<2: mcqueenhp2.set('X')
     if mcqueenhp<1: mcqueenhp1.set('X')
-    self.after(200, self.function)
+    root.after(1000, function)
+    rootthomas.after(1000, function)
 
+function()
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
