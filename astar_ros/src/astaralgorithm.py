@@ -11,7 +11,7 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
-path = None
+path = []
 robot_position = None
 respawn_point = None
 
@@ -340,10 +340,7 @@ def main():
     # # spin() simply keeps python from exiting until this node is stopped
     # rospy.spin() # Acts like a while loop to continually check for chatter
 
-    
-
-
-rospy.Subscriber("map_chatter", map_comms, callback)
+    rospy.Subscriber("map_chatter", map_comms, callback)
 
 
 while(1):   
