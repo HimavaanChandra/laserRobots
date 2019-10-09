@@ -272,7 +272,7 @@ def send_choice():
 def main():
 
 	rospy.init_node('tactics_listener', anonymous=True)
-	rospy.Subscriber("robot_positions", map_comms, reader)
+	rospy.Subscriber("map_chatter", map_comms, reader)
 	rospy.spin()
 
 	if not rospy.is_shutdown():
