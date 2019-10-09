@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+#!/usr/bin/env python2
+
 import numpy as np
 import random
 import rospkg
