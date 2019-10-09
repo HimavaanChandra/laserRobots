@@ -5,34 +5,70 @@ import numpy as np
 import random
 import rospkg
 import rospy
-from tactics_ros.msg import tactics_comms_l
+from tactics_ros.msg import tactics_comms_t
 from map_ros.msg import map_comms
-
 
 heading = 0
 choice = 0
 final_choice = 0
+left_dis = 0 
+front_left_dis = 0
+front_dis = 0
+front_right_dis = 0
+right_dis = 0
+back_dis = 0
+my_x = 0
+my_y = 0
+enemy_x = 0
+enemy_y = 0
 
-pub = rospy.Publisher('robot_choice_l', tactics_comms_l, queue_size=10)
-rospy.init_node('robot_choice_l', anonymous=True)
+
+pub = rospy.Publisher('robot_choice_t', tactics_comms_t, queue_size=10)
+rospy.init_node('robot_choice_t', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
 def reader(data):
-	rospy.loginfo(data)
+	global left_dis 
+	global front_left_dis
+	global front_dis
+	global front_right_dis 
+	global right_dis 
+	global back_dis 
+	global my_x
+	global my_y 
+	global enemy_x 
+	global enemy_y 
 
-def get_inputs():
+	rospy.loginfo(data)
 	left_dis = data.distances[0]
 	front_left_dis = data.distances[1]
 	front_dis = data.distances[2]
 	front_right_dis = data.distances[3]
 	right_dis = data.distances[4]
 	back_dis = data.distances[5]
-	my.x = data.xLightning
-	my.y = data.yLightning
-	enemy.x = data.xThomas
-	enemy.y = data.yThomas
-	x_dif = my.x - enemy.x
-	y_dif = my.y - enemy.y
+	my_x = data.xLightning
+	my_y = data.yLightning
+	enemy_x = data.xThomas
+	enemy_y = data.yThomas
+	
+
+def get_inputs():
+
+	global final_choice 
+	global left_dis 
+	global front_left_dis
+	global front_dis
+	global front_right_dis 
+	global right_dis 
+	global back_dis 
+	global my_x
+	global my_y 
+	global enemy_x 
+	global enemy_y 
+
+	x_dif = my_x - enemy_x
+	y_dif = my_y - enemy_y
+	
 
 	return[x_dif, y_dif, left_dis,front_left_dis, front_dis, front_right_dis, right_dis, back_dis]
 	
@@ -66,31 +102,31 @@ def make_choice():
 
 	#what to do if enemy is at the same x-level
 	if x_dif_input==0:
-		random_factor = randomrandint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if (heading == 0 and y_dif_input>0):
 				if front_dis>200:
 					return 9
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			elif (heading == 180 or heading == -180 and y_dif_input<0):
 				if back_dis>200:
 					return 9
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			elif heading != 0 and y_dif_input>0:
 				return 1
 			elif heading != 0 and y_dif_input<0:
 				return 5
 		else:
-			choice = randomrandint(1,8)
+			choice = random.randint(1,8)
 			return choice
 
 	#what to do if the enemy is to the right
 	elif x_dif_input>0:
-		random_factor = randomrandint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
 				if heading == 90 and right_dis > 100:
@@ -103,12 +139,12 @@ def make_choice():
 					else:
 						return 5
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			else:
 				if (heading>0 and heading<=180):
 					if right_dis>200:
-						choice = randomrandint(2,4)
+						choice = random.randint(2,4)
 						return choice
 				elif (heading<=0 and heading>180):
 					if right_dis>=100:
@@ -119,12 +155,12 @@ def make_choice():
 						else:
 							return 5
 		else:
-			choice = randomrandint(1,8)
+			choice = random.randint(1,8)
 			return choice
 
 	#what to do if the enemy is to the left
 	elif x_dif_input<0:
-		random_factor = randomrandint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
+		random_factor = random.randint(0,1000) #chooses a number between 0-1000 to add randomness into the equation
 		if random_factor>970:
 			if y_dif_input==0:
 				if heading == 90 and right_dis > 100:
@@ -137,12 +173,12 @@ def make_choice():
 					else:
 						return 5
 				else:
-					choice = randomrandint(1,8)
+					choice = random.randint(1,8)
 					return choice
 			else:
 				if (heading<0 and heading>=180):
 					if left_dis>200:
-						choice = randomrandint(6,8)
+						choice = random.randint(6,8)
 						return choice
 				elif (heading>=0 and heading<180):
 					if left_dis>=100:
@@ -153,10 +189,12 @@ def make_choice():
 						else:
 							return 2
 		else:
-			choice = randomrandint(1,8)
+			choice = random.randint(1,8)
 			return choice
 
 def send_choice():
+	global heading
+	global final_choice
 	decision = make_choice()
 	pre_heading = heading
 
@@ -272,6 +310,7 @@ def send_choice():
 		heading=pre_heading
 
 def main():
+	global final_choice
 
 	rospy.Subscriber("map_chatter", map_comms, reader)
 
@@ -279,11 +318,12 @@ def main():
 	print(final_choice)
 
 	if not rospy.is_shutdown():
-		msg = tactics_comms_l()
+		msg = tactics_comms_t()
 		msg.final_choice = final_choice
 		rospy.loginfo(msg)
 		pub.publish(msg)
 		rate.sleep()  
 
-if __name__ =='__main__':
-	main()
+while(1):
+	if __name__ =='__main__':
+		main()
