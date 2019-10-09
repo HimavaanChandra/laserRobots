@@ -182,23 +182,23 @@ def astar(maze, size, start, end):
                 # Bearing(0)
                 
                 if  unit_vector == (0,-1): 
-                    unit_vector=1
+                    unit_vector="N"
                 elif unit_vector == (1,-1): 
-                    unit_vector=2
+                    unit_vector="NE"
                 elif unit_vector == (1,0): 
-                    unit_vector=3
+                    unit_vector="E"
                 elif unit_vector == (1,1): 
-                    unit_vector=4  
+                    unit_vector="SE"    
                 elif unit_vector == (0,1):
-                    unit_vector=5
+                    unit_vector="S"
                 elif unit_vector == (-1,1):
-                    unit_vector=6
+                    unit_vector="SW"
                 elif unit_vector == (-1,0):
-                    unit_vector=7
+                    unit_vector="W"
                 elif unit_vector == (-1,-1): 
-                    unit_vector=8
+                    unit_vector="NW"
                 elif unit_vector == (0,0): 
-                    unit_vector=0
+                    unit_vector="A"
                 
                 for x in range(5): # Repeats each direction 5 times for each movement. This gives the required resolution to the stepper motor/movement code
                     directions.append(unit_vector)
@@ -319,6 +319,7 @@ def astar(maze, size, start, end):
 
 def main():
     global path
+    number = "5"
     # rospy.init_node('astar_listener', anonymous=True) 
     # rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -327,11 +328,11 @@ def main():
 
     Print_Path(robot_position, respawn_point)
 
-
+    
 
     if not rospy.is_shutdown():
             msg = astar_comms()
-            msg.path = path # message being published
+            msg.path = number # message being published
             rospy.loginfo(msg)
             pub.publish(msg)
             rate.sleep()  
