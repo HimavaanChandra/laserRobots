@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import serial
 import time
 
@@ -21,7 +22,7 @@ def send_to_ardunio(data):
         return
 
     rospy.loginfo("Command: %s" % (command))
-    s1.write(command + "\n".encode())
+    s1.write(str(command + "\n").encode())
     time.sleep(2)
 
 def read_serial():
@@ -49,7 +50,7 @@ def read_from_ardunio():
     value = my_string[index+1:len(my_string)]    
 
     if command == "Health":
-        health=value
+        health=int(value)
         
     if not rospy.is_shutdown():
         msg = serial_comms()
