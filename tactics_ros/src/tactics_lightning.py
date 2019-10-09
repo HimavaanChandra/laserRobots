@@ -6,6 +6,8 @@ import random
 import rospkg
 import rospy
 from tactics_ros.msg import tactics_comms_l
+from map_ros.msg import map_comms
+
 
 heading = 0
 choice = 0
