@@ -11,6 +11,8 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
+global path
+
 cell_array = None
 
 # Publisher
