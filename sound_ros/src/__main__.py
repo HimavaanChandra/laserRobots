@@ -16,7 +16,7 @@ def callback(data):
     rospy.loginfo("Choice is : %s" % (data.final_choice))
     if data.final_choice == "F":
         shoot()
-        time.sleep(3)
+        time.sleep(3.2)
 
 def shoot_sound():
     sounds = ["kachow.wav", "pew_pew.wav", "bang_bang.wav", "gun.wav"]
