@@ -10,7 +10,7 @@ from map_ros.msg import map_comms
 
 heading = 0
 choice = 0
-final_choice = 0
+final_choice = None
 left_dis = 0 
 front_left_dis = 0
 front_dis = 0
@@ -22,10 +22,11 @@ my_y = 0
 enemy_x = 0
 enemy_y = 0
 
-
 pub = rospy.Publisher('robot_choice_t', tactics_comms_t, queue_size=10)
-rospy.init_node('robot_choice_t', anonymous=True)
+rospy.init_node('robot_choice_nodet', anonymous=True)
 rate = rospy.Rate(10)  #10hz
+rospy.Subscriber("map_chatter", map_comms, reader)
+
 
 def reader(data):
 	global left_dis 
@@ -194,7 +195,6 @@ def make_choice():
 
 def send_choice():
 	global heading
-	global final_choice
 	decision = make_choice()
 	pre_heading = heading
 
@@ -308,13 +308,11 @@ def send_choice():
 	if decision == 9:
 		final_choice = "F"
 		heading=pre_heading
+	return final_choice
 
 def main():
-	global final_choice
 
-	rospy.Subscriber("map_chatter", map_comms, reader)
-
-	send_choice()
+	final_choice = send_choice()
 	print(final_choice)
 
 	if not rospy.is_shutdown():

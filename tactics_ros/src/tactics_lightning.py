@@ -5,7 +5,7 @@ import numpy as np
 import random
 import rospkg
 import rospy
-from tactics_ros.msg import tactics_comms_t
+from tactics_ros.msg import tactics_comms_l
 from map_ros.msg import map_comms
 
 heading = 0
@@ -23,8 +23,8 @@ enemy_x = 0
 enemy_y = 0
 
 
-pub = rospy.Publisher('robot_choice_t', tactics_comms_t, queue_size=10)
-rospy.init_node('robot_choice_t', anonymous=True)
+pub = rospy.Publisher('robot_choice_l', tactics_comms_l, queue_size=10)
+rospy.init_node('robot_choice_nodel', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
 def reader(data):
@@ -318,7 +318,7 @@ def main():
 	print(final_choice)
 
 	if not rospy.is_shutdown():
-		msg = tactics_comms_t()
+		msg = tactics_comms_l()
 		msg.final_choice = final_choice
 		rospy.loginfo(msg)
 		pub.publish(msg)
