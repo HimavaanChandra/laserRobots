@@ -11,22 +11,20 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
-path = []
 robot_position = None
 respawn_point = None
+scaling_factor = 200
 
 cell_array = None
 
-# Publisher
-pub = rospy.Publisher('astar_path', astar_comms, queue_size=10) # Topic Name
-rospy.init_node('astar_node', anonymous=True) # Node Name
-rate = rospy.Rate(10) # 10hz
 
 def callback(data):
+    global robot_position
+    global respawn_point
 
-    rospy.loginfo(data)
-    my_x = data.xThomas
-    my_y = data.yThomas
+    # rospy.loginfo(data)
+    my_x = int(data.xThomas / scaling_factor)
+    my_y = int(data.yThomas / scaling_factor)
     
     # my_x = data.xLightning
     # my_y = data.yLightning
@@ -35,12 +33,9 @@ def callback(data):
     respawn_point = (0,0)
 
 def Print_Path(robot_position, respawn_point):
-   
-    global path
-    global cell_array
+    # print("robot Pos" + str(robot_position))
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
-    print(path) # Prints coordinates of path to terminal
     return path
 
 # def callback(data): # Runs when what I am subscribed to publishes something
@@ -149,7 +144,7 @@ def astar(maze, size, start, end):
     # Loop while the open list still has nodes present
     while len(open_list) > 0:
         
-        print(len(open_list)) # Added for a testing readout of the current "open_list" value
+        # print(len(open_list)) # Added for a testing readout of the current "open_list" value
        
         # Get the current node
         current_node = open_list[0] # Adds current node to index position 0, shifting other open list nodes to the "right"
@@ -318,27 +313,29 @@ def astar(maze, size, start, end):
                     open_list.append(child) #This also link "current_node" to the "new_node" object as "current_node = open_list[0]"??
 
 def main():
-    global path
-    # number = "5"
-    # rospy.init_node('astar_listener', anonymous=True) 
-    # rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
 
     # for i in range(0, len(path)):  
     path = Print_Path(robot_position, respawn_point)
+    print("Path" + str(path)) # Prints coordinates of path to terminal
         # path.pop(0)
 
     if not rospy.is_shutdown():
-            msg = astar_comms()
-            msg.path = path # message being published
-            rospy.loginfo(msg)
-            pub.publish(msg)
-            rate.sleep()  
+        msg = astar_comms()
+        msg.path = path # message being published
+        rospy.loginfo(msg)
+        pub.publish(msg)
+        rate.sleep()  
 
     # # spin() simply keeps python from exiting until this node is stopped
     # rospy.spin() # Acts like a while loop to continually check for chatter
 
 
 if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file 
+
+    # Publisher
+    pub = rospy.Publisher('astar_path', astar_comms, queue_size=10) # Topic Name
+    rospy.init_node('astar_node', anonymous=True) # Node Name
+    rate = rospy.Rate(10) # 10hz
     rospy.Subscriber("map_chatter", map_comms, callback)
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
