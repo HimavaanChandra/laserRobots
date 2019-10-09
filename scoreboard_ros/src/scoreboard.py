@@ -43,54 +43,52 @@ mcqueeny = StringVar()
 thomasx = StringVar(rootthomas)
 thomasy = StringVar(rootthomas)
 
-def function():
-    print("help")
-    if temp is not None:
-        mcqueenx.set(temp[0])
-        mcqueeny.set(temp[1])
-        thomasx.set(temp[2])
-        thomasy.set(temp[3])
-        mcqueenhp = temp[4]
-        thomashp = temp[5]
-    else:
-        mcqueenx.set(None)
-        mcqueeny.set(None)
-        thomasx.set(None)
-        thomasy.set(None)
-        mcqueenhp = 4
-        thomashp = 2
+class classy:
+    def function(self):
+        print("help")
+        if temp is not None:
+            mcqueenx.set(temp[0])
+            mcqueeny.set(temp[1])
+            thomasx.set(temp[2])
+            thomasy.set(temp[3])
+            mcqueenhp = temp[4]
+            thomashp = temp[5]
+        else:
+            mcqueenx.set(None)
+            mcqueeny.set(None)
+            thomasx.set(None)
+            thomasy.set(None)
+            mcqueenhp = 4
+            thomashp = 2
 
-    if thomashp <= 5:
-        thomashp1.set('O')
-        thomashp2.set('O')
-        thomashp3.set('O')
-        thomashp4.set('O')
-        thomashp5.set('O')
+        if thomashp <= 5:
+            thomashp1.set('O')
+            thomashp2.set('O')
+            thomashp3.set('O')
+            thomashp4.set('O')
+            thomashp5.set('O')
 
-    if thomashp<5: thomashp5.set('X')
-    if thomashp<4: thomashp4.set('X')
-    if thomashp<3: thomashp3.set('X')
-    if thomashp<2: thomashp2.set('X')
-    if thomashp<1: thomashp1.set('X')
+        if thomashp<5: thomashp5.set('X')
+        if thomashp<4: thomashp4.set('X')
+        if thomashp<3: thomashp3.set('X')
+        if thomashp<2: thomashp2.set('X')
+        if thomashp<1: thomashp1.set('X')
 
-    if mcqueenhp <= 5:
-        mcqueenhp1.set('O')
-        mcqueenhp2.set('O')
-        mcqueenhp3.set('O')
-        mcqueenhp4.set('O')
-        mcqueenhp5.set('O')
+        if mcqueenhp <= 5:
+            mcqueenhp1.set('O')
+            mcqueenhp2.set('O')
+            mcqueenhp3.set('O')
+            mcqueenhp4.set('O')
+            mcqueenhp5.set('O')
 
-    if mcqueenhp<5: mcqueenhp5.set('X')
-    if mcqueenhp<4: mcqueenhp4.set('X')
-    if mcqueenhp<3: mcqueenhp3.set('X')
-    if mcqueenhp<2: mcqueenhp2.set('X')
-    if mcqueenhp<1: mcqueenhp1.set('X')
-    root.after(500, function)
-    rootthomas.after(500, function)
+        if mcqueenhp<5: mcqueenhp5.set('X')
+        if mcqueenhp<4: mcqueenhp4.set('X')
+        if mcqueenhp<3: mcqueenhp3.set('X')
+        if mcqueenhp<2: mcqueenhp2.set('X')
+        if mcqueenhp<1: mcqueenhp1.set('X')
+        self.after(200, self.function)
 
 function()
-
-print(data.xthomas)
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
