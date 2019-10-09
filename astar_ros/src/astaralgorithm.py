@@ -182,23 +182,23 @@ def astar(maze, size, start, end):
                 # Bearing(0)
                 
                 if  unit_vector == (0,-1): 
-                    unit_vector="N"
+                    unit_vector=1
                 elif unit_vector == (1,-1): 
-                    unit_vector="NE"
+                    unit_vector=2
                 elif unit_vector == (1,0): 
-                    unit_vector="E"
+                    unit_vector=3
                 elif unit_vector == (1,1): 
-                    unit_vector="SE"    
+                    unit_vector=4  
                 elif unit_vector == (0,1):
-                    unit_vector="S"
+                    unit_vector=5
                 elif unit_vector == (-1,1):
-                    unit_vector="SW"
+                    unit_vector=6
                 elif unit_vector == (-1,0):
-                    unit_vector="W"
+                    unit_vector=7
                 elif unit_vector == (-1,-1): 
-                    unit_vector="NW"
+                    unit_vector=8
                 elif unit_vector == (0,0): 
-                    unit_vector="A"
+                    unit_vector=0
                 
                 for x in range(5): # Repeats each direction 5 times for each movement. This gives the required resolution to the stepper motor/movement code
                     directions.append(unit_vector)
@@ -324,8 +324,10 @@ def main():
     dir_path = os.path.dirname(os.path.realpath(__file__))
     cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
-    
+
     Print_Path(robot_position, respawn_point)
+
+
 
     if not rospy.is_shutdown():
             msg = astar_comms()

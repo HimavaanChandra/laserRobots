@@ -1,1 +1,1 @@
-string[] path 
+int[] path 
