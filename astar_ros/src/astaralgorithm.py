@@ -13,7 +13,7 @@ import operator
 
 global path
 path = None
-global robot_position
+global robot_position = None
 robot_position = None
 global respawn_point
 respawn_point = None
@@ -22,7 +22,7 @@ cell_array = None
 
 # Publisher
 pub = rospy.Publisher('astar_path', astar_comms, queue_size=10) # Topic Name
-rospy.init_node('astar_path', anonymous=True) # Node Name
+rospy.init_node('astar_node', anonymous=True) # Node Name
 rate = rospy.Rate(10) # 10hz
 
 def callback(data):
@@ -332,7 +332,6 @@ def main():
             pub.publish(msg)
             rate.sleep()  
 
-    rospy.Subscriber("map_chatter", map_comms, callback)
 
     # # spin() simply keeps python from exiting until this node is stopped
     # rospy.spin() # Acts like a while loop to continually check for chatter
@@ -342,6 +341,8 @@ def main():
     cell_array = np.array(cell_map).tolist()
 
     Print_Path(robot_position, respawn_point)
+
+rospy.Subscriber("map_chatter", map_comms, callback)
 
 
 while(1):   
