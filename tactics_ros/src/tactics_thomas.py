@@ -25,7 +25,7 @@ enemy_y = 0
 pub = rospy.Publisher('robot_choice_t', tactics_comms_t, queue_size=10)
 rospy.init_node('robot_choice_nodet', anonymous=True)
 rate = rospy.Rate(10)  #10hz
-rospy.Subscriber("map_chatter", map_comms, reader)
+
 
 
 def reader(data):
@@ -310,6 +310,8 @@ def send_choice():
 		heading=pre_heading
 	return final_choice
 
+
+
 def main():
 
 	final_choice = send_choice()
@@ -321,6 +323,8 @@ def main():
 		rospy.loginfo(msg)
 		pub.publish(msg)
 		rate.sleep()  
+
+rospy.Subscriber("map_chatter", map_comms, reader)
 
 while(1):
 	if __name__ =='__main__':
