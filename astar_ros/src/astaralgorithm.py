@@ -344,9 +344,9 @@ def main():
     Print_Path(robot_position, respawn_point)
 
 
-        
-if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
-    main()
+while(1):   
+    if __name__ == '__main__': #So that when/if this file is created as a header file. Only the main loop of the overall file will be executed
+        main()
 
 
 
