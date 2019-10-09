@@ -6,6 +6,8 @@ import random
 import rospkg
 import rospy
 from tactics_ros.msg import tactics_comms_l
+from map_ros.msg import map_comms
+
 
 heading = 0
 choice = 0
@@ -159,122 +161,122 @@ def send_choice():
 	pre_heading = heading
 
 	if decision == 0:
-		final_choice='A'
+		final_choice="A"
 		heading = pre_heading
 	if decision == 1:
 		if front_dis < 50:
 			if right_dis>left_dis:
-				final_choice = 'E'
+				final_choice = "E"
 				heading = 90
 			else:
-				final_choice = 'W'
+				final_choice = "W"
 				heading = -90
 		else:
-			final_choice = 'N'
+			final_choice = "N"
 			heading = 0
 	if decision == 2:
 		if front_right_dis < 50:
 			if right_dis>front_dis:
-				final_choice = 'E'
+				final_choice = "E"
 				heading = 90
 			else:
 				if front_dis>back_dis:
-					final_choice = 'N'
+					final_choice = "N"
 					heading = 0
 				else:
-					final_choice='SE'
+					final_choice="SE"
 					heading = 135
 		else:
-			final_choice = 'NE'
+			final_choice = "NE"
 			heading = 45
 	if decision == 3:
 		if right_dis < 50:
 			if back_dis>front_dis:
-				final_choice = 'S'
+				final_choice = "S"
 				heading = 180
 			else:
 				if front_dis>front_right_dis:
-					final_choice = 'N'
+					final_choice = "N"
 					heading = 0
 				else:
-					final_choice='NE'
+					final_choice="NE"
 					heading = 45
 		else:
-			final_choice = 'E'
+			final_choice = "E"
 			heading = 90
 	if decision == 4:
 		if back_dis < 50 or right_dis<50:
 			if right_dis>front_right_dis:
-				final_choice = 'E'
+				final_choice = "E"
 				heading = 90
 			else:
-				final_choice='NE'
+				final_choice="NE"
 				heading = 45
 		else:
-			final_choice = 'SE'
+			final_choice = "SE"
 			heading = 135
 	if decision == 5:
 		if back_dis < 50:
 			if right_dis>left_dis:
-				final_choice = 'E'
+				final_choice = "E"
 				heading = 90
 			else:
-				final_choice='W'
+				final_choice="W"
 				heading = -90
 		else:
-			final_choice = 'S'
+			final_choice = "S"
 			heading = 180
 	if decision == 6:
 		if back_dis < 50 or left_dis < 50:
 			if left_dis>front_left_dis:
-				final_choice = 'W'
+				final_choice = "W"
 				heading = -90
 			else:
-				final_choice='NW'
+				final_choice="NW"
 				heading = -45
 		else:
-			final_choice = 'SW'
+			final_choice = "SW"
 			heading = -135
 	if decision == 7:
 		if left_dis < 50:
 			if back_dis>front_dis:
-				final_choice = 'S'
+				final_choice = "S"
 				heading = 180
 			else:
 				if front_dis>front_left_dis:
-					final_choice = 'N'
+					final_choice = "N"
 					heading = 0
 				else:
-					final_choice='NW'
+					final_choice="NW"
 					heading = -45
 		else:
-			final_choice = 'W'
+			final_choice = "W"
 			heading = -90
 	if decision == 8:
 		if front_left_dis < 50:
 			if left_dis>front_dis:
-				final_choice = 'W'
+				final_choice = "W"
 				heading = -90
 			else:
 				if front_dis>back_dis:
-					final_choice = 'N'
+					final_choice = "N"
 					heading = 0
 				else:
 					final_choice="SW"
 					heading = -135
 		else:
-			final_choice = 'SW'
+			final_choice = "SW"
 			heading = -45
 	if decision == 9:
-		final_choice = 'F'
+		final_choice = "F"
 		heading=pre_heading
 
 def main():
 
 	rospy.Subscriber("map_chatter", map_comms, reader)
-	rospy.spin()
 
 	send_choice()
+	print(final_choice)
 
 	if not rospy.is_shutdown():
 		msg = tactics_comms_l()
