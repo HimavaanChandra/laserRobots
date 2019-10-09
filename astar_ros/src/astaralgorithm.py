@@ -228,8 +228,9 @@ def astar(maze, size, start, end):
 
 def main():
  
-    path = Print_Path(robot_position, respawn_point)
-    
+global check
+
+path = Print_Path(robot_position, respawn_point)
     
     if check == path:
         return
