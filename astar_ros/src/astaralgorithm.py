@@ -17,6 +17,7 @@ scaling_factor = 200 # Scales down the grid to match Excel map size
 
 cell_array = None
 
+check = None
 
 def callback(data): # Updates robot position data when called
     global robot_position
@@ -228,13 +229,16 @@ def astar(maze, size, start, end):
 def main():
  
     path = Print_Path(robot_position, respawn_point)
-    print("Path" + str(path)) # Prints coordinates of path to terminal
+    
     
     if check == path:
-        continue
+        return
     
-    else
-        path_item in p ath: # Set path_item to each iterative index in path 
+    else:
+        
+        print("Path" + str(path)) # Prints coordinates of path to terminal
+        
+        for path_item in p ath: # Set path_item to each iterative index in path 
             if not rospy.is_shutdown():
                 msg = astar_comms()
                 msg.path = path_item # message being published
