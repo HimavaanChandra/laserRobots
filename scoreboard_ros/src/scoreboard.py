@@ -15,18 +15,9 @@ def callback(data):
     global temp
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
     print(temp)
-    function()
 
-# def main():
-#     done = False
-#     while not done:
 rospy.init_node('map_node', anonymous=True)
 rospy.Subscriber("robot_positions", vision_comms, callback)
-
-# if __name__ == '__main__':
-#     try:
-#         main()
-#     except rospy.ROSInterruptException: pass
 
 
 root = Tk()
@@ -94,7 +85,9 @@ def function():
     if mcqueenhp<3: mcqueenhp3.set('X')
     if mcqueenhp<2: mcqueenhp2.set('X')
     if mcqueenhp<1: mcqueenhp1.set('X')
-    tk.after(1000, function)
+    root.after(500, function)
+    rootthomas.after(500, function)
+
 
 function()
 
