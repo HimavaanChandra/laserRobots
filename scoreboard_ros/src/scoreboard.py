@@ -29,29 +29,30 @@ rospy.Subscriber("robot_positions", vision_comms, callback)
 #         main()
 #     except rospy.ROSInterruptException: pass
 
-while 1:
-    root = Tk()
-    root.title("Scoreboard")
 
-    rootthomas = Tk()
-    rootthomas.title("Scoreboard")
+root = Tk()
+root.title("Scoreboard")
 
-    mcqueenhp1 = StringVar()
-    mcqueenhp2 = StringVar()
-    mcqueenhp3 = StringVar()
-    mcqueenhp4 = StringVar()
-    mcqueenhp5 = StringVar()
+rootthomas = Tk()
+rootthomas.title("Scoreboard")
 
-    thomashp1 = StringVar(rootthomas)
-    thomashp2 = StringVar(rootthomas)
-    thomashp3 = StringVar(rootthomas)
-    thomashp4 = StringVar(rootthomas)
-    thomashp5 = StringVar(rootthomas)
+mcqueenhp1 = StringVar()
+mcqueenhp2 = StringVar()
+mcqueenhp3 = StringVar()
+mcqueenhp4 = StringVar()
+mcqueenhp5 = StringVar()
 
-    mcqueenx = StringVar()
-    mcqueeny = StringVar()
-    thomasx = StringVar(rootthomas)
-    thomasy = StringVar(rootthomas)
+thomashp1 = StringVar(rootthomas)
+thomashp2 = StringVar(rootthomas)
+thomashp3 = StringVar(rootthomas)
+thomashp4 = StringVar(rootthomas)
+thomashp5 = StringVar(rootthomas)
+
+mcqueenx = StringVar()
+mcqueeny = StringVar()
+thomasx = StringVar(rootthomas)
+thomasy = StringVar(rootthomas)
+def function(self):
     if temp is not None:
         mcqueenx.set(temp[0])
         mcqueeny.set(temp[1])
@@ -92,57 +93,58 @@ while 1:
     if mcqueenhp<3: mcqueenhp3.set('X')
     if mcqueenhp<2: mcqueenhp2.set('X')
     if mcqueenhp<1: mcqueenhp1.set('X')
+    self.after(200, self.function)
 
 
-    mainframe = ttk.Frame(root, padding="10")
-    mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
-    root.columnconfigure(0, weight=1)
-    root.rowconfigure(0, weight=1)
+mainframe = ttk.Frame(root, padding="10")
+mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
 
-    mainframe2 = ttk.Frame(rootthomas, padding="10")
-    mainframe2.grid(column=0, row=0, sticky=(N, W, E, S))
-    root.columnconfigure(0, weight=1)
-    root.rowconfigure(0, weight=1)
+mainframe2 = ttk.Frame(rootthomas, padding="10")
+mainframe2.grid(column=0, row=0, sticky=(N, W, E, S))
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
 
-    ttk.Label(mainframe, text='Lightning McQueen', width=25).grid(column=1, columnspan=5, row=1, sticky=(W))
-    ttk.Label(mainframe2, text='Thomas the Tank Engine', width=25).grid(column=1, columnspan=5, row=1, sticky=(E))
+ttk.Label(mainframe, text='Lightning McQueen', width=25).grid(column=1, columnspan=5, row=1, sticky=(W))
+ttk.Label(mainframe2, text='Thomas the Tank Engine', width=25).grid(column=1, columnspan=5, row=1, sticky=(E))
 
-    ttk.Label(mainframe, text='HEALTH', width=25).grid(column=1, columnspan=5, row=2, sticky=(W))
-    ttk.Label(mainframe2, text='HEALTH', width=25).grid(column=1, columnspan=5, row=2, sticky=(E))
+ttk.Label(mainframe, text='HEALTH', width=25).grid(column=1, columnspan=5, row=2, sticky=(W))
+ttk.Label(mainframe2, text='HEALTH', width=25).grid(column=1, columnspan=5, row=2, sticky=(E))
 
-    ttk.Label(mainframe, textvariable=mcqueenhp1).grid(column=1, row=3, sticky=(W, E))
-    ttk.Label(mainframe, textvariable=mcqueenhp2).grid(column=2, row=3, sticky=(W, E))
-    ttk.Label(mainframe, textvariable=mcqueenhp3).grid(column=3, row=3, sticky=(W, E))
-    ttk.Label(mainframe, textvariable=mcqueenhp4).grid(column=4, row=3, sticky=(W, E))
-    ttk.Label(mainframe, textvariable=mcqueenhp5).grid(column=5, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp1).grid(column=1, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp2).grid(column=2, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp3).grid(column=3, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp4).grid(column=4, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp5).grid(column=5, row=3, sticky=(W, E))
 
-    ttk.Label(mainframe2, textvariable=thomashp1).grid(column=1, row=3, sticky=(W, E))
-    ttk.Label(mainframe2, textvariable=thomashp2).grid(column=2, row=3, sticky=(W, E))
-    ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E))
-    ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
-    ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp1).grid(column=1, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp2).grid(column=2, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
 
-    ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
-    ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
+ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
+ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
 
-    ttk.Label(mainframe, text='x=').grid(column=1, row=5)
-    ttk.Label(mainframe, textvariable=mcqueenx).grid(column=2, columnspan=2, row=5)
-    ttk.Label(mainframe, text='y=').grid(column=4, row=5)
-    ttk.Label(mainframe, textvariable=mcqueeny).grid(column=5, columnspan=2, row=5)
-    ttk.Label(mainframe2, text='x=').grid(column=1, row=5)
-    ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
-    ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
-    ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
+ttk.Label(mainframe, text='x=').grid(column=1, row=5)
+ttk.Label(mainframe, textvariable=mcqueenx).grid(column=2, columnspan=2, row=5)
+ttk.Label(mainframe, text='y=').grid(column=4, row=5)
+ttk.Label(mainframe, textvariable=mcqueeny).grid(column=5, columnspan=2, row=5)
+ttk.Label(mainframe2, text='x=').grid(column=1, row=5)
+ttk.Label(mainframe2, textvariable=thomasx).grid(column=2, columnspan=2, row=5)
+ttk.Label(mainframe2, text='y=').grid(column=4, row=5)
+ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 
-    # if mcqueenHasShot = 1:
-    #     ttk.Label(mainframe, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
-    # if thomasHasShot = 1:
-    #     ttk.Label(mainframe2, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
+# if mcqueenHasShot = 1:
+#     ttk.Label(mainframe, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
+# if thomasHasShot = 1:
+#     ttk.Label(mainframe2, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
 
-    # def test(*args):
-    #     print("sucessfull test")
-    # ttk.Button(mainframe, text='test', command=test).grid(column=6, row=1)
+# def test(*args):
+#     print("sucessfull test")
+# ttk.Button(mainframe, text='test', command=test).grid(column=6, row=1)
 
-    root.mainloop()
-    rootthomas.mainloop()
+root.mainloop()
+rootthomas.mainloop()
 
