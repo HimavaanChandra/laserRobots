@@ -1,45 +1,30 @@
 import serial
 import time
-port="/dev/ttyACM0"
 
-s1=serial.Serial(port,9600)
-s1.flushInput()
-
-#Send to Arduino
-time.sleep(2)
-s1.write("N\n".encode())
-time.sleep(2)
-s1.write("NE\n".encode())
-time.sleep(2)
-s1.write("E\n".encode())
-time.sleep(2)
-s1.write("SE\n".encode())
-time.sleep(2)
-s1.write("S\n".encode())
-time.sleep(2)
-s1.write("SW\n".encode())
-time.sleep(2)
-s1.write("W\n".encode())
-time.sleep(2)
-s1.write("NW\n".encode())
-time.sleep(2)
-s1.write("Shoot\n".encode())
-time.sleep(2)
-s1.write("Hit\n".encode())
-time.sleep(2)
-s1.write("Reset\n".encode())
-time.sleep(2)
-s1.write("s_angle\n".encode())
-#s_angle=345
-#s1.write(str(s_angle).encode())
-#time.sleep(2)
+#ROS
+import rospkg
+import rospy
+from serial_ros.msg import serial_comms
+from tactics_ros.msg import tactics_comms_l
+from tactics_ros.msg import tactics_comms_t
+from astar_ros.msg import astar_comms
 
 
 
-#Read from Arduino 
-done = False
-while not done:
+def send_to_ardunio(data):
+    if data.final_choice not None:
+        command = data.final_choice
+    elif data.path not None:
+        command = data.path
+    else:
+        rospy.logwarn("Command not recognised")
+        return
 
+    rospy.loginfo("Command: %s" % (command))
+    s1.write(command + "\n".encode())
+    time.sleep(2)
+
+def read_serial():
     my_string = ""
     line_is_done = False
 
@@ -53,17 +38,46 @@ while not done:
 
         my_string += read_ser
 
+    return my_string
+
+def read_from_ardunio():
+    health = 0
+    my_string = read_serial()
+
     index = my_string.find(':')
     command = my_string[0:index]
-    value = my_string[index+1:len(my_string)]
-    
-    if command == "Angle":
-        print(command)
-        print(value)
+    value = my_string[index+1:len(my_string)]    
+
     if command == "Health":
-        print(command)
-        print(value)
-    if command == "Shoot":
-        print(value)
-    if command == "Hit":
-        print(value)
+        health=value
+        
+    if not rospy.is_shutdown():
+        msg = serial_comms()
+        msg.Health = health
+        rospy.loginfo(msg)
+        pub.publish(msg)
+        rate.sleep()
+
+rospy.init_node('serial_link_node', anonymous=True)
+pub = rospy.Publisher('serial_link', serial_comms, queue_size=10)
+rate = rospy.Rate(10)  #10hz
+
+#Serial
+port="/dev/ttyACM0"
+s1=serial.Serial(port,9600)
+s1.flushInput()
+
+#Read from Arduino 
+def main():
+    done = False
+    rospy.Subscriber("robot_choice_l", tactics_comms_l, send_to_ardunio)
+    rospy.Subscriber("robot_choice_t", tactics_comms_t, send_to_ardunio)
+    rospy.Subscriber("astar_path", astar_comms, send_to_ardunio)
+    while not done:
+        read_from_ardunio()
+    
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException: pass
