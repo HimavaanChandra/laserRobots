@@ -1,15 +1,18 @@
+#!/usr/bin/env python3
+#!/usr/bin/env python2
+
 import numpy as np
 import random
 import rospkg
 import rospy
-from tactics.msg import tactics_comms_t
+from tactics_ros.msg import tactics_comms_t
 
 heading = 0
 choice = 0
 final_choice = 0
 
-pub = rospy.Publisher('robot_choice', tactics_comms_t, queue_size=10)
-rospy.init_node('robot_choice', anonymous=True)
+pub = rospy.Publisher('robot_choice_t', tactics_comms_t, queue_size=10)
+rospy.init_node('robot_choice_t', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
 def reader(data):
@@ -273,11 +276,11 @@ def main():
 	rospy.spin()
 
 	if not rospy.is_shutdown():
-	msg = tactics_comms_t()
-	msg.final_choice = final_choice
-	rospy.loginfo(msg)
-	pub.publish(msg)
-	rate.sleep()  
+		msg = tactics_comms_t()
+		msg.final_choice = final_choice
+		rospy.loginfo(msg)
+		pub.publish(msg)
+		rate.sleep()  
 
 if __name__ =='__main__':
 	main()
