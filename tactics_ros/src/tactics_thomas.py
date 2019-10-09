@@ -194,6 +194,7 @@ def make_choice():
 
 def send_choice():
 	global heading
+	global final_choice
 	decision = make_choice()
 	pre_heading = heading
 
@@ -309,9 +310,9 @@ def send_choice():
 		heading=pre_heading
 
 def main():
+	global final_choice
 
 	rospy.Subscriber("map_chatter", map_comms, reader)
-
 
 	send_choice()
 	print(final_choice)
