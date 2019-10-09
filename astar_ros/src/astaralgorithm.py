@@ -13,7 +13,7 @@ import operator
 
 global path
 path = None
-global robot_position = None
+global robot_position
 robot_position = None
 global respawn_point
 respawn_point = None
