@@ -37,11 +37,10 @@ def callback(data):
 def Print_Path(robot_position, respawn_point):
    
     global path
-
     global cell_array
     aStar = AStar(cell_array, robot_position, respawn_point) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
-    print(path[0]) # Prints coordinates of path to terminal
+    print(path) # Prints coordinates of path to terminal
 
 # def callback(data): # Runs when what I am subscribed to publishes something
 #     rospy.loginfo("xThomas %d : yThomas %d" % (data.xThomas, data.yThomas))
@@ -319,20 +318,20 @@ def astar(maze, size, start, end):
 
 def main():
     global path
-    number = "5"
+    # number = "5"
     # rospy.init_node('astar_listener', anonymous=True) 
     # rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
     dir_path = os.path.dirname(os.path.realpath(__file__))
     cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
 
-    for i in range(0, len(path)):  
+    # for i in range(0, len(path)):  
         Print_Path(robot_position, respawn_point)
-        path.pop(0)
+        # path.pop(0)
 
     if not rospy.is_shutdown():
             msg = astar_comms()
-            msg.path = number # message being published
+            msg.path = path # message being published
             rospy.loginfo(msg)
             pub.publish(msg)
             rate.sleep()  
