@@ -201,7 +201,7 @@ def send_choice():
 	if decision == 0:
 		final_choice="A"
 		heading = pre_heading
-	if decision == 1:
+	elif decision == 1:
 		if front_dis < 50:
 			if right_dis>left_dis:
 				final_choice = "E"
@@ -212,7 +212,7 @@ def send_choice():
 		else:
 			final_choice = "N"
 			heading = 0
-	if decision == 2:
+	elif decision == 2:
 		if front_right_dis < 50:
 			if right_dis>front_dis:
 				final_choice = "E"
@@ -227,7 +227,7 @@ def send_choice():
 		else:
 			final_choice = "NE"
 			heading = 45
-	if decision == 3:
+	elif decision == 3:
 		if right_dis < 50:
 			if back_dis>front_dis:
 				final_choice = "S"
@@ -242,7 +242,7 @@ def send_choice():
 		else:
 			final_choice = "E"
 			heading = 90
-	if decision == 4:
+	elif decision == 4:
 		if back_dis < 50 or right_dis<50:
 			if right_dis>front_right_dis:
 				final_choice = "E"
@@ -253,7 +253,7 @@ def send_choice():
 		else:
 			final_choice = "SE"
 			heading = 135
-	if decision == 5:
+	elif decision == 5:
 		if back_dis < 50:
 			if right_dis>left_dis:
 				final_choice = "E"
@@ -264,7 +264,7 @@ def send_choice():
 		else:
 			final_choice = "S"
 			heading = 180
-	if decision == 6:
+	elif decision == 6:
 		if back_dis < 50 or left_dis < 50:
 			if left_dis>front_left_dis:
 				final_choice = "W"
@@ -275,7 +275,7 @@ def send_choice():
 		else:
 			final_choice = "SW"
 			heading = -135
-	if decision == 7:
+	elif decision == 7:
 		if left_dis < 50:
 			if back_dis>front_dis:
 				final_choice = "S"
@@ -290,7 +290,7 @@ def send_choice():
 		else:
 			final_choice = "W"
 			heading = -90
-	if decision == 8:
+	elif decision == 8:
 		if front_left_dis < 50:
 			if left_dis>front_dis:
 				final_choice = "W"
@@ -305,7 +305,7 @@ def send_choice():
 		else:
 			final_choice = "SW"
 			heading = -45
-	if decision == 9:
+	elif decision == 9:
 		final_choice = "F"
 		heading=pre_heading
 	return final_choice
