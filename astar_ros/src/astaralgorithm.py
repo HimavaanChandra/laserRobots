@@ -269,7 +269,7 @@ def main():
 
     path = Print_Path(robot_position, respawn_point)
 
-    if check == path: # When robot position is constant
+    if check == path: # When robot position is   constant
         return
 
     else: # When robot position changes

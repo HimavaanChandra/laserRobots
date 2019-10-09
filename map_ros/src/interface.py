@@ -25,6 +25,7 @@ class Interface():
         self.grid = grid
         self.sim = SimLayer(self.grid)
         self.m_unit = 1
+        self.scale_factor = 1.4
         self.test = self.sim.spawn_instance("Test")
         self.test.spawn_robots(0, 0, 0, 0)
 
@@ -41,10 +42,10 @@ class Interface():
 
     def _update_pos(self, data):
         self.callback(data)
-        xThomas = data.xThomas * self.m_unit
-        yThomas = data.yThomas * self.m_unit
-        xLightning = data.xLightning * self.m_unit
-        yLightning = data.yLightning * self.m_unit
+        xThomas = (data.xThomas / self.scale_factor) * self.m_unit
+        yThomas = (data.yThomas / self.scale_factor)  * self.m_unit
+        xLightning = (data.xLightning / self.scale_factor)  * self.m_unit
+        yLightning = (data.yLightning / self.scale_factor)  * self.m_unit
 
         self.test.set(0, [xThomas, yThomas])
         self.test.set(1, [xLightning, yLightning])
