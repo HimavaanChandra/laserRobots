@@ -11,27 +11,64 @@ from map_ros.msg import map_comms
 heading = 0
 choice = 0
 final_choice = 0
+left_dis = 0 
+front_left_dis = 0
+front_dis = 0
+front_right_dis = 0
+right_dis = 0
+back_dis = 0
+my_x = 0
+my_y = 0
+enemy_x = 0
+enemy_y = 0
+
 
 pub = rospy.Publisher('robot_choice_t', tactics_comms_t, queue_size=10)
 rospy.init_node('robot_choice_t', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
 def reader(data):
-	rospy.loginfo(data)
+	global left_dis 
+	global front_left_dis
+	global front_dis
+	global front_right_dis 
+	global right_dis 
+	global back_dis 
+	global my_x
+	global my_y 
+	global enemy_x 
+	global enemy_y 
 
-def get_inputs():
+	rospy.loginfo(data)
 	left_dis = data.distances[0]
 	front_left_dis = data.distances[1]
 	front_dis = data.distances[2]
 	front_right_dis = data.distances[3]
 	right_dis = data.distances[4]
 	back_dis = data.distances[5]
-	my.x = data.xThomas
-	my.y = data.yThomas
-	enemy.x = data.xLightning
-	enemy.y = data.yLightning
-	x_dif = my.x - enemy.x
-	y_dif = my.y - enemy.y
+	my_x = data.xThomas
+	my_y = data.yThomas
+	enemy_x = data.xLightning
+	enemy_y = data.yLightning
+	
+
+def get_inputs():
+
+	global final_choice 
+	global left_dis 
+	global front_left_dis
+	global front_dis
+	global front_right_dis 
+	global right_dis 
+	global back_dis 
+	global my_x
+	global my_y 
+	global enemy_x 
+	global enemy_y 
+
+	x_dif = my_x - enemy_x
+	y_dif = my_y - enemy_y
+	
 
 	return[x_dif, y_dif, left_dis,front_left_dis, front_dis, front_right_dis, right_dis, back_dis]
 	
@@ -273,7 +310,6 @@ def send_choice():
 def main():
 
 	rospy.Subscriber("map_chatter", map_comms, reader)
-	rospy.spin()
 
 
 	send_choice()
