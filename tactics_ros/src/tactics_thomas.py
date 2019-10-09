@@ -5,7 +5,7 @@ import numpy as np
 import random
 import rospkg
 import rospy
-from tactics.msg import tactics_comms_t
+from tactics_ros.msg import tactics_comms_t
 
 heading = 0
 choice = 0
