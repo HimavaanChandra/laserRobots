@@ -230,14 +230,17 @@ def main():
     path = Print_Path(robot_position, respawn_point)
     print("Path" + str(path)) # Prints coordinates of path to terminal
     
-    for path_item in path: # Set path_item to each iterative index in path 
+    if check = path
+        continue
+    
+    else path_item in path: # Set path_item to each iterative index in path 
         if not rospy.is_shutdown():
             msg = astar_comms()
             msg.path = path_item # message being published
             rospy.loginfo(msg)
             pub.publish(msg)
             rate.sleep()  
-
+        check = path
     # # spin() simply keeps python from exiting until this node is stopped
     # rospy.spin() # Acts like a while loop to continually check for chatter
 
