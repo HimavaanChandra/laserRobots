@@ -8,50 +8,6 @@ from vision_ros.msg import vision_comms
 global temp 
 temp = None
 
-def callback(data):
-    rospy.loginfo("Thomas %d is : %d" % (data.xThomas, data.yThomas))
-    rospy.loginfo("Lightning %d is : %d" % (data.xLightning, data.yLightning))
-
-    global temp
-    temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
-    print(temp)
-    function()
-
-# def main():
-#     done = False
-#     while not done:
-rospy.init_node('map_node', anonymous=True)
-rospy.Subscriber("robot_positions", vision_comms, callback)
-
-# if __name__ == '__main__':
-#     try:
-#         main()
-#     except rospy.ROSInterruptException: pass
-
-
-root = Tk()
-root.title("Scoreboard")
-
-rootthomas = Tk()
-rootthomas.title("Scoreboard")
-
-mcqueenhp1 = StringVar()
-mcqueenhp2 = StringVar()
-mcqueenhp3 = StringVar()
-mcqueenhp4 = StringVar()
-mcqueenhp5 = StringVar()
-
-thomashp1 = StringVar(rootthomas)
-thomashp2 = StringVar(rootthomas)
-thomashp3 = StringVar(rootthomas)
-thomashp4 = StringVar(rootthomas)
-thomashp5 = StringVar(rootthomas)
-
-mcqueenx = StringVar()
-mcqueeny = StringVar()
-thomasx = StringVar(rootthomas)
-thomasy = StringVar(rootthomas)
-
 def function():
     print("help")
     if temp is not None:
@@ -96,7 +52,50 @@ def function():
     if mcqueenhp<1: mcqueenhp1.set('X')
     tk.after(1000, function)
 
-function()
+
+def callback(data):
+    rospy.loginfo("Thomas %d is : %d" % (data.xThomas, data.yThomas))
+    rospy.loginfo("Lightning %d is : %d" % (data.xLightning, data.yLightning))
+
+    global temp
+    temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
+    print(temp)
+    function()
+
+# def main():
+#     done = False
+#     while not done:
+rospy.init_node('map_node', anonymous=True)
+rospy.Subscriber("robot_positions", vision_comms, callback)
+
+# if __name__ == '__main__':
+#     try:
+#         main()
+#     except rospy.ROSInterruptException: pass
+
+
+root = Tk()
+root.title("Scoreboard")
+
+rootthomas = Tk()
+rootthomas.title("Scoreboard")
+
+mcqueenhp1 = StringVar()
+mcqueenhp2 = StringVar()
+mcqueenhp3 = StringVar()
+mcqueenhp4 = StringVar()
+mcqueenhp5 = StringVar()
+
+thomashp1 = StringVar(rootthomas)
+thomashp2 = StringVar(rootthomas)
+thomashp3 = StringVar(rootthomas)
+thomashp4 = StringVar(rootthomas)
+thomashp5 = StringVar(rootthomas)
+
+mcqueenx = StringVar()
+mcqueeny = StringVar()
+thomasx = StringVar(rootthomas)
+thomasy = StringVar(rootthomas)
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
