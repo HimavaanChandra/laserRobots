@@ -48,6 +48,8 @@ def read_from_ardunio():
     index = my_string.find(':')
     command = my_string[0:index]
     value = my_string[index+1:len(my_string)]    
+    
+    rospy.loginfo("Pi Says: %s" % (my_string))
 
     if command == "Health":
         health=int(value)
