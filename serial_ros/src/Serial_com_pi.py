@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import serial
 import time
 
@@ -12,16 +13,16 @@ from astar_ros.msg import astar_comms
 
 
 def send_to_ardunio(data):
-    if data.final_choice not None:
+    if data.final_choice is not None:
         command = data.final_choice
-    elif data.path not None:
+    elif data.path is not None:
         command = data.path
     else:
         rospy.logwarn("Command not recognised")
         return
 
     rospy.loginfo("Command: %s" % (command))
-    s1.write(command + "\n".encode())
+    s1.write(str(command + "\n").encode())
     time.sleep(2)
 
 def read_serial():
@@ -49,11 +50,11 @@ def read_from_ardunio():
     value = my_string[index+1:len(my_string)]    
 
     if command == "Health":
-        health=value
+        health=int(value)
         
     if not rospy.is_shutdown():
         msg = serial_comms()
-        msg.Health = health
+        msg.health = health
         rospy.loginfo(msg)
         pub.publish(msg)
         rate.sleep()
