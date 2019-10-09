@@ -13,9 +13,9 @@ from astar_ros.msg import astar_comms
 
 
 def send_to_ardunio(data):
-    if data.final_choice is not None:
+    if hasattr(data, "final_choice"):
         command = data.final_choice
-    elif data.path is not None:
+    elif hasattr(data, "path"):
         command = data.path
     else:
         rospy.logwarn("Command not recognised")
