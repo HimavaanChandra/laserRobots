@@ -12,11 +12,10 @@ def callback(data):
     rospy.loginfo("Thomas %d is : %d" % (data.xThomas, data.yThomas))
     rospy.loginfo("Lightning %d is : %d" % (data.xLightning, data.yLightning))
 
-    print("Thomas %d is : %d" % (data.xThomas, data.yThomas))
-    print("Lightning %d is : %d" % (data.xLightning, data.yLightning))
     global temp
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
     print(temp)
+    function()
 
 # def main():
 #     done = False
