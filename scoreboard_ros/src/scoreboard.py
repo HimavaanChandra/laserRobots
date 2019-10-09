@@ -98,7 +98,7 @@ def function(self):
     self.root.after(1000, self.function)
     self.rootthomas.after(1000, self.function)
 
-function()
+function(self)
 
 mainframe = ttk.Frame(root, padding="10")
 mainframe.grid(column=0, row=0, sticky=(N, W, E, S))
