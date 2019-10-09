@@ -11,8 +11,8 @@ heading = 0
 choice = 0
 final_choice = 0
 
-pub = rospy.Publisher('robot_choice', tactics_comms_l, queue_size=10)
-rospy.init_node('robot_choice', anonymous=True)
+pub = rospy.Publisher('robot_choice_l', tactics_comms_l, queue_size=10)
+rospy.init_node('robot_choice_l', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
 def reader(data):
