@@ -18,19 +18,13 @@ def callback(data):
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
     print(temp)
 
-# def main():
-#     done = False
-#     while not done:
-rospy.init_node('scoreboard_listener_node', anonymous=True)
-rospy.Subscriber("scoreboard_listener", vision_comms, callback)
-
-        # spin() simply keeps python from exiting until this node is stopped
-# rospy.spin()
-
-# if __name__ == '__main__':
-#     try:
-#         main()
-#     except rospy.ROSInterruptException: pass
+def main():
+    done = False
+    while not done:
+        rospy.init_node('scoreboard_listener_node', anonymous=True)
+        rospy.Subscriber("scoreboard_listener", vision_comms, callback)
+        root.mainloop()
+        rootthomas.mainloop()
 
 
 root = Tk()
@@ -141,9 +135,14 @@ ttk.Label(mainframe2, textvariable=thomasy).grid(column=5, columnspan=2, row=5)
 # if thomasHasShot = 1:
 #     ttk.Label(mainframe2, text='Shots Fired', width=25).grid(column=1, columnspan=5, row=6)
 
-def test(*args):
-    print("sucessfull test")
-ttk.Button(mainframe, text='test', command=test).grid(column=3, row=1))
-root.mainloop()
-rootthomas.mainloop()
+# def test(*args):
+#     print("sucessfull test")
+# ttk.Button(mainframe, text='test', command=test).grid(column=3, row=1)
 
+# root.mainloop()
+# rootthomas.mainloop()
+
+if __name__ == '__main__':
+    try:
+        main()
+    except rospy.ROSInterruptException: pass
