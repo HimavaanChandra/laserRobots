@@ -11,18 +11,15 @@ import numpy as np
 from numpy import genfromtxt
 import operator
 
-global path
 path = None
-global robot_position
 robot_position = None
-global respawn_point
 respawn_point = None
 
 cell_array = None
 
 # Publisher
 pub = rospy.Publisher('astar_path', astar_comms, queue_size=10) # Topic Name
-rospy.init_node('astar_path', anonymous=True) # Node Name
+rospy.init_node('astar_node', anonymous=True) # Node Name
 rate = rospy.Rate(10) # 10hz
 
 def callback(data):
@@ -185,23 +182,23 @@ def astar(maze, size, start, end):
                 # Bearing(0)
                 
                 if  unit_vector == (0,-1): 
-                    unit_vector='N'
+                    unit_vector="N"
                 elif unit_vector == (1,-1): 
-                    unit_vector='NE'
+                    unit_vector="NE"
                 elif unit_vector == (1,0): 
-                    unit_vector='E'
+                    unit_vector="E"
                 elif unit_vector == (1,1): 
-                    unit_vector='SE'    
+                    unit_vector="SE"    
                 elif unit_vector == (0,1):
-                    unit_vector='S'
+                    unit_vector="S"
                 elif unit_vector == (-1,1):
-                    unit_vector='SW'
+                    unit_vector="SW"
                 elif unit_vector == (-1,0):
-                    unit_vector='W'
+                    unit_vector="W"
                 elif unit_vector == (-1,-1): 
-                    unit_vector='NW'
+                    unit_vector="NW"
                 elif unit_vector == (0,0): 
-                    unit_vector='NONE'
+                    unit_vector="A"
                 
                 for x in range(5): # Repeats each direction 5 times for each movement. This gives the required resolution to the stepper motor/movement code
                     directions.append(unit_vector)
@@ -321,27 +318,32 @@ def astar(maze, size, start, end):
                     open_list.append(child) #This also link "current_node" to the "new_node" object as "current_node = open_list[0]"??
 
 def main():
-
+    global path
+    number = "5"
     # rospy.init_node('astar_listener', anonymous=True) 
     # rospy.Subscriber("map_chatter", map_comms, callback) # Listening to subscriber information
-
-    if not rospy.is_shutdown():
-            msg = astar_comms()
-            msg.path = path # message being published
-            rospy.loginfo(msg)
-            pub.publish(msg)
-            rate.sleep()  
-
-    rospy.Subscriber("map_chatter", map_comms, callback)
-
-    # # spin() simply keeps python from exiting until this node is stopped
-    # rospy.spin() # Acts like a while loop to continually check for chatter
-
     dir_path = os.path.dirname(os.path.realpath(__file__))
     cell_map = np.loadtxt(dir_path + "/" + "filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
 
     Print_Path(robot_position, respawn_point)
+
+    
+
+    if not rospy.is_shutdown():
+            msg = astar_comms()
+            msg.path = number # message being published
+            rospy.loginfo(msg)
+            pub.publish(msg)
+            rate.sleep()  
+
+    # # spin() simply keeps python from exiting until this node is stopped
+    # rospy.spin() # Acts like a while loop to continually check for chatter
+
+    
+
+
+rospy.Subscriber("map_chatter", map_comms, callback)
 
 
 while(1):   

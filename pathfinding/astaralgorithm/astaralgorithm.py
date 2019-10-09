@@ -148,23 +148,23 @@ def astar(maze, size, start, end):
                 # Bearing(0)
                 
                 if  unit_vector == (0,-1): 
-                    unit_vector='N'
+                    unit_vector="N"
                 elif unit_vector == (1,-1): 
-                    unit_vector='NE'
+                    unit_vector="NE"
                 elif unit_vector == (1,0): 
-                    unit_vector='E'
+                    unit_vector="E"
                 elif unit_vector == (1,1): 
-                    unit_vector='SE'    
+                    unit_vector="SE"    
                 elif unit_vector == (0,1):
-                    unit_vector='S'
+                    unit_vector="S"
                 elif unit_vector == (-1,1):
-                    unit_vector='SW'
+                    unit_vector="SW"
                 elif unit_vector == (-1,0):
-                    unit_vector='W'
+                    unit_vector="W"
                 elif unit_vector == (-1,-1): 
-                    unit_vector='NW'
+                    unit_vector="NW"
                 elif unit_vector == (0,0): 
-                    unit_vector='NONE'
+                    unit_vector="NONE"
                 
                 for x in range(5): # Repeats each direction 5 times for each movement. This gives the required resolution to the stepper motor/movement code
                     directions.append(unit_vector)
