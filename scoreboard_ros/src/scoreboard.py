@@ -53,7 +53,7 @@ mcqueeny = StringVar()
 thomasx = StringVar(rootthomas)
 thomasy = StringVar(rootthomas)
 
-def function(temp):
+def function():
     print("help")
     if temp is not None:
         mcqueenx.set(temp[0])
@@ -95,8 +95,7 @@ def function(temp):
     if mcqueenhp<3: mcqueenhp3.set('X')
     if mcqueenhp<2: mcqueenhp2.set('X')
     if mcqueenhp<1: mcqueenhp1.set('X')
-    root.after(1000, function)
-    rootthomas.after(1000, function)
+    tk.after(1000, function)
 
 function()
 
