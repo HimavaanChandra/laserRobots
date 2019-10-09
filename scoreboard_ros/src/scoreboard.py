@@ -7,20 +7,26 @@ import rospy
 from vision_ros.msg import vision_comms
 from serial_ros.msg import serial_comms
 global temp 
-temp = None
+temp = []
 
 def callback(data):
-    rospy.loginfo("Thomas is at %d : %d, and %d" % (data.xThomas, data.yThomas, data.health))
-    rospy.loginfo("Lightning is at %d : %d, and %d" % (data.xLightning, data.yLightning))
+    rospy.loginfo("Thomas is at %d : %d, and %d" % (data.xThomas, data.yThomas))
+    rospy.loginfo("Lightning is at %d : %d" % (data.xLightning, data.yLightning))
 
     global temp
-    temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning, data.health]
+    temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
+    print(temp)
+    root.after(200, function)
+def callback2(data):
+    rospy.loginfo("This is health %d" % (data.health))
+    global temp
+    temp.append(data.health)
     print(temp)
     root.after(200, function)
 
 rospy.init_node('scoreboard', anonymous=True)
 rospy.Subscriber("robot_positions", vision_comms, callback)
-rospy.Subscriber("serial_link", serial_comms, callback)
+rospy.Subscriber("serial_link", serial_comms, callback2)
 
 
 root = Tk()
@@ -131,33 +137,33 @@ mainframe2.grid(column=0, row=0, sticky=(N, W, E, S))
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-ttk.Label(mainframe, text='Lightning McQueen', width=25).grid(column=1, columnspan=5, row=1, sticky=(W))
-ttk.Label(mainframe2, text='Thomas the Tank Engine', width=25).grid(column=1, columnspan=5, row=1, sticky=(E))
+ttk.Label(mainframe, text='Lightning McQueen', width=30).grid(column=1, row=1, sticky=(W, E))
+ttk.Label(mainframe2, text='Thomas the Tank Engine', width=30).grid(column=1, row=1, sticky=(W, E))
 
-ttk.Label(mainframe, text='HEALTH', width=25).grid(column=1, columnspan=10, row=2, sticky=(W))
-ttk.Label(mainframe2, text='HEALTH', width=25).grid(column=1, columnspan=10, row=2, sticky=(E))
+ttk.Label(mainframe, text='HEALTH', width=30).grid(column=1, row=2)
+ttk.Label(mainframe2, text='HEALTH', width=30).grid(column=1, row=2)
 
-ttk.Label(mainframe, textvariable=mcqueenhp1).grid(column=1, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp2).grid(column=2, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp3).grid(column=3, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp4).grid(column=4, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp5).grid(column=5, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp6).grid(column=6, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp7).grid(column=7, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp8).grid(column=8, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp9).grid(column=9, row=3, sticky=(W, E))
-ttk.Label(mainframe, textvariable=mcqueenhp10).grid(column=10, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp1, width=3).grid(column=1, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp2, width=3).grid(column=2, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp3, width=3).grid(column=3, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp4, width=3).grid(column=4, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp5, width=3).grid(column=5, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp6, width=3).grid(column=6, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp7, width=3).grid(column=7, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp8, width=3).grid(column=8, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp9, width=3).grid(column=9, row=3, sticky=(W, E))
+ttk.Label(mainframe, textvariable=mcqueenhp10, width=3).grid(column=10, row=3, sticky=(W, E))
 
-ttk.Label(mainframe2, textvariable=thomashp1).grid(column=1, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp2).grid(column=2, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp3).grid(column=3, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp4).grid(column=4, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp5).grid(column=5, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp6).grid(column=6, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp7).grid(column=7, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp8).grid(column=8, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp9).grid(column=9, row=3, sticky=(W, E))
-ttk.Label(mainframe2, textvariable=thomashp10).grid(column=10, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp1, width=3).grid(column=1, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp2, width=3).grid(column=2, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp3, width=3).grid(column=3, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp4, width=3).grid(column=4, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp5, width=3).grid(column=5, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp6, width=3).grid(column=6, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp7, width=3).grid(column=7, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp8, width=3).grid(column=8, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp9, width=3).grid(column=9, row=3, sticky=(W, E))
+ttk.Label(mainframe2, textvariable=thomashp10, width=3).grid(column=10, row=3, sticky=(W, E))
 
 ttk.Label(mainframe, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(W))
 ttk.Label(mainframe2, text='LOCATION', width=25).grid(column=1, columnspan=5, row=4, sticky=(E))
