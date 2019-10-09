@@ -275,6 +275,9 @@ def main():
 	rospy.Subscriber("map_chatter", map_comms, reader)
 	rospy.spin()
 
+	send_choice()
+	print(final_choice)
+
 	if not rospy.is_shutdown():
 		msg = tactics_comms_t()
 		msg.final_choice = final_choice
