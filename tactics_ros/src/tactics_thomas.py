@@ -193,6 +193,7 @@ def make_choice():
 			return choice
 
 def send_choice():
+	global heading
 	decision = make_choice()
 	pre_heading = heading
 
