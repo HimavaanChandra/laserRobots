@@ -1,27 +1,37 @@
 #!/usr/bin/env python3
 from tkinter import *
 from tkinter import ttk
+from datetime import datetime
 
 import rospkg
 import rospy
 from vision_ros.msg import vision_comms
 from serial_ros.msg import serial_comms
 global temp 
+global t_health
 temp = None
+t_health = 10
 
 def callback(data):
-    rospy.loginfo("Thomas is at %d : %d" % (data.xThomas, data.yThomas))
-    rospy.loginfo("Lightning is at %d : %d" % (data.xLightning, data.yLightning))
+    # rospy.loginfo("Thomas is at %d : %d" % (data.xThomas, data.yThomas))
+    # rospy.loginfo("Lightning is at %d : %d" % (data.xLightning, data.yLightning))
 
     global temp
     temp = [data.xThomas, data.yThomas, data.xLightning, data.yLightning]
-    print(temp)
+    # print(temp)
     root.after(200, function)
 def callback2(data):
-    rospy.loginfo("This is health %d" % (data.health))
-    global temp
-    temp.append(data.health)
-    print(temp)
+    # rospy.loginfo("This is health %d" % (data.health))
+    global t_health
+    if t_health > data.health:
+        now = datetime.now()
+        time_string = now.strftime("%H:%M:%S")
+        if t_health == 0:
+            print(time_string + ":Robot has been destroyed")
+        else:
+            print(time_string + ":Robot has been hit")
+    t_health = data.health
+    # print(t_health)
     root.after(200, function)
 
 rospy.init_node('scoreboard', anonymous=True)
@@ -69,8 +79,8 @@ def function():
         mcqueeny.set(temp[1])
         thomasx.set(temp[2])
         thomasy.set(temp[3])
-        mcqueenhp = temp[4]
-        thomashp = temp[5]
+        mcqueenhp = t_health
+        thomashp = t_health
     else:
         mcqueenx.set(None)
         mcqueeny.set(None)
@@ -114,11 +124,11 @@ def function():
         mcqueenhp9.set('O')
         mcqueenhp10.set('O')
 
-    if mcqueenhp<10: mcqueenhp5.set('X')
-    if mcqueenhp<9: mcqueenhp4.set('X')
-    if mcqueenhp<8: mcqueenhp3.set('X')
-    if mcqueenhp<7: mcqueenhp2.set('X')
-    if mcqueenhp<6: mcqueenhp1.set('X')
+    if mcqueenhp<10: mcqueenhp10.set('X')
+    if mcqueenhp<9: mcqueenhp9.set('X')
+    if mcqueenhp<8: mcqueenhp8.set('X')
+    if mcqueenhp<7: mcqueenhp7.set('X')
+    if mcqueenhp<6: mcqueenhp6.set('X')
     if mcqueenhp<5: mcqueenhp5.set('X')
     if mcqueenhp<4: mcqueenhp4.set('X')
     if mcqueenhp<3: mcqueenhp3.set('X')
@@ -137,11 +147,11 @@ mainframe2.grid(column=0, row=0, sticky=(N, W, E, S))
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 
-ttk.Label(mainframe, text='Lightning McQueen', width=60).grid(column=1, row=1, columspan = 10, sticky=(W, E))
-ttk.Label(mainframe2, text='Thomas the Tank Engine', width=60).grid(column=1, row=1, columspan = 10, sticky=(W, E))
+ttk.Label(mainframe, text='Lightning McQueen', width=60).grid(column=1, row=1, columnspan = 10, sticky=(W, E))
+ttk.Label(mainframe2, text='Thomas the Tank Engine', width=60).grid(column=1, row=1, columnspan = 10, sticky=(W, E))
 
-ttk.Label(mainframe, text='HEALTH', width=60).grid(column=1, row=2, columspan = 10)
-ttk.Label(mainframe2, text='HEALTH', width=60).grid(column=1, row=2, columspan = 10)
+ttk.Label(mainframe, text='HEALTH', width=60).grid(column=1, row=2, columnspan = 10)
+ttk.Label(mainframe2, text='HEALTH', width=60).grid(column=1, row=2, columnspan = 10)
 
 ttk.Label(mainframe, textvariable=mcqueenhp1).grid(column=1, row=3)
 ttk.Label(mainframe, textvariable=mcqueenhp2).grid(column=2, row=3)
