@@ -11,7 +11,7 @@ int Laser_Angle_Corrected = 0; // Corrected for robot rotation
 int Position = 0; // Flag used in the "Servo_Sweep" function
 
 
-void Laser_Angle_Correction (int Laser_Angle, int Robot_Rotation_Angle)
+void Laser_Angle_Correc tion (int Laser_Angle, int Robot_Rotation_Angle)
 {
   // if (Robot_Rotation_Angle != 0)
 
