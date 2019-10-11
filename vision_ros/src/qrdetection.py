@@ -21,16 +21,17 @@ yLightningCode = 0
 def decode(im) : 
     # Find barcodes and QR codes
     decodedObjects = pyzbar.decode(im)
-    for obj in decodedObjects: #maybe adjust this for printing
+    for obj in decodedObjects:
         print('')     
     return decodedObjects
 
+#ROS initialise publisher
 pub = rospy.Publisher('robot_positions', vision_comms, queue_size=10)
 rospy.init_node('robot_positions', anonymous=True)
 rate = rospy.Rate(10)  #10hz
 
 
-
+#start video capture
 cap = cv2.VideoCapture(0)
 
 cap.set(3,1920)
@@ -40,9 +41,7 @@ time.sleep(2)
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 while(cap.isOpened()):
-    # Capture frame-by-frame
     ret, frame = cap.read()
-    # Our operations on the frame come here
     im = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
          
     decodedObjects = decode(im)
@@ -66,14 +65,13 @@ while(cap.isOpened()):
         x = decodedObject.rect.left
         y = decodedObject.rect.top
 
-        #print(x, y)
         qrData = decodedObject.data
-
+#differentiating between the 2 robots
         if qrData == b'1':
               xThomasCode = x
               yThomasCode = y
               print("Thomas: ",xThomasCode,yThomasCode)
-              cv2.putText(frame, 'Thomas', (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
+              cv2.putText(frame, 'Thomas', (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA) #putting robot name on its QR code
         if qrData == b'2':
               xLightningCode = x
               yLightningCode = y
@@ -82,8 +80,7 @@ while(cap.isOpened()):
 
 
         barCode = str(decodedObject.data)
-        # cv2.putText(frame, barCode, (x, y), font, 1, (0,255,255), 2, cv2.LINE_AA)
-    
+#publishing position data to ROS    
     if not rospy.is_shutdown():
       msg = vision_comms()
       msg.xThomas = xThomasCode
@@ -100,6 +97,6 @@ while(cap.isOpened()):
         break
    
 
-# When everything done, release the capture
+# releasing capture
 cap.release()
 cv2.destroyAllWindows()
