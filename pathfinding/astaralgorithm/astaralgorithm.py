@@ -32,7 +32,7 @@ class Node(): #Setting up "class" "Node"
         return self.position == other.position
 
 class AStar(): #Setting up "class" "AStar"
-    size = 1 #Sets the size of the buffer around the robot. MAKE SURE THAT ROBOT BUFFER IS NOT TOUCHING ANY WALLS IN THE STARTING POSITION
+    size = 0 #Sets the size of the buffer around the robot. MAKE SURE THAT ROBOT BUFFER IS NOT TOUCHING ANY WALLS IN THE STARTING POSITION
     # Initialisation function that is called when the class is called
     def __init__(self, maze, start, end): 
         self.maze = maze
@@ -166,8 +166,8 @@ def astar(maze, size, start, end):
                 elif unit_vector == (0,0): 
                     unit_vector="NONE"
                 
-                for x in range(5): # Repeats each direction 5 times for each movement. This gives the required resolution to the stepper motor/movement code
-                    directions.append(unit_vector)
+                # for x in range(5): # Repeats each direction 5 times for each movement. This gives the required resolution to the stepper motor/movement code
+                directions.append(unit_vector)
 
             # return path[::-1]  # Return reversed path
             return directions[::-1]  # Return reversed path
@@ -288,7 +288,7 @@ def main():
     cell_map = np.loadtxt("filename.csv", delimiter=",")
     cell_array = np.array(cell_map).tolist()
    
-    aStar = AStar(cell_array, (0, 0), (11, 7)) # maze, start, end - Object "aStar" sets start and coordinates for robot
+    aStar = AStar(cell_array, (0, 0), (7, 3)) # maze, start, end - Object "aStar" sets start and coordinates for robot
     path=aStar.calculatePath() 
     print(path) #Prints coordinates of path to terminal
     # aStar.setStart((40, 40)) #Sets start positon (Should be set to equal previous path end position)
